@@ -1,0 +1,52 @@
+<form [formGroup]="form" (ngSubmit)="save(form.value)" class="form-container">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Registro de Producto</mat-card-title>
+        <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <br>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex="100" appearance="outline">
+                <mat-label>Descripción</mat-label>
+                <input matInput formControlName="description" placeholder="Descripción">
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>Marca de Producto</mat-label>
+                <mat-select formControlName="product_brand" >
+                    <mat-option value="option1">Option 1</mat-option>
+                    <mat-option value="option2">Option 2</mat-option>
+                    <mat-option value="option3">Option 3</mat-option>
+                  </mat-select>
+            </mat-form-field>
+            <button mat-mini-fab matTooltip="Agregar Marca de Producto" aria-label="Nueva Marca de Producto" type="button" (click)="openDialog()" class="" style="margin-top: 10px;">
+                <mat-icon>add</mat-icon>
+            </button>
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>Tipo de Producto</mat-label>
+                <mat-select formControlName="product_type" >
+                    <mat-option value="option1">Option 1</mat-option>
+                    <mat-option value="option2">Option 2</mat-option>
+                    <mat-option value="option3">Option 3</mat-option>
+                  </mat-select>
+            </mat-form-field>
+            <button mat-mini-fab matTooltip="Agregar Tipo de Producto" aria-label="Nuevo Tipo de Producto" type="button" (click)="openDialog()" class="" style="margin-top: 10px;">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <div flex fxLayoutAlign="end center" fxLayout="row">
+            <mat-slide-toggle class="margin-slide float-right" formControlName="status" color="primary"> {{form.value.status ? 'Activo' : 'Inactivo'}} </mat-slide-toggle>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="container">
+          <div class="row justify-content-center">
+            <button mat-button color="warn" matTooltip="Limpiar" type="reset">Limpiar</button>
+            <button mat-button color="primary" type="submit" matTooltip="Guardar" [disabled]="!form.valid">Guardar</button>
+          </div>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </form>

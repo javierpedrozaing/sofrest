@@ -1,0 +1,50 @@
+.content-card{
+  height: 30vh;
+  padding: 10px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+}
+.card-style{
+    padding: 10px;
+}
+.content-img-food{
+    height: 15vh;
+    max-height: 15vh;
+    text-align: center;    
+    white-space: nowrap;
+    margin: 1em 0;
+}
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.content-food-description{
+    height: 15vh;
+    max-height: 15vh;
+    padding: 0 !important;
+    text-align: center;
+}
+.name-and-ingredients{
+
+}
+.price-weight{
+    // height: 4vh;
+}
+.ingredients{
+    overflow-x: auto;
+    font-size: 10px;
+    // height: vh;
+}
+img.img-content{
+    max-width: 100%;
+    height: auto;
+    max-height: 14.5vh;}
+.selected-content{
+    background-color: #343434;
+    color: #aaaaaa;}
+.input-number-style{
+    text-align: center;
+    margin-top: 15%;}
+.mat-form-field-flex{
+    background-color: #ffffff !important;}

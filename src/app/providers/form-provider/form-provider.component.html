@@ -1,0 +1,124 @@
+<form [formGroup]="form" (ngSubmit)="submit(form.value,null)" class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Registro de Proveedores</mat-card-title>
+      <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+      <div class="button-close">
+        <button type="button" routerLink="/providers/list" matTooltip="Regresar" mat-button color="warn"
+          class="float-right config-close">
+          <mat-icon>keyboard_backspace</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <br>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <div fxflex flex fxLayout="row">
+          <mat-form-field fxFlex appearance="outline">
+            <mat-label>RUC</mat-label>
+            <input matInput formControlName="ruc" id="ruc" placeholder="RUC">
+          </mat-form-field>
+          <span fxFlex>
+            <button mat-icon-button type="button" [disabled]="form.value.ruc === null" (click)="getClientByRUC(form.value.ruc)" matTooltip="Buscar" style="margin-top: 10px;" color="primary">
+              <mat-icon>search</mat-icon>
+          </button>
+          </span>
+        </div>
+        <mat-form-field fxFlex appearance="outline">
+          <mat-label>Razón Social</mat-label>
+          <input matInput formControlName="business_name" placeholder="Razón Social">
+        </mat-form-field>
+        <mat-form-field fxFlex appearance="outline">
+          <mat-label>Nombre Comercial</mat-label>
+          <input matInput formControlName="tradename" placeholder="Nombre Comercial">
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Dirección</mat-label>
+          <textarea formControlName="address" type="text" matInput placeholder="Dirección"></textarea>
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <mat-form-field fxFlex appearance="outline">
+          <mat-label>UBIGEO</mat-label>
+          <mat-select formControlName="ubigeo_id" [compareWith]="compareObjects" #singleSelectUbigeo>
+            <mat-option>
+                <ngx-mat-select-search [formControl]="ubigeoFilterCtrl" [placeholderLabel]="'Buscar'"
+                    [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let ubigeo of filteredUbigeos | async" [value]="ubigeo.id">
+              {{ubigeo.department}}/{{ubigeo.province}}/{{ubigeo.district}}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+        <mat-form-field fxFlex appearance="outline">
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="phone" placeholder="Número telefónico">
+        </mat-form-field>
+        <!-- <mat-form-field fxFlex appearance="outline">
+          <mat-label>Tel&eacute;fono Alternativo</mat-label>
+          <input matInput formControlName="alternative_phone" placeholder="Ingrese un Tel&eacute;fono Alternativo">
+        </mat-form-field> -->
+        <mat-form-field fxFlex appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" placeholder="Correo Electr&oacute;nico">
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Web</mat-label>
+          <input matInput formControlName="web" placeholder="URL del sitio web">
+        </mat-form-field>
+        <mat-form-field fxFlex="50" appearance="outline">
+            <mat-label>Día de Crédito</mat-label>
+            <input matInput formControlName="credit_day" type="number" min="1" max="30" placeholder="Día de Crédito">
+          </mat-form-field>
+      </div>
+      <!-- <div flex fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Ciudad</mat-label>
+          <input matInput formControlName="city" placeholder="Ciudad">
+        </mat-form-field>
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Código Postal</mat-label>
+          <input matInput formControlName="postal_code" placeholder="Código Postal">
+        </mat-form-field>
+      </div> -->
+      <!-- <div flex fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>País</mat-label>
+          <mat-select formControlName="country">
+            <mat-option *ngFor="let country of countries" [value]="country.id">{{country.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Región/Estado/Provincia</mat-label>
+          <input matInput formControlName="region" placeholder="Región/Estado/Provincia">
+        </mat-form-field>
+      </div> -->
+      <div flex fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Observación</mat-label>
+          <input matInput formControlName="observation" placeholder="Observación">
+        </mat-form-field>
+      </div>
+      <h6>D&iacute;as de Entrega</h6>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <button mat-raised-button [ngClass]="{'day-selected': day.checked}" *ngFor="let day of weekDays; let i = index;" type="button"
+          (click)="changeCheck(i,!day.checked)">{{day.name}}</button>
+      </div>
+      <div flex fxLayoutAlign="end center" fxLayout="row" fxLayoutGap="10px">
+        <mat-slide-toggle class="margin-slide float-right" formControlName="state" [color]="'primary'">
+          {{form.value.state ? 'Activo' : 'Inactivo'}} 
+        </mat-slide-toggle>
+      </div>
+    </mat-card-content>
+    <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+      <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro" type="reset">Limpiar</button>
+      <span>&nbsp;</span>
+      <button flex mat-raised-button color="primary" matTooltip="Guardar Registro" type="submit"
+        [disabled]="!form.valid">Guardar</button>
+    </div>
+  </mat-card>
+</form>

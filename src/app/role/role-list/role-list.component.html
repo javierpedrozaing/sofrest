@@ -1,0 +1,60 @@
+<mat-card>
+  <div class="container-section-header clearfix">
+    <h2 class="float-left">Gestionar Roles</h2>
+    <button class="float-right" mat-flat-button color="primary" (click)="openDialog()" matTooltip="Nuevo Rol" *ngIf="!isMobile">
+      <mat-icon aria-hidden="false" aria-label="Add Icon">add</mat-icon> Añadir Rol
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" class="text-center" [hidden]="isMobile">
+
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> N </th>
+      <td mat-cell *matCellDef="let element; let i =index" class="text-center"> {{i + 1}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Nombre </th>
+      <td mat-cell *matCellDef="let element; let i =index" class="text-center"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Descripción </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.description}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="options">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Opciones </th>
+      <td mat-cell *matCellDef="let idx = index; let element" class="text-center">
+        <button mat-icon-button type="button" (click)="getRole(element.id)">
+          <mat-icon matTooltip="Ver Detalle" color="primary">
+              search</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons [hidden]="isMobile" ></mat-paginator>
+  <mat-list *ngIf="isMobile">
+    <mat-list-item *ngFor="let data of dataSource; let idx = index; let element" class="mat-element">
+      <mat-icon mat-list-icon>insert_drive_file</mat-icon>
+      <h4 mat-line>{{data.name}}</h4>
+      <p mat-line> {{data.description}} </p>
+      <p mat-line>
+        <button mat-icon-button type="button" (click)="getRole(element.id)">
+          <mat-icon matTooltip="Ver Detalle" color="primary">
+              search</mat-icon>
+        </button>
+      </p>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
+</mat-card>
+
+<button class="float-button" [routerLink]="['/roles/new']" *ngIf="isMobile" mat-fab color="primary">
+  <mat-icon aria-label="Añadir">
+    add
+  </mat-icon>
+</button>

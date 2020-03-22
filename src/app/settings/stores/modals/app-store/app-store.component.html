@@ -1,0 +1,39 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>NUEVA Local</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <form [formGroup]="newStore" class="form-container">
+
+            <mat-form-field class="adapted-form col-lg-12" appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input type="text" matInput formControlName="name" placeholder="Nombre">
+            </mat-form-field>
+
+            <mat-form-field class="adapted-form col-lg-12" appearance="outline">
+                <mat-label>Dirección</mat-label>
+                <input type="text" matInput formControlName="addres" placeholder="Dirección">
+            </mat-form-field>
+
+            <mat-form-field class="adapted-form col-lg-12" appearance="outline">
+                <mat-label>Telefono</mat-label>
+                <input type="text" matInput formControlName="phone" placeholder="Telefono">
+            </mat-form-field>
+
+            <mat-form-field class="adapted-form col-lg-12" appearance="outline">
+                <mat-label>Descripción</mat-label>
+                <input type="text" matInput formControlName="description" placeholder="Descripción">
+            </mat-form-field>
+
+        </form>
+
+    </mat-card-content>
+
+    <mat-card-actions>
+        <div class="clearfix">
+            <button class="float-right" matTooltip="Guardar" mat-button>GUARDAR</button>
+            <button (click)="close()" matTooltip="Cancelar" class="float-right" mat-button>CANCELAR</button>
+        </div>
+    </mat-card-actions>
+</mat-card>

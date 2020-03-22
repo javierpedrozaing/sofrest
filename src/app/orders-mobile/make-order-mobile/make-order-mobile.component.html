@@ -1,0 +1,52 @@
+<div fxLayout="row" style="background-color: #7986CB; color: white">
+  <div fxFlex="20" style="padding: 10px">
+      <button mat-raised-button color="accent" routerLink="/orders-mobile">
+          <mat-icon>arrow_back</mat-icon>
+      </button></div>
+  <div fxFlex="80" style="padding: 10px" fxLayoutAlign="center center">PEDIDOS</div>
+</div>
+<mat-list>
+  <mat-list-item>
+    <ngx-avatar mat-list-icon name="Pasticho de Berenjenas"></ngx-avatar>
+    <h4 style="margin-left: 20px;" mat-line>Pasticho de Berenjenas</h4>
+    <p style="margin-left: 20px;" mat-line>Ingrediente 1, Ingrediente 2</p>
+  </mat-list-item>
+</mat-list>
+<div class="clearfix" style="font-size: 1.2em; color: #bdbdbd">
+  <span style="float:left">S/10.50</span>
+  <button
+    style="float:right"
+    mat-icon-button
+    color="accent"
+    aria-label="Example icon-button with a heart icon"
+  >
+    <mat-icon>add_circle_outline</mat-icon>
+  </button>
+  <span style="float:right; margin-top: 9px">1</span>
+  <button
+    style="float:right"
+    mat-icon-button
+    color="primary"
+    aria-label="Example icon-button with a heart icon"
+  >
+    <mat-icon>remove_circle_outline</mat-icon>
+  </button>
+</div>
+<h3>Con</h3>
+<mat-checkbox>Checked</mat-checkbox>
+<span style="float: right;">$11.00</span>
+<h3>Sin</h3>
+<mat-checkbox>Checked</mat-checkbox>
+<h3>T&eacute;rmino</h3>
+<mat-radio-group aria-label="Select an option">
+  <mat-radio-button value="1">Option 1</mat-radio-button>
+  <mat-radio-button value="2">Option 2</mat-radio-button>
+</mat-radio-group>
+<h3>Adicionales</h3>
+<mat-checkbox>Checked</mat-checkbox>
+<div class="row" style="position: fixed; bottom: 5px; margin: 0 auto 0 auto">
+  <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle routerLink="/orders-mobile/list">Seguir Agregando <mat-icon>arrow_upward</mat-icon></mat-button-toggle>
+    <mat-button-toggle routerLink="/orders-mobile/grid" style="background-color: #3f51b5; color: white">Enviar Comanda <mat-icon>keyboard_arrow_right</mat-icon></mat-button-toggle>
+  </mat-button-toggle-group>
+</div>

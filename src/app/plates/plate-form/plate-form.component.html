@@ -1,0 +1,316 @@
+<form [formGroup]="form" class="form-container" (ngSubmit)="submit(form.value, null)">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Registro de Plato</mat-card-title>
+            <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+            <div class="button-close">
+                <button type="button" routerLink="/plates" matTooltip="Volver al Listado" mat-button color="warn"
+                    class="float-right config-close">
+                    <mat-icon>keyboard_backspace</mat-icon>
+                </button>
+            </div>
+        </mat-card-header>
+        <mat-card-content>
+            <br>
+
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+                <mat-form-field fxFlex="50" appearance="outline">
+                    <mat-label>Nombre del Plato</mat-label>
+                    <input matInput formControlName="name" placeholder="Nombre del Plato">
+                </mat-form-field>
+                <mat-form-field fxFlex="10" appearance="outline">
+                    <mat-label>C&oacute;digo</mat-label>
+                    <input matInput formControlName="code" placeholder="Código">
+                  </mat-form-field>
+                  <mat-form-field fxFlex appearance="outline">
+                    <mat-label>C&oacute;digo de Barras</mat-label>
+                    <input matInput formControlName="barcode" placeholder="Codigo de Barras">
+                  </mat-form-field>
+                <mat-form-field fxFlex appearance="outline">
+                    <mat-label>Moneda</mat-label>
+                    <mat-select formControlName="coin_id" [compareWith]="compareObjects">
+                        <mat-option *ngFor="let item of currencies" [value]="item.id">{{item.description}}
+                            ({{item.symbol}})</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+  
+
+                <mat-form-field fxFlex appearance="outline">
+                    <mat-label>Precio Neto</mat-label>
+                    <input matInput type="number" (keyup)="setPrice(form.value.net_price)" formControlName="net_price"
+                        placeholder="Precio Neto">
+                </mat-form-field>
+                <mat-form-field fxFlex appearance="outline">
+                    <mat-label>Precio de Venta</mat-label>
+                    <input matInput type="number" (keyup)="setNetPrice(form.value.price)"
+                        formControlName="price" placeholder="Precio">
+                </mat-form-field>
+                <mat-form-field fxFlex appearance="outline">
+                    <mat-label>IGV</mat-label>
+                    <input matInput type="number" readonly [value]="form.value.net_price*0.18" placeholder="IGV">
+                </mat-form-field>
+                <mat-form-field fxFlex appearance="outline">
+                    <mat-label>Costo</mat-label>
+                    <input matInput type="number" formControlName="cost" placeholder="Costo">
+                </mat-form-field>
+
+            </div>
+            <div flex fxLayout="row">
+                <div fxFlex="20">
+                    <span>
+                      Imagen de Artículo
+                    </span>
+                    <ngx-image-uploader [options]="options" (upload)="onUpload($event)"></ngx-image-uploader>
+                </div>
+                <div fxLayout="column" fxFlex>
+                    <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+                        <mat-form-field fxFlex appearance="outline">
+                            <mat-label>Máximo Permitido</mat-label>
+                            <input matInput type="number" formControlName="dish_maximum_allowed" placeholder="Máximo Permitido">
+                        </mat-form-field>
+    
+                        <mat-form-field fxFlex appearance="outline">
+                            <mat-label>Categoría del Plato</mat-label>
+                            <mat-select formControlName="dish_category_id" [compareWith]="compareObjects">
+                                <mat-option *ngFor="let item of dishCategories" [value]="item.id">{{item.description}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex appearance="outline">
+                            <mat-label>Area de Impresión</mat-label>
+                            <mat-select formControlName="area_id" (selectionChange)="getPrintersByArea(form.value.area_id)"
+                              [compareWith]="compareObjects">
+                              <mat-option *ngFor="let area of areas" [value]="area.id">{{area.description}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                        <mat-form-field fxFlex appearance="outline">
+                            <mat-label>Impresora</mat-label>
+                            <mat-select formControlName="printer_id" [compareWith]="compareObjects">
+                              <mat-option *ngFor="let printer of printers" [value]="printer.id">{{printer.description}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </div>
+                    <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+                        <mat-form-field fxFlex appearance="outline">
+                            <mat-label>Observaciones</mat-label>
+                            <textarea formControlName="observation" type="text" matInput placeholder="Observaciones"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+            <!-- <h4>Artículos</h4> -->
+            <!-- <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+                <mat-form-field fxFlex="25" appearance="outline">
+                    <mat-select [formControl]="categoryCtrl" placeholder="Categorías" #singleSelect
+                        >
+                        <mat-option>
+                            <ngx-mat-select-search [formControl]="categoryFilterCtrl" [placeholderLabel]="'Buscar'"
+                                [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let category of filteredCategories | async" [value]="category.id">
+                            {{category.description}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field fxFlex="25" appearance="outline">
+                    <mat-select [formControl]="productCtrl" placeholder="Sub-Categoría" #singleSelect
+                        >
+                        <mat-option>
+                            <ngx-mat-select-search [formControl]="subCategoryFilterCtrl" [placeholderLabel]="'Buscar'"
+                                [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let subcategory of filteredSubCategories | async" [value]="subcategory.id">
+                            {{subcategory.description}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" appearance="outline">
+                    <mat-select [formControl]="productCtrl" placeholder="Productos" #singleSelect
+                        (selectionChange)="changeValue($event)">
+                        <mat-option>
+                            <ngx-mat-select-search [formControl]="productFilterCtrl" [placeholderLabel]="'Buscar'"
+                                [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+                            {{product.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div flex fxLayout="row">
+                <div fxFlex="100" class="table-responsive">
+                    <table mat-table [dataSource]="dataSource">
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>Producto</th>
+                            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="price">
+                            <th mat-header-cell *matHeaderCellDef>Precio</th>
+                            <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="qty">
+                            <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+                            <td mat-cell *matCellDef="let element; let i = index;">
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-icon style="color: #d32f2f;cursor: pointer;" (click)="changeQty(i,-1)" matTooltip="Disminuir Cantidad" >
+                                        arrow_downward</mat-icon>
+                                    <mat-icon style="color: #0277bd;cursor: pointer;" matTooltip="Aumentar Cantidad" (click)="changeQty(i,1)">arrow_upward
+                                    </mat-icon>
+                                    <span>{{ element.qty }}</span>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element">
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <button mat-button color="warn" matTooltip="Quitar Producto"  (click)="removeElement(i)">
+                                        <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+            <mat-divider></mat-divider> -->
+            <h4>Recetas</h4>
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+                <mat-form-field fxFlex="25" appearance="outline">
+                    <mat-select [formControl]="recipeCtrl" placeholder="Receta"
+                        (selectionChange)="changeValueRecipe($event)" #singleSelect3>
+                        <mat-option>
+                            <ngx-mat-select-search [formControl]="recipeFilterCtrl" [placeholderLabel]="'Buscar'"
+                                [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of filteredRecipes | async" [value]="item">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div flex fxLayout="row">
+                <div fxFlex="100" class="table-responsive">
+                    <table mat-table [dataSource]="dataSourceRecipe">
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>Receta</th>
+                            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="price">
+                            <th mat-header-cell *matHeaderCellDef>Precio</th>
+                            <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element;let i = index;">
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <button mat-button color="warn" type="button" matTooltip="Quitar Receta"
+                                        (click)="removeElementRecipe(i)">
+                                        <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsRecipes"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsRecipes"></tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <h4>T&eacute;rmino</h4>
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px"
+                *ngFor="let term of terms; let i = index; trackBy:trackByFn">
+                <div fxFlex="70" fxLayout="row">
+                    <mat-form-field fxFlex="80" appearance="outline">
+                        <mat-label>Término {{i+1}}</mat-label>
+                        <input matInput placeholder="Término" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="terms[i].description">
+                    </mat-form-field>
+                    <div fxFlex="10" *ngIf="i === terms.length-1">
+                        <button mat-button aria-label="Nuevo" matTooltip="Añadir" type="button" color="primary"
+                            (click)="addTerm()" style="margin-top: 10px;">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                    <div fxFlex="10" *ngIf="terms.length>1">
+                        <button mat-button aria-label="Nuevo" matTooltip="Quitar" type="button" color="warn"
+                            (click)="deleteTerm(i)" style="margin-top: 10px;">
+                            <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <h4>Reglas</h4>
+            <div flex fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px"
+                *ngFor="let rule of selectRule; let i = index; trackBy:trackByFn">
+                <mat-form-field fxFlex appearance="outline">
+                    <mat-label>Regla </mat-label>
+                    <mat-select [(ngModel)]="selectRule[i].attribute" [ngModelOptions]="{standalone: true}">
+                        <mat-option *ngFor="let item of optionRule" [value]="item.value">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field fxFlex appearance="outline">
+                    <mat-label>Producto </mat-label>
+                    <mat-select [(ngModel)]="selectRule[i].product" [ngModelOptions]="{standalone: true}"
+                        [compareWith]="compareObjects">
+                        <mat-option *ngFor="let item of products" [value]="item.id">{{item.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- <ngx-select-dropdown fxFlex="20" [(ngModel)]="selectRule[i]" [ngModelOptions]="{standalone: true}"
+                    [multiple]="false" [config]="selectRule" [options]="optionRule">
+                </ngx-select-dropdown> -->
+                <!-- <ngx-select-dropdown fxFlex="20" [multiple]="false" [config]="selectProduc" [options]="optionProduc">
+                </ngx-select-dropdown> -->
+                <mat-form-field *ngIf="selectRule[i].attribute === 1" fxFlex="20" appearance="outline">
+                    <mat-label>Precio</mat-label>
+                    <input matInput type="number" placeholder="Precio" [(ngModel)]="selectRule[i].price_attribute"
+                        [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                <!-- <mat-form-field *ngIf="selectRule[i].attribute === 1" fxFlex="20" appearance="outline">
+                    <mat-label>Cantidad Máxima</mat-label>
+                    <input matInput type="number" placeholder="Cantidad M&aacute;xima" [(ngModel)]="selectRule[i].max_quantity" [ngModelOptions]="{standalone: true}">
+                </mat-form-field> -->
+                <div fxFlex="20">
+                    <button mat-icon-button type="button" matTooltip="Añadir" style="margin-top:10px"
+                        (click)="addRule()" color="primary">
+                        <mat-icon aria-hidden="false" aria-label="add">add</mat-icon>
+                    </button>
+                    <button mat-button color="warn" type="button" matTooltip="Quitar" (click)="deleteRule(i)">
+                        <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                    </button>
+                </div>
+            </div>
+            <div flex fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="end center" fxLayoutGap="10px">
+                <mat-slide-toggle class="margin-slide float-right" formControlName="state" color="primary">
+                    {{form.value.state ? 'Activo' : 'Inactivo'}} </mat-slide-toggle>
+            </div>
+        </mat-card-content>
+        <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+            <button flex mat-raised-button color="warn" type="reset" matTooltip="Reiniciar Registro">Limpiar</button>
+            <span>&nbsp;</span>
+            <button flex mat-raised-button color="primary" type="submit" matTooltip="Guardar Registro"
+                [disabled]="!form.valid">Guardar</button>
+        </div>
+    </mat-card>
+</form>

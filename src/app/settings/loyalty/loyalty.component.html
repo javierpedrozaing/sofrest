@@ -1,0 +1,29 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>CONFIGURACIÓN DE LEALTAD</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <form [formGroup]="Lealtad" class="form-container">
+
+            <mat-form-field class="adapted-form col-lg-12" appearance="outline">
+                <mat-label>Tipo de lealtad</mat-label>
+                <input type="email" matInput formControlName="loyalty_type" placeholder="tipo de lealtad">
+            </mat-form-field>
+
+            <mat-form-field class="adapted-form col-lg-12" appearance="outline">
+                <mat-label>Un porcentaje de la cantidad de la compra seré acreditado a la cuenta de puntos del cliente</mat-label>
+                <input type="text" matInput formControlName="percentage" placeholder="%">
+            </mat-form-field>
+
+        </form>
+
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-actions>
+        <div class="clearfix">
+            <button class="float-right" matTooltip="Guardar Registro" color="warn" mat-raised-button>Guardar</button>
+            <button class="float-right" matTooltip="Cancelar Registro" color="primary" mat-raised-button>Cancelar</button>
+        </div>
+    </mat-card-actions>
+</mat-card>

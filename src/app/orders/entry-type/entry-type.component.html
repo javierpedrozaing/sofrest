@@ -1,0 +1,82 @@
+<mat-card>
+  <div class="container-section-header clearfix">
+    <h2 class="float-left">Gestionar Tipos de Ingresos</h2>
+    <button class="float-right" mat-flat-button color="primary" matTooltip="Añadir Tipo de Ingreso" [routerLink]="['/orders/entry-type/form']" *ngIf="!isMobile">
+      <mat-icon aria-hidden="false" aria-label="Add Icon">add</mat-icon> Añadir Tipo de Ingreso
+    </button>
+  </div>
+  
+  <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" *ngIf="!isMobile">
+    <mat-form-field fxFlex="50">
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+      <span matPrefix>
+        <mat-icon>search</mat-icon>
+      </span>
+    </mat-form-field>
+  </div>
+  
+  <table mat-table [dataSource]="dataSource" class="text-center" *ngIf="!isMobile">
+  
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> N </th>
+      <td mat-cell *matCellDef="let element; let i =index" class="text-center"> {{i + 1}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Descripción </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.description}} </td>
+    </ng-container>
+  
+    <!-- <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> ¿Activo? </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+            <mat-icon *ngIf="element.status===true" color="primary" aria-hidden="false" aria-label="active">check_circle</mat-icon>
+        </td>
+    </ng-container> -->
+
+    <ng-container matColumnDef="options">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Opciones </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> 
+          <button mat-icon-button matTooltip="Deshabilitar" *ngIf="element.status" (click)="element.status = !element.status" style="color:#00c853">
+            <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Habilitar" *ngIf="!element.status" color="warn" (click)="element.status = !element.status">
+          <mat-icon>visibility_off</mat-icon>
+      </button>
+            <button mat-icon-button color="primary" matTooltip="Editar"><img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24"></button>
+            <button mat-icon-button color="warn" matTooltip="Eliminar"><img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24"></button>  
+        </td>
+      </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="text-center" *ngIf="!isMobile"></mat-paginator>
+
+  <mat-list *ngIf="isMobile">
+    <mat-list-item *ngFor="let data of dataSource.data; let element" class="mat-element">
+      <mat-icon mat-list-icon>insert_drive_file</mat-icon>
+      <!-- <h4 mat-line>{{data.description}}</h4>
+      <p mat-line> {{data.code}} - {{data.status ? 'Activo' : 'Inactivo'}}</p> -->
+
+      <p mat-line>Descripción: {{element.description}}</p>
+
+      <p mat-line>
+          <button mat-icon-button matTooltip="Deshabilitar" *ngIf="element.status" (click)="element.status = !element.status" style="color:#00c853">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Habilitar" *ngIf="!element.status" color="warn" (click)="element.status = !element.status">
+            <mat-icon>visibility_off</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" matTooltip="Editar"><img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24"></button>
+          <button mat-icon-button color="warn" matTooltip="Eliminar"><img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24"></button>  
+      </p>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
+</mat-card>
+<button class="float-button" [routerLink]="['/orders/entry-type/form']" *ngIf="isMobile" mat-fab color="primary">
+  <mat-icon aria-label="Añadir">
+      add
+  </mat-icon>
+</button>

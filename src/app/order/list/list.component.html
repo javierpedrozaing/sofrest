@@ -1,0 +1,24 @@
+<div class="clearfix">
+  <span class="float-left title-component">NUEVA ORDEN</span>
+  <span class="float-right" routerLink="/supervisor/0">
+    <mat-icon>
+      keyboard_backspace
+    </mat-icon>
+  </span>
+</div>
+
+
+<div class="tabs-categories">
+  <button class="col-sm" [matTooltip]="category.name" mat-button *ngFor="let category of categories; let i = index" (click)="selectedCategory(i)"
+    class="category-button" [ngClass]="{'selected-category': category.selected}">
+    <span>{{category.name}}</span>
+  </button>
+</div>
+<div class="row">
+  <div class="col-lg-3 col-md-4 col-xs-12 col-sm-6" *ngFor="let item of items;">
+    <app-order></app-order>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <button matTooltip="Ordenar" mat-button color="primary" (click)="saveOrder()" type="button">Ordenar</button>
+</div>

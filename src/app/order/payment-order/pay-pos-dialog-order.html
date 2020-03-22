@@ -1,0 +1,75 @@
+<div fxLayout="row" fxLayoutAlign="center center" style="color: blue">
+        <h1>M&oacute;dulo de Pago</h1>
+</div>
+<div mat-dialog-content>
+    <div fxLayout="row">
+        <div fxFlex="30">
+            <button mat-stroked-button color="primary">
+                <fa-icon [icon]="faCreditCard"></fa-icon>
+            </button>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayout.lt-lg="column">
+        <div fxFlex="100" fxFlex.lt-lg="100" style="padding: 7px">
+            <h3>Datos de Facturaci&oacute;n</h3>
+            <form [formGroup]="billingFormGroup">
+                <div lex fxLayout="row">
+                        <mat-form-field fxFlex="20" appearance="outline">
+                                <mat-label>Tipo de Documento</mat-label>
+                                <mat-select formControlName="document_type" >
+                                        <mat-option value="option1">Pasaporte</mat-option>
+                                        <mat-option value="option2">RUC</mat-option>
+                                        <mat-option value="option3">DNI</mat-option>
+                                      </mat-select>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="30" appearance="outline">
+                                <mat-label>Documento</mat-label>
+                                <input matInput placeholder="Documento" formControlName="dni" required>
+                        </mat-form-field>
+                        <button mat-mini-fab matTooltip="Buscar" color="primary" type="button" style="margin-top: 10px;" (click)="search()" *ngIf="billingFormGroup.value.document_type && billingFormGroup.value.dni" ><mat-icon>search</mat-icon></button>
+                </div>
+                <div flex fxLayout="column">
+                    <mat-form-field fxFlex="100" appearance="outline">
+                        <mat-label>Nombre/Razón Social</mat-label>
+                        <input matInput placeholder="Nombre/Razón Social" formControlName="name" disabled required>
+                    </mat-form-field>
+                  
+                </div>
+            </form>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="end center" >
+            <h4>Total : {{total | number}}</h4>
+     </div>
+    <div xLayout="row" fxLayout.lt-lg="column">
+        <div fxFlex="100" fxFlex.lt-lg="100" style="padding: 7px">
+            <h3>Datos de Pago</h3>
+            <!-- <form [formGroup]="cardFormGroup">
+                <div flex fxLayout="column">
+                    <mat-form-field fxFlex="100" appearance="outline">
+                        <mat-label>Nombre en la Tarjeta</mat-label>
+                        <input matInput placeholder="Nombre en la Tarjeta" formControlName="cardholder_name" required>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="100" appearance="outline">
+                        <mat-label>N&uacute;mero de Tarjeta</mat-label>
+                        <input type="number" (keyup)="GetCardType(cardFormGroup.value.card_number)" matInput
+                            placeholder="N&uacute;mero de Tarjeta" formControlName="card_number" required>
+                        <mat-icon matSuffix><img *ngIf="card_type" height="24" src="{{card_type.img}}"></mat-icon>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="100" appearance="outline">
+                        <mat-label>Fecha de Vencimiento</mat-label>
+                        <input type="month" matInput placeholder="Fecha de Expiraci&oacute;n"
+                            formControlName="expire_date" required>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="100" appearance="outline">
+                        <mat-label>CVV</mat-label>
+                        <input type="number" matInput placeholder="D&iacute;gitos de Seguridad" formControlName="cvv"
+                            required>
+                    </mat-form-field>
+                </div>
+            </form> -->
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-around center" mat-dialog-actions>
+        <button matTooltip="Pagar" mat-raised-button color="primary">Pagar</button>
+    </div>

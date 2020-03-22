@@ -1,0 +1,81 @@
+<div fxLayout="row" fxLayoutAlign="center center">
+  <h5><b>PRE - CUENTA</b></h5>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+  <h6><b>Mesa: </b> 05</h6>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+  <h6><b>Mozo: </b> Carlos A Parra</h6>
+</div>
+<table mat-table [dataSource]="dataSource">
+
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef> Descripci&oacute;n </th>
+    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    <td mat-footer-cell *matFooterCellDef> &nbsp; </td>
+  </ng-container>
+
+  <ng-container matColumnDef="emptyFooter">
+    <td mat-footer-cell *matFooterCellDef> &nbsp; </td>
+  </ng-container>
+
+  <ng-container matColumnDef="emptyFooter2">
+    <td mat-footer-cell *matFooterCellDef> &nbsp; </td>
+  </ng-container>
+
+  <ng-container matColumnDef="qty">
+    <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+    <td mat-cell *matCellDef="let element"> {{element.qty}} </td>
+    <td mat-footer-cell *matFooterCellDef> SubTotal S/.</td>
+  </ng-container>
+
+  <ng-container matColumnDef="discount">
+    <td mat-footer-cell *matFooterCellDef> Descuento S/.</td>
+  </ng-container>
+
+  <ng-container matColumnDef="totl">
+    <td mat-footer-cell *matFooterCellDef> <b>Total S/.</b></td>
+  </ng-container>
+
+  <ng-container matColumnDef="price">
+    <th mat-header-cell *matHeaderCellDef> Precio </th>
+    <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+    <td mat-footer-cell *matFooterCellDef> &nbsp; </td>
+  </ng-container>
+
+  <ng-container matColumnDef="emptyFooter1">
+    <td mat-footer-cell *matFooterCellDef> &nbsp; </td>
+  </ng-container>
+
+  <ng-container matColumnDef="emptyFooter3">
+    <td mat-footer-cell *matFooterCellDef> &nbsp; </td>
+  </ng-container>
+
+  <ng-container matColumnDef="total">
+    <th mat-header-cell *matHeaderCellDef> Total </th>
+    <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+    <td mat-footer-cell *matFooterCellDef> <b>{{getTotalCost() | currency}}</b> </td>
+  </ng-container>
+
+  <ng-container matColumnDef="dscamount">
+    <td mat-footer-cell *matFooterCellDef> &nbsp; </td>
+  </ng-container>
+
+  <ng-container matColumnDef="totalammount">
+    <td mat-footer-cell *matFooterCellDef> <b>{{getTotalCost() | currency}}</b> </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+  <tr mat-footer-row *matFooterRowDef="displayedDscColumns"></tr>
+  <tr mat-footer-row *matFooterRowDef="displayedTotalColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 50px;">
+  <h6>DNI/RUC: _____________________________</h6>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 50px;">
+  <h6>Nombre/Raz&oacute;n Social: _____________________________</h6>
+</div>

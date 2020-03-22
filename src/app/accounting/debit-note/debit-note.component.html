@@ -1,0 +1,204 @@
+<form [formGroup]="form" class="form-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Nota de Débito</mat-card-title>
+            <div class="button-close">
+                    <button type="button" mat-button matTooltip="Cerrar" color="warn" class="float-right config-close"
+                    routerLink="/accounting/electronic-receipt">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+                </div>
+        </mat-card-header>
+        <mat-card-content>
+            <br>
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+                <mat-form-field fxFlex="40" appearance="outline">
+                    <mat-label>Cliente</mat-label>
+                    <mat-select formControlName="client" required>
+                        <mat-option *ngFor="let client of clients" [value]="client">
+                            {{client.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field fxFlex="15" appearance="outline">
+                    <mat-label>Serie</mat-label>
+                    <mat-select formControlName="serie" required>
+                        <mat-option value="NFC001"> NFC001 </mat-option>
+                        <mat-option value="NFC002"> NFC002 </mat-option>
+                        <mat-option value="NFC003"> NFC003 </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field fxFlex="25" appearance="outline">
+                    <mat-label>Número (Referencial)</mat-label>
+                    <input matInput formControlName="ref" type="number" placeholder="Número (Referencial)">
+                </mat-form-field>
+                <mat-form-field fxFlex="20" appearance="outline">
+                    <mat-label>Emisión</mat-label>
+                    <input matInput [matDatepicker]="picker" [min]="minDate" placeholder="Emisión">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <!-- <mat-form-field fxFlex="50" appearance="outline">
+                        <mat-label>Motivo</mat-label>
+                        <mat-select formControlName="subject" required>
+                            <mat-option *ngFor="let subject of subjects" [value]="subject">
+                                {{subject}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+            </div>
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+                <mat-form-field fxFlex="30" appearance="outline">
+                    <mat-label>Tipo de Operación</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let operation of operations" [value]="operation.id">{{operation.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field fxFlex="15" appearance="outline">
+                    <mat-label>Moneda</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let currency of currencies" [value]="currency.id">{{currency.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field fxFlex="20" appearance="outline">
+                    <mat-label>Fecha de Vencimiento</mat-label>
+                    <input matInput [matDatepicker]="picker1" [min]="minDate" placeholder="Fecha de Vencimiento">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" appearance="outline">
+                    <mat-label>Motivo</mat-label>
+                    <mat-select formControlName="subject" required>
+                        <mat-option *ngFor="let subject of subjects" [value]="subject">
+                            {{subject}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div flex fxLayout="row" fxLayout.xs="column">
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Observación</mat-label>
+                    <textarea formControlName="observation" type="text" matInput placeholder="Observación"></textarea>
+                </mat-form-field>
+            </div>
+            <h4>Artículos</h4>
+            <mat-divider></mat-divider>
+            <div class="container-section-header clearfix">
+                <button class="float-right" mat-flat-button color="primary" matTooltip="Agregar Producto" type="button"
+                    (click)="openDialog(null,null)">
+                    <mat-icon aria-hidden="false" aria-label="Add Icon">add</mat-icon> Agregar Producto
+                </button>
+            </div>
+            <div flex fxLayout="row">
+                <div fxFlex="100" class="table-responsive">
+                    <table mat-table [dataSource]="dataSource">
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>Producto</th>
+                            <td mat-cell *matCellDef="let element">{{ element.article }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="price">
+                            <th mat-header-cell *matHeaderCellDef>Precio</th>
+                            <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="qty">
+                            <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+                            <td mat-cell *matCellDef="let element; let i = index;">
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-icon matTooltip="Disminuir Cantidad" style="color: #d32f2f;cursor: pointer;" (click)="changeQty(i,-1)">
+                                        arrow_downward</mat-icon>
+                                    <mat-icon matTooltip="Aumentar Cantidad" style="color: #0277bd;cursor: pointer;" (click)="changeQty(i,1)">
+                                        arrow_upward
+                                    </mat-icon>
+                                    <span>{{ element.qty }}</span>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="subtotal">
+                            <th mat-header-cell *matHeaderCellDef>Sub Total</th>
+                            <td mat-cell *matCellDef="let element">{{ element.price * element.qty }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="total">
+                            <th mat-header-cell *matHeaderCellDef>Total</th>
+                            <td mat-cell *matCellDef="let element">{{ element.price * element.qty }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element; let i = index">
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <button type="button" matTooltip="Editar" mat-button color="primary" (click)="openDialog(element,i)">
+                                        <img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24">
+                                    </button>
+                                    <button type="button" mat-button color="warn" matTooltip="Quitar" (click)="removeElement(i)">
+                                        <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    </table>
+
+                    <mat-paginator *ngIf="dataSource.data.length>0" [pageSizeOptions]="[5, 10, 20]"
+                        showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-around end">
+                <mat-form-field fxFlex="25" appearance="outline">
+                    <mat-label>Gravada</mat-label>
+                    <input matInput formControlName="gravada" placeholder="Gravada">
+                </mat-form-field>
+                <mat-form-field fxFlex="25" appearance="outline">
+                    <mat-label>IGV</mat-label>
+                    <input matInput formControlName="igv" placeholder="IGV">
+                </mat-form-field>
+                <mat-form-field fxFlex="25" appearance="outline">
+                    <mat-label>Total</mat-label>
+                    <input matInput formControlName="total" placeholder="Total">
+                </mat-form-field>
+            </div>
+
+            <h4>Documento a Modificar</h4>
+            <mat-divider></mat-divider>
+
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field fxFlex appearance="outline">
+                    <mat-label>Documento</mat-label>
+                    <input matInput formControlName="document" placeholder="Documento">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Serie</mat-label>
+                    <input matInput formControlName="serieDoc" placeholder="Serie">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Número</mat-label>
+                    <input matInput formControlName="number" type="number" placeholder="Número">
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field fxFlex appearance="outline">
+                        <mat-label>Tipo de Nota de Débito</mat-label>
+                        <mat-select formControlName="note_type" required>
+                            <mat-option value="1"> Intereses por Mora </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+        </mat-card-content>
+        <mat-card-actions>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <button mat-button color="primary" type="submit" matTooltip="Generar Nota de Débito" [disabled]="!form.valid">Generar Nota</button>
+                </div>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</form>

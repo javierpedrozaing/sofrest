@@ -1,0 +1,105 @@
+<div [ngClass]="{'app-sidebar-right': statusMenu == true}" id="sidebar-component"
+  [class]="'app-sidebar sidebar-shadow ' + (config$ | async).sidebarTheme" style="border-right: 1px solid #b0ced9;">
+  <div [ngClass]="{'theme-dark': statusTheme == true}" class="app-header__logo">
+    <img (click)="toggleSidebar()" style="cursor: pointer; margin: 0 auto 0 auto" src="./assets/images/logo.png">
+  </div>
+  <div [ngClass]="{'theme-dark': statusTheme == true}" class="app-sidebar-content" style="overflow-y: auto;">
+    <div class="app-sidebar-scroll">
+      <perfect-scrollbar [autoPropagation]="true">
+        <div class="v-sidebar-menu vsm-default">
+          <div class="vsm-list">
+            <!-- <span *ngFor="let menuItem of menuItems; let i = index" class="vsm-list"> -->
+              <ngb-accordion [destroyOnHide]="false" [closeOthers]="true">
+                <span *ngFor="let menuItem of menuItems; let i = index" class="vsm-list">
+                  <ngb-panel id="dashboardsMenuP-{{i}}">
+                    <ng-template ngbPanelHeader>
+                      <button [ngClass]="{'lyrics-color': statusTheme == true}" *ngIf="!globals.toggleSidebar || newInnerWidth < 1200"
+                        ngbPanelToggle
+                        class="vsm-link">
+                        <img class="vsm-icon" style="opacity: unset;"
+                          src="./assets/ui-icons/SVG/{{menuItem.icon}}-icon.svg" width="34" height="34">
+                        <span class="vsm-title">{{menuItem.name}}</span>
+                        <i class="vsm-arrow"></i>
+                      </button>
+                      <button [ngClass]="{'lyrics-color': statusTheme == true}" container="body" id="button_pop_{{i}}"
+                        *ngIf="globals.toggleSidebar && newInnerWidth > 1200" [ngbPopover]="popContent" [placement]="!statusMenu ? 'right' : 'left'"
+                        [matTooltip]="menuItem.tooltip ? menuItem.tooltip : menuItem.name" class="vsm-link" [autoClose]="'outside'">
+                        <img class="vsm-icon" style="opacity: unset;"
+                          src="./assets/ui-icons/SVG/{{menuItem.icon}}-icon.svg" width="34" height="34">
+                        <ng-template #popContent>
+                          <span *ngFor="let menuItemOptions of menuItem.items">
+                            <button style="color: black" routerLink="{{menuItemOptions.route}}" (click)="selectMenuOption('button_pop_'+i)" type="button"
+                              class="dropdown-item" routerLinkActive="active-item"
+                              *ngIf="!menuItemOptions.dropdown">{{menuItemOptions.name}}</button>
+                              <span *ngIf="menuItemOptions.dropdown">
+                                <button [autoClose]="'outside'" style="color: black" type="button" container="body" [ngbPopover]="popContentDropdown" [placement]="!statusMenu ? 'right' : 'left'"
+                                    class="dropdown-item dropdown-item-menu" >{{menuItemOptions.name}}
+                                  <mat-icon class="float-right">keyboard_arrow_right</mat-icon>
+                                  </button>
+                                <ng-template #popContentDropdown>
+                                  <span *ngFor="let menuItemOptionsDropdown of menuItemOptions.items">
+                                    <button style="color: black;" routerLink="{{menuItemOptionsDropdown.route}}" type="button"
+                                    class="dropdown-item" routerLinkActive="active-item">{{menuItemOptionsDropdown.name}}</button>
+                                  </span>
+                                </ng-template>
+                                <!-- <span> {{menuItemOptions.name}} </span>
+                                <mat-divider></mat-divider>
+                                <span *ngFor="let menuItemOptionsDropdown of menuItemOptions.items">
+                                  <button style="color: black" routerLink="{{menuItemOptionsDropdown.route}}" type="button"
+                                  class="dropdown-item" routerLinkActive="active-item">{{menuItemOptionsDropdown.name}}</button>
+                                </span>
+                                <mat-divider></mat-divider> -->
+                              </span>
+                          </span>
+                        </ng-template>
+                      </button>
+                    </ng-template>
+                    <ng-template ngbPanelContent>
+                      <div class="vsm-dropdown">
+                        <div class="vsm-list">
+                          <div class="vsm-item" *ngFor="let menuItemOptions of menuItem.items">
+                            <a routerLink="{{menuItemOptions.route}}" routerLinkActive="active-item"
+                              [ngClass]="{'lyrics-color': statusTheme == true}" class="vsm-link"
+                              *ngIf="!menuItemOptions.dropdown">
+                              <span class="vsm-title">{{menuItemOptions.name}}</span>
+                            </a>
+                            <span *ngIf="menuItemOptions.dropdown">
+                              <ngb-accordion [destroyOnHide]="false" [closeOthers]="true">
+                                <ngb-panel id="dashboardsMenu">
+                                  <ng-template ngbPanelHeader>
+                                    <button [ngClass]="{'lyrics-color': statusTheme == true}" ngbPanelToggle
+                                      class="vsm-link">
+                                      <span class="vsm-title">{{menuItemOptions.name}}</span>
+                                      <i class="vsm-arrow"></i>
+                                    </button>
+                                  </ng-template>
+                                  <ng-template ngbPanelContent>
+                                    <div class="vsm-dropdown">
+                                      <div class="vsm-list">
+                                        <div class="vsm-item"
+                                          *ngFor="let menuItemOptionsDropdown of menuItemOptions.items">
+                                          <a [ngClass]="{'lyrics-color': statusTheme == true}"
+                                            routerLink="{{menuItemOptionsDropdown.route}}" routerLinkActive="active-item"
+                                            [routerLinkActiveOptions]="{exact: true}" class="vsm-link"><span
+                                              class="vsm-title">{{menuItemOptionsDropdown.name}}</span></a>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </ng-template>
+                                </ngb-panel>
+                              </ngb-accordion>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </ngb-panel>
+                </span>
+              </ngb-accordion>
+            <!-- </span> -->
+          </div>
+        </div>
+      </perfect-scrollbar>
+    </div>
+  </div>
+</div>

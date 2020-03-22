@@ -1,0 +1,74 @@
+<form [formGroup]="form" (ngSubmit)="submit(form.value,null)" class="form-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Registro de Pagos y Gastos</mat-card-title>
+            <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+            <div class="button-close">
+                    <button type="button" routerLink="/accounting/payments-expenses" matTooltip="Regresar" mat-button color="warn" class="float-right config-close">
+                      <mat-icon>keyboard_backspace</mat-icon>
+                    </button>
+                  </div>
+        </mat-card-header>
+        <mat-card-content>
+            <br>
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+                <mat-form-field fxFlex="30" appearance="outline">
+                    <mat-label>Fecha de Factura</mat-label>
+                    <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="invoice_date"
+                        placeholder="Fecha de Factura">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field fxFlex="30" appearance="outline">
+                    <mat-label>Monto</mat-label>
+                    <input matInput formControlName="amount" type="number" placeholder="Monto">
+                </mat-form-field>
+                <mat-form-field fxFlex="30" appearance="outline">
+                    <mat-label>Motivo</mat-label>
+                    <mat-select formControlName="reason_spending_id" required [compareWith]="compareObjects">
+                        <mat-option *ngFor="let motive of motives" [value]="motive.id">
+                            {{motive.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" fxLayoutAlign="none center">
+                <mat-form-field fxFlex="30" appearance="outline">
+                    <mat-label>Factura</mat-label>
+                    <input matInput formControlName="bill" placeholder="Factura">
+                </mat-form-field>
+                    <mat-form-field fxFlex="30" appearance="outline">
+                        <mat-label>Fecha de Pago</mat-label>
+                        <input matInput [matDatepicker]="picker1" [min]="minDate" formControlName="pay_day"
+                            placeholder="Fecha de Pago">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+            </div>
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" fxLayoutAlign="none center">
+                    <div fxFlex="100">
+                            <mat-slide-toggle class="margin-slide float-right" formControlName="paid_out" [color]="'primary'"> ¿Pagado?
+                            </mat-slide-toggle>
+                        </div>
+            </div>
+            <!-- <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+                    <div fxFlex="30">
+                            <span>
+                                Cargar Factura
+                            </span>
+                            <file-upload accept=".jpg,.jpeg,.png" maxsize="80" filesize="80" formControlName="paymentImg">
+                                <ng-template #placeholder>
+                                    <span>
+                                        <mat-icon>cloud_upload</mat-icon>
+                                    </span>
+                                </ng-template>
+                            </file-upload>
+                        </div>
+            </div> -->
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end center" fxLayoutGap="5px">
+                    <button flex mat-raised-button color="warn" matTooltip="Limpiar" type="reset">Limpiar</button>
+                    <button mat-raised-button color="primary" matTooltip="Guardar" type="submit" [disabled]="!form.valid">Guardar</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

@@ -1,0 +1,105 @@
+.table-supervisor{
+    height: 80vh;
+    width: 100%;
+}
+
+.clearfix{
+    padding: 0% 0%;
+}
+
+.sigle-table{
+    border-radius: 5px !important;
+    width: 8vw !important;
+    height: auto !important;
+}
+
+
+.table-config{
+    color: #ffff;
+    width: 100%;
+    height: 100%;
+}
+
+.table-busy{
+    background: #dede13;
+    color: black;
+    font-size: 10px !important;
+}
+
+.table-available{
+    // background: #1DE9B6;
+    background : #179072;
+    color: #ffffff;
+}
+
+.table-enabled{
+    // background: #B71C1C;
+    color: #ffffff;
+    background: #b74953;
+}
+
+.title-cronograma{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.button-header{
+    z-index: 2 !important;
+  float: left;
+  width: 100%;
+  height: 20px;
+}
+
+.mat-icon-button{
+    width: 0px;
+}
+
+gridster{
+    background-image: url('https://media.freestocktextures.com/cache/2c/cd/2ccdc50f379f91ad26fb989b6b6d00ad.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.radio-status{
+    width: 100%;
+}
+
+.name-table{
+    font-size: 0.6rem;
+    width: 100%;
+    text-align: center;
+    vertical-align: top;
+}
+
+@media screen and (max-width: 480px) {
+    .name-table{
+        font-size: 10px;
+    }
+
+}
+
+.menu-content{
+    text-align: right;
+    height: 15px;
+    padding: 0px 5px;
+}
+
+p{
+    margin-bottom: 0.1rem;
+}
+
+.padding-top-content{
+    padding-top: 1%;
+}
+
+.padding-top-content-fixed{
+    position: fixed;
+    z-index: 5;
+    bottom: 60px;
+    right: 10px;
+}
+
+.selected-table{
+    border: 2px solid #f60;
+}

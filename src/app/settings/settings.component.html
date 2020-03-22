@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="col-lg-4">
+        <mat-card class="example-card">
+            <mat-card-header>
+                <div mat-card-avatar>
+                    <i style="background:#d7dbdf6e;border-radius: 50%;padding: 8px;font-size: 30px;"
+                        class="pe-7s-config"></i>
+                </div>
+                <!-- <div mat-card-avatar class="example-header-image"></div> -->
+                <mat-card-title>CONFIGURACIÓN</mat-card-title>
+                <mat-card-subtitle>Configuración del Sistema</mat-card-subtitle>
+            </mat-card-header>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item (click)="ChangeItem('general')">General</mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item (click)="ChangeItem('billing-and-subscriptions')">Facturación y suscripciones</mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item (click)="ChangeItem('paymethod')">Métodos de Pago</mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item (click)="ChangeItem('loyalty')">Lealtad</mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item (click)="ChangeItem('taxes')">Impuestos</mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item (click)="ChangeItem('openTickes')">Tickets abiertos</mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item (click)="ChangeItem('receipt')" >Recibo</mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item (click)="ChangeItem('orderType')">Tipo de pedido</mat-list-item>
+                    <mat-divider></mat-divider>
+                </mat-list>
+
+            </mat-card-content>
+            <mat-card-header>
+                <div mat-card-avatar>
+                    <i style="background:#d7dbdf6e;border-radius: 50%;padding: 8px;font-size: 30px;" class="pe-7s-home"></i>
+                </div>
+                <!-- <div mat-card-avatar class="example-header-image"></div> -->
+                <mat-card-title>Locales</mat-card-title>
+                <mat-card-subtitle>Configuración de la Local y Dispositivos M&oacute;viles</mat-card-subtitle>
+            </mat-card-header>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item (click)="ChangeItem('store')">Locales</mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item (click)="ChangeItem('tpv')">Dispositivos M&oacute;viles</mat-list-item>
+                    <mat-divider></mat-divider>
+                </mat-list>
+            </mat-card-content>
+
+        </mat-card>
+    </div>
+    <div class="col-lg-8">
+        <app-general-settings *ngIf="showItem === 'general'"></app-general-settings>
+        <app-billing-and-subscriptions *ngIf="showItem === 'billing-and-subscriptions'"></app-billing-and-subscriptions>
+        <app-payment-method-list *ngIf="showItem === 'paymethod'"></app-payment-method-list>
+        <app-loyalty *ngIf="showItem === 'loyalty'"></app-loyalty>
+        <app-taxes *ngIf="showItem === 'taxes'"></app-taxes>
+        <app-order-types *ngIf="showItem === 'orderType'"></app-order-types>
+        <app-open-tickets *ngIf="showItem === 'openTickes'"></app-open-tickets>
+        <app-stores *ngIf="showItem === 'store'"></app-stores>
+        <app-tpv-dispositives *ngIf="showItem === 'tpv'"></app-tpv-dispositives>
+        <app-receipt *ngIf="showItem === 'receipt'"></app-receipt>
+    </div>
+</div>

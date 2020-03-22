@@ -1,0 +1,95 @@
+<h1 mat-dialog-title>Formas de Pago
+    <button type="button" mat-button matTooltip="Cerrar" color="warn" class="float-right config-close" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+</h1>
+<div mat-dialog-content>
+    <div flex fxLayout="row" fxLayoutAlign="end center">
+        <span style="font-size: 20px">
+            <strong>Total: </strong> {{data.total | number:'.2'}}
+        </span>
+    </div>
+    <div flex fxLayout="column" *ngFor="let payment of payments; let i = index;">
+        <div fxLayout="row" fxLayoutGap="10px">
+          <mat-form-field fxFlex="20" appearance="outline">
+            <mat-label>Forma de Pago</mat-label>
+            <mat-select [(ngModel)]='payment.id' [ngModelOptions]="{standalone: true}">
+              <mat-option [value]="item.id" *ngFor="let item of paymentMethods">{{item.description}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field fxFlex="15" appearance="outline">
+            <mat-label>Moneda</mat-label>
+            <mat-select [(ngModel)]='payment.coin_id' [ngModelOptions]="{standalone: true}">
+              <mat-option *ngFor="let coin of coins" [value]="coin.id">
+                {{ coin.description }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="adapted-form col-lg-4" fxFlex="25" appearance="outline">
+            <mat-label>Monto</mat-label>
+            <input matInput min="0" [max]="total" type="number" step="0.01" placeholder="Monto" [(ngModel)]='payment.amount' [ngModelOptions]="{standalone: true}">
+          </mat-form-field>
+          <mat-form-field class="adapted-form col-lg-4" fxFlex="25" *ngIf="payment.type === 'paperMoney' || payment.type === 'gift'" appearance="outline">
+            <mat-label *ngIf="payment.type === 'paperMoney'">Cheque #</mat-label>
+            <mat-label *ngIf="payment.type === 'gift'">Gift Card #</mat-label>
+            <input matInput type="text" placeholder="Referencia" [(ngModel)]='payment.reference' [ngModelOptions]="{standalone: true}">
+          </mat-form-field>
+          <div fxFlex>
+            <button mat-mini-fab matTooltip="Calcular" color="primary" aria-label="Calculate" type="button"
+            (click)="getRest(i)" class="" style="margin-top: 10px;">
+            <mat-icon>event_note</mat-icon>
+          </button>
+          <button mat-mini-fab matTooltip="Eliminar" color="warn" aria-label="Eliminar" type="button"
+            *ngIf="payments.length > 1" (click)="removePaymentMethod(i)" class="" style="margin-top: 10px;">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <button mat-mini-fab matTooltip="Agregar" aria-label="Nuevo" type="button" *ngIf="i === (payments.length - 1)"
+            (click)="addPaymentMethod()" class="" style="margin-top: 10px;">
+            <mat-icon>add</mat-icon>
+          </button>
+          </div>
+        </div>
+        <div fxLayout="column" *ngIf="payment.type === 'card'">
+            <form [formGroup]="cardFormGroup">
+                    <mat-form-field fxFlex="40" appearance="outline">
+                        <mat-label>Nombre en la Tarjeta</mat-label>
+                        <input matInput placeholder="Nombre en la Tarjeta" formControlName="cardholder_name"
+                            required>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="30" appearance="outline">
+                        <mat-label>N&uacute;mero de Tarjeta</mat-label>
+                        <input type="number" (keyup)="GetCardType(cardFormGroup.value.card_number)" matInput
+                            placeholder="N&uacute;mero de Tarjeta" formControlName="card_number" required>
+                        <mat-icon matSuffix><img *ngIf="card_type" height="24" src="{{card_type.img}}">
+                        </mat-icon>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="20" appearance="outline">
+                        <mat-label>Fecha de Vencimiento</mat-label>
+                        <input type="month" matInput placeholder="Fecha de Expiraci&oacute;n"
+                            formControlName="expire_date" required>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="10" appearance="outline">
+                        <mat-label>CVV</mat-label>
+                        <input type="number" matInput placeholder="D&iacute;gitos de Seguridad"
+                            formControlName="cvv" required>
+                    </mat-form-field>
+            </form>
+        </div>
+      </div>
+    <!-- <div fxLayout="row">
+      <mat-form-field fxFlex="100">
+        <textarea matInput placeholder="Observaciones" formControlName="adjust"></textarea>
+      </mat-form-field>
+    </div> -->
+
+    <div fxLayout="row" fxLayoutAlign="center">
+      <button
+        type="button"
+        (click)="submit()"
+        mat-flat-button
+        color="primary"
+        matTooltip="Pagar">
+        Pagar
+      </button>
+    </div>
+</div>

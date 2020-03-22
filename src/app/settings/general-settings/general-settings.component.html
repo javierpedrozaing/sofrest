@@ -1,0 +1,117 @@
+<form [formGroup]="General" (ngSubmit)="submit(General.value,null)" class="form-container">
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>CONFIGURACIÓN GENERAL</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+            <mat-form-field class="adapted-form col-lg-6" appearance="outline">
+                <mat-label>Zona Horaria</mat-label>
+                <mat-select formControlName="time_zone" [compareWith]="compareObjects" #singleSelect1>
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="timezoneFilterCtrl" [placeholderLabel]="'Buscar'"
+                            [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let timezone of filteredTimezones | async" [value]="timezone">{{timezone}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="optiones-general">
+                <p class="title-descriptions">CARACTERÍSTICAS</p>
+                <mat-card-header>
+                    <div mat-card-avatar>
+                        <i style="background:#d7dbdf6e;border-radius: 50%;padding: 8px;font-size: 30px;"
+                            class="pe-7s-config"></i>
+                    </div>
+                    <mat-card-title class="item-form-menu">Cierres de cajas por turnos</mat-card-title>
+                    <mat-card-subtitle>Controla el dinero que entra y sale del cajón de efectivo.</mat-card-subtitle>
+                    <mat-slide-toggle formControlName="close_box" class="margin-item-auto" [color]="'primary'"></mat-slide-toggle>
+                </mat-card-header>
+
+                 <mat-card-header>
+                    <div mat-card-avatar>
+                        <i style="background:#d7dbdf6e;border-radius: 50%;padding: 8px;font-size: 30px;"
+                            class="pe-7s-config"></i>
+                    </div>
+                    <mat-card-title class="item-form-menu">Función de reloj</mat-card-title>
+                    <mat-card-subtitle>Controla los tiempos de entrada y salida de tus empleados y calcula el total de
+                        horas trabajadas.</mat-card-subtitle>
+                    <mat-slide-toggle formControlName="clock_function" class="margin-item-auto" [color]="'primary'"></mat-slide-toggle>
+                </mat-card-header>
+
+                <mat-card-header>
+                    <div mat-card-avatar>
+                        <i style="background:#d7dbdf6e;border-radius: 50%;padding: 8px;font-size: 30px;"
+                            class="pe-7s-config"></i>
+                    </div>
+                    <mat-card-title class="item-form-menu">Tickets abiertos</mat-card-title>
+                    <mat-card-subtitle>Permite guardar y editar pedidos antes de completar un pago.</mat-card-subtitle>
+                    <mat-slide-toggle formControlName="open_ticket" class="margin-item-auto" [color]="'primary'"></mat-slide-toggle>
+                </mat-card-header>
+
+                <!-- <mat-card-header>
+                    <div mat-card-avatar>
+                        <i style="background:#d7dbdf6e;border-radius: 50%;padding: 8px;font-size: 30px;"
+                            class="pe-7s-config"></i>
+                    </div>
+                    <mat-card-title class="item-form-menu">Impresoras de cocina</mat-card-title>
+                    <mat-card-subtitle>Envía comandas a la cocina a través de una impresora o una pantalla.
+                    </mat-card-subtitle>
+                    <mat-slide-toggle class="margin-item-auto" [color]="'primary'"></mat-slide-toggle>
+                </mat-card-header> -->
+
+                <mat-card-header>
+                    <div mat-card-avatar>
+                        <i style="background:#d7dbdf6e;border-radius: 50%;padding: 8px;font-size: 30px;"
+                            class="pe-7s-config"></i>
+                    </div>
+                    <mat-card-title class="item-form-menu">Pantalla para clientes</mat-card-title>
+                    <mat-card-subtitle>Muestre a sus clientes información y precios en el momento de la venta.
+                    </mat-card-subtitle>
+                    <mat-slide-toggle formControlName="customer_display" class="margin-item-auto" [color]="'primary'"></mat-slide-toggle>
+                </mat-card-header>
+
+               <!-- <mat-card-header>
+                    <div mat-card-avatar>
+                        <i style="background:#d7dbdf6e;border-radius: 50%;padding: 8px;font-size: 30px;"
+                            class="pe-7s-config"></i>
+                    </div>
+                    <mat-card-title class="item-form-menu">Tipo de pedidos</mat-card-title>
+                    <mat-card-subtitle>Toma pedidos para cenar dentro, para llevar o a domicilio.</mat-card-subtitle>
+                    <mat-slide-toggle class="margin-item-auto" [color]="'primary'"></mat-slide-toggle>
+                </mat-card-header> -->
+
+               <mat-card-header>
+                    <div mat-card-avatar>
+                        <i style="background:#d7dbdf6e;border-radius: 50%;padding: 8px;font-size: 30px;"
+                            class="pe-7s-config"></i>
+                    </div>
+                    <mat-card-title class="item-form-menu">Notificaciones de stock bajo</mat-card-title>
+                    <mat-card-subtitle>Recibe un email diario sobre los articulos bajo o fuera de stock.
+                    </mat-card-subtitle>
+                    <mat-slide-toggle formControlName="low_stock_notification" class="margin-item-auto" [color]="'primary'"></mat-slide-toggle>
+                </mat-card-header>
+
+
+                 <mat-card-header>
+                    <div mat-card-avatar>
+                        <i style="background:#d7dbdf6e;border-radius: 50%;padding: 8px;font-size: 30px;"
+                            class="pe-7s-config"></i>
+                    </div>
+                    <mat-card-title class="item-form-menu">Alertas de stock negativo</mat-card-title>
+                    <mat-card-subtitle>Avisa al cajero cuando intenta vender más productos que el disponible en stock.
+                    </mat-card-subtitle>
+                    <mat-slide-toggle formControlName="negative_stock_alert" class="margin-item-auto" [color]="'primary'"></mat-slide-toggle>
+                </mat-card-header>
+            </div>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-actions>
+        <div class="clearfix">
+            <button class="float-right" matTooltip="Guardar Registro" color="warn" type="submit" mat-raised-button>Guardar</button>
+            <button class="float-right" matTooltip="Cancelar" color="primary" type="button" (click)="getGeneralConfiguration()" mat-raised-button>Cancelar</button>
+        </div>
+    </mat-card-actions>
+</mat-card>
+</form>

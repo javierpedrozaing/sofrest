@@ -1,0 +1,24 @@
+.card-background{
+    background-color: #e9e9e9;
+}
+
+.down-data{
+    color: #fb5d5d;
+}
+
+.up-data{
+    color: #53c88e;
+}
+
+.height-bar-description{
+    height: 100%;
+    @media screen and (max-width:576px) {
+        display: none;
+    }
+}
+
+.height-bar-description-mobile{
+    @media screen and (min-width:576px) {
+        display: none;
+    }
+}

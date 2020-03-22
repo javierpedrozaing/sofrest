@@ -1,0 +1,22 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title><span>CAMBIAR ESTATUS DE LA MESA</span></mat-card-title>
+            <mat-card-subtitle>{{Table.name}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        <mat-radio-group [(ngModel)]="option" aria-label="Select an option">
+            <mat-radio-button class="radio-status" value="available">Disponible</mat-radio-button>
+            <mat-radio-button class="radio-status" value="busy">Ocupada</mat-radio-button>
+            <mat-radio-button class="radio-status" value="enabled">Cerrada</mat-radio-button>
+        </mat-radio-group>
+        {{option}}
+    </mat-card-content>
+    <mat-card-actions>
+        <div class=" clearfix">
+            <button class="float-left" matTooltip="Cerrar" (click)="onNoClick()" mat-button>Cerrar</button>
+            <button class="float-right" matTooltip="Guardar" (click)="onNoClick()" mat-button>Guardar</button>
+        </div>
+
+    </mat-card-actions>
+</mat-card>

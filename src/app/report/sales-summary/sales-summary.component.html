@@ -1,0 +1,153 @@
+<div fxLayout="row" fxLayout.lt-lg="column">
+  <mat-card fxFlex="100">
+    <mat-card-title fxLayout="column">
+      <div fxLayout="row">
+        <div fxFlex="80" fxLayoutAlign="start">
+          Res&uacute;men de Ventas
+        </div>
+        <div fxFlex="20" fxLayoutAlign="end" fxHide.lg *ngIf="isMobile">
+          <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item matTooltip="Rango de Fecha">Rango de Fecha</button>
+            <button mat-menu-item matTooltip="Lapso de Tiempo">Lapso de Tiempo</button>
+            <button mat-menu-item matTooltip="Local">Local</button>
+            <button mat-menu-item matTooltip="Colaboradores">Colaboradores</button>
+          </mat-menu>
+        </div>
+      </div>
+    </mat-card-title>
+    <mat-card-content>
+      <div fxLayout="row" fxLayoutGap="20px" *ngIf="!isMobile">
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Rango de Fecha" [satDatepicker]="picker">
+          <sat-datepicker #picker [rangeMode]="true" orderPeriodLabel="month"></sat-datepicker>
+          <sat-datepicker-toggle matSuffix [for]="picker"></sat-datepicker-toggle>
+        </mat-form-field>
+        <button mat-button [matMenuTriggerFor]="menu" fxFlex>Lapso de Tiempo</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item matTooltip="Día Entero">D&iacute;a Entero</button>
+          <button mat-menu-item matTooltip="Período Personalizado">Per&iacute;odo Personalizado</button>
+        </mat-menu>
+        <mat-form-field fxFlex>
+          <mat-label>Locales</mat-label>
+          <mat-select multiple>
+            <mat-option>Todos los locales</mat-option>
+            <mat-option *ngFor="let shop of shops" [value]="shop">
+              {{shop}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <mat-label>Colaboradores</mat-label>
+          <mat-select multiple>
+            <mat-option>Todas los Colaboradores</mat-option>
+            <mat-option *ngFor="let collaborator of collaborators" [value]="collaborator">
+              {{collaborator}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- <div fxFlex="100" fxLayoutAlign="start" >
+
+        </div> -->
+      </div>
+      <br>
+      <div fxLayout="row">
+        <div fxFlex="100" *ngIf="!isMobile">
+          <mat-grid-list cols="5" rowHeight="2:1">
+ 
+            <mat-grid-tile (click)="visibleChart = 'gross_sales'" style="cursor: pointer;">
+              <mat-card>
+                <h5>Ventas Brutas</h5>
+                <h4>10,897.00</h4>
+                <small style="color:green">+ 10,897.00 (+100%)</small>
+              </mat-card>
+            </mat-grid-tile>
+
+            <mat-grid-tile (click)="visibleChart = 'refunds'" style="cursor: pointer;">
+              <mat-card>
+                <h5>Reembolsos</h5>
+                <h4>216.00</h4>
+                <small style="color:red">+ 216.00 (+100%)</small>
+              </mat-card>
+            </mat-grid-tile>
+
+            <mat-grid-tile (click)="visibleChart = 'discounts'" style="cursor: pointer;">
+              <mat-card>
+                <h5>Descuentos</h5>
+                <h4>1,158.64</h4>
+                <small style="color:red">+ 1,158.64 (+100%)</small>
+              </mat-card>
+            </mat-grid-tile>
+
+            <mat-grid-tile (click)="visibleChart = 'net_sales'" style="cursor: pointer;">
+              <mat-card>
+                <h5>Ventas netas</h5>
+                <h4>9,522.36</h4>
+                <small style="color:green">+ 9,522.36 (+100%)</small>
+              </mat-card>
+            </mat-grid-tile>
+
+            <mat-grid-tile (click)="visibleChart = 'gross_profit'" style="cursor: pointer;">
+              <mat-card>
+                <h5>Beneficio Bruto</h5>
+                <h4>1,777.88</h4>
+                <small style="color:green">+ 1,777.88 (+100%)</small>
+              </mat-card>
+            </mat-grid-tile>
+
+          </mat-grid-list>
+        </div>
+
+        <div fxFlex="100" *ngIf="isMobile" style="text-align: center; width: 100%;">
+          <p mat-line>
+            <mat-card (click)="visibleChart = 'gross_sales'">
+              <span>Ventas Brutas </span>||<span> 10,897.00 </span>||<small style="color:green"> +10,897.00
+                (+100%)</small>
+            </mat-card>
+          </p>
+          <p mat-line>
+            <mat-card (click)="visibleChart = 'refunds'" style="cursor: pointer;">
+              <span>Reembolsos </span>||<span> 216.00 </span>||<small style="color:red"> +216.00 (+100%)</small>
+            </mat-card>
+          </p>
+          <p mat-line>
+            <mat-card (click)="visibleChart = 'discounts'" style="cursor: pointer;">
+              <span>Descuentos </span>||<span> 1,158.64 </span>||<small style="color:red"> +1,158.64 (+100%)</small>
+            </mat-card>
+          </p>
+          <p mat-line>
+            <mat-card (click)="visibleChart = 'net_sales'" style="cursor: pointer;">
+              <span>Ventas netas </span>||<span> 9,522.36 </span>||<small style="color:green"> +9,522.36 (+100%)</small>
+            </mat-card>
+          </p>
+          <p mat-line>
+            <mat-card (click)="visibleChart = 'gross_profit'" style="cursor: pointer;">
+              <span>Beneficio Bruto </span>||<span> 1,777.88 </span>||<small style="color:green"> +1,777.88
+                (+100%)</small>
+            </mat-card>
+          </p>
+        </div>
+      </div>
+      <div fxLayout="row">
+        <div fxFlex="100">
+          <div style="display: block">
+            <canvas *ngIf="visibleChart === 'gross_sales'" baseChart width="400" height="auto"
+              [datasets]="lineChartDataGrossSales" [labels]="lineChartLabels" [options]="lineChartOptions"
+              [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+              [plugins]="lineChartPlugins"></canvas>
+            <canvas *ngIf="visibleChart === 'refunds'" baseChart width="400" height="auto"
+              [datasets]="lineChartDataRefunds" [labels]="lineChartLabels" [options]="lineChartOptions"
+              [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+              [plugins]="lineChartPlugins"></canvas>
+            <canvas *ngIf="visibleChart === 'discounts'" baseChart width="400" height="auto"
+              [datasets]="lineChartDataDiscounts" [labels]="lineChartLabels" [options]="lineChartOptions"
+              [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
+              [plugins]="lineChartPlugins"></canvas>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

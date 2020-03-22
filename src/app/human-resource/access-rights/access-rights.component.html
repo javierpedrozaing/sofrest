@@ -1,0 +1,96 @@
+<mat-card>
+        <div class="container-section-header clearfix">
+                <h2 class="float-left">Derechos de Accesos</h2>
+                <button class="float-right" mat-flat-button color="primary" [routerLink]="['/human-resource/group-form']" matTooltip="Nuevo Grupo" *ngIf="!isMobile">
+                    <mat-icon aria-hidden="false" aria-label="Add Icon">add</mat-icon> AÑADIR GRUPO
+                </button>
+                <span class="float-right">&nbsp;</span>
+                <button class="float-right" *ngIf="showRemove && dataSource" matTooltip="Retirar Seleccionados" (click)="removeSelected()" mat-flat-button
+                    color="warn">
+                    <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24"> RETIRAR
+                </button>
+            </div>
+            
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center">
+                <mat-form-field fxFlex="50">
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+                    <span matPrefix>
+                        <mat-icon>search</mat-icon>
+                    </span>
+                </mat-form-field>
+            </div>
+            
+            <div class="table-responsive text-nowrap" *ngIf="!isMobile">
+                <table mat-table class="table table-responsive-sm" [dataSource]="dataSource">
+            
+                    <ng-container matColumnDef="position">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">
+                            <mat-checkbox [(ngModel)]="allSelected" (change)="selectAll(allSelected)"></mat-checkbox>
+                        </th>
+                        <td mat-cell class="text-center" *matCellDef="let element; let i = index">
+                            <mat-checkbox [checked]="element.canChecked  ? element.checked : false"
+                                (change)="checkedElement(!element.checked,i)" [disabled]="!element.canChecked"></mat-checkbox>
+                        </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="role">
+                        <th mat-header-cell class="text-center" *matHeaderCellDef> Rol </th>
+                        <td mat-cell class="text-center" *matCellDef="let element"> {{element.role}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="access">
+                        <th mat-header-cell class="text-center" *matHeaderCellDef> Accesos </th>
+                        <td mat-cell class="text-center" *matCellDef="let element"> {{element.access}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="employees">
+                        <th mat-header-cell class="text-center" *matHeaderCellDef>Empleados </th>
+                        <td mat-cell class="text-center" *matCellDef="let element"> {{element.employees}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell class="text-center" *matHeaderCellDef> ¿Activo? </th>
+                        <td mat-cell class="text-center" *matCellDef="let idx = index; let element">
+                            <button mat-icon-button (click)="changeVisibility(idx, element.status)">
+                                <mat-icon *ngIf="element.status===true" matTooltip="Deshabilitar" color="success">
+                                    visibility</mat-icon>
+                                <mat-icon *ngIf="element.status===false" matTooltip="Habilitar" color="warn">
+                                    visibility_off</mat-icon>
+                            </button>
+                            <!-- <button mat-icon-button matTooltip="Deshabilitar" *ngIf="element.status" (click)="element.status = !element.status" style="color:#00c853">
+                                <mat-icon>visibility</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Habilitar" *ngIf="!element.status" color="warn" (click)="element.status = !element.status">
+                              <mat-icon>visibility_off</mat-icon>
+                          </button> -->
+                        </td>
+                    </ng-container>
+            
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="text-center"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="text-center"></tr>
+                </table>
+            </div>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"  *ngIf="!isMobile"></mat-paginator>
+            
+            <mat-list *ngIf="isMobile">
+              <mat-list-item *ngFor="let data of dataSource.data; let element; let idx = index" class="mat-element">
+                <mat-icon mat-list-icon>insert_drive_file</mat-icon>
+                <h4 mat-line>{{data.role}}</h4>
+                <p mat-line> {{data.access}} - {{data.status ? 'Activo' : 'Inactivo'}}</p>
+                <p mat-line>
+                    <button mat-icon-button (click)="changeVisibility(idx, element.status)">
+                        <mat-icon *ngIf="element.status===true" matTooltip="Deshabilitar" color="success">
+                            visibility</mat-icon>
+                        <mat-icon *ngIf="element.status===false" matTooltip="Habilitar" color="warn">
+                            visibility_off</mat-icon>
+                    </button>
+                </p>
+                <mat-divider></mat-divider>
+              </mat-list-item>
+            </mat-list>
+                  <button class="float-button" [routerLink]="['/human-resource/group-form']" *ngIf="isMobile" mat-fab color="primary">
+                <mat-icon aria-label="Añadir">
+                    add
+                </mat-icon>
+            </button>
+</mat-card>

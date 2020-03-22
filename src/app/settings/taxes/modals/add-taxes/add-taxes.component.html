@@ -1,0 +1,90 @@
+<form [formGroup]="form" (ngSubmit)="submit(form.value,null)"  class="form-container">
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>REGISTRO DE IMPUESTO</mat-card-title>
+        <div class="button-close">
+            <button type="button" mat-button color="warn" matTooltip="Cerrar" class="float-right config-close" (click)="close()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Descripción</mat-label>
+          <input matInput formControlName="description" placeholder="Descripción">
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+            <mat-form-field fxFlex="33.33" appearance="outline">
+              <mat-label>Tipo de Impuesto</mat-label>
+              <mat-select formControlName="type_tax">
+                  <mat-option [value]="0">NORMAL</mat-option>
+                  <mat-option [value]="1">ISC</mat-option>
+              </mat-select>
+          </mat-form-field>
+            <mat-form-field fxFlex="33.33" appearance="outline">
+              <mat-label>Tipo</mat-label>
+              <mat-select formControlName="type">
+                  <mat-option [value]="0">Porcentaje</mat-option>
+                  <mat-option [value]="1">Precio</mat-option>
+              </mat-select>
+          </mat-form-field>
+          <mat-form-field fxFlex="33.33" appearance="outline">
+            <mat-label>Tipo de Aplicaci&oacute;n</mat-label>
+            <mat-select formControlName="type_application">
+                <mat-option [value]="0">Al Precio</mat-option>
+                <mat-option [value]="1">A la Cantidad</mat-option>
+            </mat-select>
+        </mat-form-field>
+          </div>
+
+          <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+            <mat-form-field fxFlex="50" appearance="outline">
+              <mat-label>Opciones</mat-label>
+              <mat-select formControlName="option">
+                  <mat-option [value]="1">El impuesto se aplica a los nuevos artículos</mat-option>
+                  <mat-option [value]="2">Aplicar el impuesto a los artículos existentes</mat-option>
+                  <mat-option [value]="3">Aplicar el impuesto a todos los artículos nuevos y existentes
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>
+            <mat-form-field fxFlex="50" appearance="outline">
+              <mat-label>Monto</mat-label>
+              <input type="number" matInput formControlName="amount" placeholder="Tasa de impuestos">
+          </mat-form-field>
+          </div>
+
+        <!-- <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Sucursales
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-checkbox [(ngModel)]="checkedAll" [ngModelOptions]="{standalone: true}">Disponible en todas las Sucursales</mat-checkbox>
+                <div class="stores" div flex fxLayout="row" *ngFor="let headquarter of headquarters" >
+                    <mat-checkbox [checked]="headquarter.checked || checkedAll" >{{headquarter.description | uppercase}}</mat-checkbox>
+                </div>
+
+
+            </mat-expansion-panel>
+        </mat-accordion> -->
+
+    </mat-card-content>
+
+    <div fxLayoutAlign="end center" fxLayout="row">
+        <mat-slide-toggle [color]="'primary'" formControlName="state">{{form.value.state ? 'Activo' : 'Inactivo'}}
+        </mat-slide-toggle>
+      </div>
+
+    <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+        <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro"  type="reset">Limpiar</button>
+        <span>&nbsp;</span>
+        <button flex mat-raised-button color="primary" matTooltip="Guardar Registro" type="submit">Guardar</button>
+    </div>
+
+</mat-card>
+</form>

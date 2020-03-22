@@ -1,0 +1,128 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>SUSCRIPCIONES</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="row item-suscription">
+            <div class="col-lg-1">
+                <div mat-card-avatar>
+                    <i style="padding: 8px;font-size: 30px;" class="pe-7s-config"></i>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <p class="suscripcion-employed">Administración de empleados</p>
+                <p>Personalice derechos de acceso a la app, registre tarjetas de asistencia y ventas por empleado.</p>
+            </div>
+            <div class="col-lg-3">
+                <p>Fecha de vencimiento del periodo de prueba : 21 nov. 2019</p>
+            </div>
+            <div class="col-lg-3">
+                <button class="active-button" (click)="EmployeeAdm()" mat-raised-button color="primary" matTooltip="Activar">ACTIVAR</button>
+                <button mat-raised-button (click)="Edropout()" color="primary" matTooltip="Darse de Baja">DARSE DE BAJA</button>
+            </div>
+        </div>
+        <div class="row item-suscription">
+            <div class="col-lg-1">
+                <div mat-card-avatar>
+                    <i style="padding: 8px;font-size: 30px;" class="pe-7s-config"></i>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <p class="suscripcion-employed">Invetario avanzado</p>
+                <p>Crear ordenes de compra, consultar valoraciones de inventario y gestionar stock.</p>
+            </div>
+            <div class="col-lg-3">
+                <p>Fecha de vencimiento del periodo de prueba : 21 nov. 2019</p>
+            </div>
+            <div class="col-lg-3">
+                <button class="active-button" (click)="InvAvz()" mat-raised-button color="primary" matTooltip="Activar">ACTIVAR</button>
+                <button mat-raised-button (click)="IAdropout()" color="primary" matTooltip="Darse de Baja">DARSE DE BAJA</button>
+            </div>
+        </div>
+        <h4>PLANES DE SUSCRIPCIÓN</h4>
+        <div class="row">
+            <div class="col-lg-4">
+                <div
+                    class="card mb-3 widget-chart widget-chart2 text-left card-btm-border card-shadow-warning border-warning">
+                    <div class="widget-chat-wrapper-outer">
+                        <div class="widget-chart-content pt-3 pl-3 pb-1">
+                            <div class="widget-chart-flex">
+                                <div class="widget-numbers">
+                                    <div class="widget-chart-flex">
+                                        <div class="fsize-4">
+                                            <small class="opacity-5">$</small>
+                                            <span>100</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h6 class="widget-subheading center-plan mb-0 opacity-5">PLAN FREE</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div
+                    class="card mb-3 widget-chart widget-chart2 text-left card-btm-border card-shadow-info border-info">
+                    <div class="widget-chat-wrapper-outer">
+                        <div class="widget-chart-content pt-3 pl-3 pb-1">
+                            <div class="widget-chart-flex">
+                                <div class="widget-numbers">
+                                    <div class="widget-chart-flex">
+                                        <div class="fsize-4">
+                                            <small class="opacity-5">$</small>
+                                            <span>200</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h6 class="widget-subheading center-plan mb-0 opacity-5">PLAN PREMIUN</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div
+                    class="card mb-3 widget-chart widget-chart2 text-left card-btm-border card-shadow-success border-success">
+                    <div class="widget-chat-wrapper-outer">
+                        <div class="widget-chart-content pt-3 pl-3 pb-1">
+                            <div class="widget-chart-flex">
+                                <div class="widget-numbers">
+                                    <div class="widget-chart-flex">
+                                        <div class="fsize-4">
+                                            <small class="opacity-5">$</small>
+                                            <span>300</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h6 class="widget-subheading mb-0 center-plan opacity-5">PLAN GOLD</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <mat-divider></mat-divider><br>
+        <h4>MÉTODO DE PAGO</h4>
+        <div class="row item-suscription">
+            <div class="col-lg-1">
+                <div mat-card-avatar>
+                    <i style="padding: 0px 8px 8px 8px;font-size: 30px;" class="pe-7s-config config"></i>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <p class="suscripcion-employed">Niguna tarjeta de credito registrada</p>
+            </div>
+            <div class="col-lg-5">
+                <button class="active-button" (click)="AddPaymentMethod()" matTooltip="Añadir Método de Pago" mat-raised-button color="primary">AÑADIR MÉTODO DE PAGO</button>
+            </div>
+        </div>
+        <div class="row item-suscription">
+                <div class="col-lg-6">
+                    <p>Cambie el nombre del negocio, añada un contacto de facturación o cualquier otra información que desee incluir en sus facturas</p>
+                </div>
+                <div class="col-lg-5">
+                    <button class="active-button" (click)="ChangeDetailFacture()" matTooltip="Cambiar Detalles de Facturación" mat-raised-button color="primary">CAMBIAR DETALLES DE FACTURACIÓN</button>
+                </div>
+            </div>
+    </mat-card-content>
+
+</mat-card>

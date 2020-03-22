@@ -1,0 +1,31 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>Activar inventario avanzado</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <p>
+            Crear órdenes de compra, consultar valoraciones de inventario y gestionar stock.
+        </p>
+        <p>Seleccione un plan de pago :</p>
+
+        <mat-radio-group class="example-radio-group">
+            <mat-radio-button class="example-radio-button" value="1">$25 USD/mes por Local</mat-radio-button>
+            <mat-radio-button class="example-radio-button" value="2">$250 USD/año por Local</mat-radio-button>
+        </mat-radio-group>
+
+        <p>
+            Es posible que sea cobrado impuestos si su país de facturación se encuentra en la UE, EEUU o Canadá.
+        </p>
+
+        <p>
+            <i style="font-size: 20px;" class="pe-7s-credit"></i>  Ninguna tarjeta de crédito registrada
+        </p>
+
+    </mat-card-content>
+    <mat-card-actions>
+        <div class="clearfix">
+            <button class="float-right" matTooltip="Continuar" mat-button>CONTINUAR</button>
+            <button (click)="close()" matTooltip="Cancelar" class="float-right" mat-button>CANCELAR</button>
+        </div>
+    </mat-card-actions>
+</mat-card>

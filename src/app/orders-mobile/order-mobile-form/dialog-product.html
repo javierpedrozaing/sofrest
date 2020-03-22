@@ -1,0 +1,95 @@
+<h1 mat-dialog-title>Detalle del Pedido
+        <button type="button" mat-button matTooltip="Cerrar" color="warn" class="float-right config-close" (click)="onNoClick()">
+                <mat-icon>close</mat-icon>
+              </button>
+</h1>
+<form [formGroup]="form" (ngSubmit)="save(form.value)" class="form-container">
+    <div mat-dialog-content>
+            <div flex fxLayout="row" *ngIf="data.showSearch">
+                    <mat-form-field fxFlex appearance="outline">
+                        <mat-select [formControl]="productCtrl" placeholder="Productos" #singleSelect
+                            (selectionChange)="changeValue($event)">
+                            <mat-option>
+                                <ngx-mat-select-search [formControl]="productFilterCtrl" [placeholderLabel]="'Buscar'"
+                                    [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+                                {{product.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+        <div flex fxLayout="row">
+            <mat-form-field fxFlex="70" appearance="outline">
+                <mat-label>Artículo</mat-label>
+                <input matInput formControlName="article" placeholder="Artículo">
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Cantidad</mat-label>
+                <input matInput type="number" (change)="calculateTotalPrice()" formControlName="qty" placeholder="Cantidad">
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" *ngIf="form.value.plate">
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Con</mat-label>
+                <mat-select formControlName="add" [compareWith]="compareObjects" multiple (selectionChange)="changeAditionals();calculateTotalPrice()">
+                        <mat-option *ngFor="let plusItem of plusItems" [value]="plusItem">
+                                {{plusItem.name}}
+                                <span class="float-right">Precio: {{plusItem.price | number : '.2'}} </span>
+                            </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Exclusiones</mat-label>
+                <mat-select formControlName="exclude" multiple [compareWith]="compareObjects">
+                        <mat-option *ngFor="let excludeItem of excludeItems" [value]="excludeItem">
+                                {{excludeItem.name}}
+                            </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" *ngIf="form.value.plate">
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Término</mat-label>
+                <mat-select formControlName="term">
+                        <mat-option *ngFor="let term of terms" [value]="term">
+                                {{term}}
+                            </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Adicionales</mat-label>
+                <mat-select formControlName="additionals" [compareWith]="compareObjects">
+                        <mat-option *ngFor="let additional of additionals" [value]="additional">
+                                {{additional.name}}
+                            </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row">
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Observaciones</mat-label>
+                <input matInput formControlName="observations" placeholder="Observaciones">
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row">
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Precio</mat-label>
+                <input matInput type="number" formControlName="price" placeholder="Precio">
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Adicionales</mat-label>
+                <input matInput type="number" formControlName="addValue" placeholder="Adicionales">
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Precio Total</mat-label>
+                <input matInput type="number" formControlName="total_price" placeholder="Precio Total">
+            </mat-form-field>
+        </div>
+    </div>
+    <div flex fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button (click)="onNoClick()" type="button" matTooltip="Cancelar" class="float-right" color="warn">Cancelar</button>
+        <span>&nbsp;</span>
+        <button mat-raised-button type="submit" color="primary" matTooltip="Guardar" class="float-right">Guardar</button>
+    </div>
+</form>

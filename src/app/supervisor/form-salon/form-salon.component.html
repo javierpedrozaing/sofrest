@@ -1,0 +1,35 @@
+<mat-card>
+    <div class=" padding-top-content">
+
+        <button matTooltip="Agregar Mesa"
+        [matTooltipPosition]="'above'" style="margin-right: 8px;" (click)="addTable()" mat-mini-fab color="primary">
+            <mat-icon>add</mat-icon> 
+        </button>
+
+
+        <button matTooltip="Guardar Salon"
+        [matTooltipPosition]="'above'"  style="margin-right: 8px;" mat-mini-fab color="primary">
+            <mat-icon>save_alt</mat-icon>
+        </button>
+
+        <button matTooltip="Regresar"
+        [matTooltipPosition]="'above'" [routerLink]="['/halls']" routerLinkActive="router-link-active"  (click)="addTable()" mat-mini-fab color="primary">
+            <mat-icon>backspace</mat-icon>
+        </button>
+
+    </div>
+    <div class="table-supervisor">
+        <gridster (window:resize)="onResize($event)" id="tableMozoNew" [options]="options">
+            <gridster-item class="sigle-table" [item]="item" *ngFor="let item of dashboard;let i = index">
+                <div class="table-{{item.status}}  table-config">
+                    <div  [style.touch-action]="'pan-y'" class="conten-table">
+                        <!-- <p  (click)="deleteTable(i)" class="menu-content">
+                            <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                        </p> -->
+                        <p class="name-table">{{item.name}}</p>
+                    </div>
+                </div>
+            </gridster-item>
+        </gridster>
+    </div>
+</mat-card>

@@ -1,0 +1,20 @@
+<div fxLayout="row" style="background-color: #7986CB; color: white">
+  <div fxFlex="20" style="padding: 10px">
+      <button mat-raised-button color="accent" matTooltip="Regresar" routerLink="/orders-mobile/status">
+          <mat-icon>arrow_back</mat-icon>
+      </button></div>
+  <div fxFlex="80" style="padding: 10px" fxLayoutAlign="center center">PEDIDOS</div>
+</div>
+<div flex fxLayout="row">
+  <mat-form-field fxFlex="100" appearance="outline">
+  <input matInput placeholder="B&uacute;squeda">
+</mat-form-field>
+</div>
+<mat-nav-list>
+  <a routerLink="/orders-mobile/make" mat-list-item *ngFor="let order of ordersArray; let i = index">
+    <ngx-avatar mat-list-icon [name]="order.name"></ngx-avatar>
+    <h4 style="margin-left: 20px;" mat-line>{{order.name}} <span style="float: right; color: #bdbdbd">S/10.50</span></h4>
+    <p style="margin-left: 20px;" mat-line>{{order.description}}</p>
+    <mat-divider></mat-divider>
+  </a>
+</mat-nav-list>

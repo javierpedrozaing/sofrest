@@ -1,0 +1,101 @@
+<div fxLayout="row" fxLayout.lt-md="column">
+    <div fxFlex="50" fxFlex.lt-lg="100" style="margin:7px; background-color: white">
+        <div fxLayout="column">
+            <h4>Pedidos</h4>
+            <div>
+                <table mat-table [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="table">
+                        <th mat-header-cell *matHeaderCellDef> Mesa </th>
+                        <td mat-cell *matCellDef="let element"> {{element.table}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="order">
+                        <th mat-header-cell *matHeaderCellDef> Pedido </th>
+                        <td mat-cell *matCellDef="let element"> {{element.order}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="owner">
+                        <th mat-header-cell *matHeaderCellDef> Encargado </th>
+                        <td mat-cell *matCellDef="let element"> {{element.owner}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="total">
+                        <th mat-header-cell *matHeaderCellDef> Total </th>
+                        <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="option">
+                        <th mat-header-cell *matHeaderCellDef> Opci&oacute;n </th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-checkbox></mat-checkbox>
+                            <button (click)="printPreAccount()" matTooltip="Imprimir Pre Cuentas" mat-icon-button color="primary">
+                                <mat-icon>assignment</mat-icon>
+                            </button>
+                            <button matTooltip="Añadir Descuentos" (click)="openDialogDiscount()" mat-icon-button color="accent">
+                                <mat-icon>local_offer</mat-icon>
+                            </button>
+
+                            <!-- <button mat-stroked-button color="primary" [matMenuTriggerFor]="menu">Opciones</button>
+                            <mat-menu #menu="matMenu">
+                                <button routerLink="/pos-sales/pay-init" mat-menu-item>Pagar</button>
+                                <button mat-menu-item>Pendiente</button>
+                            </mat-menu> -->
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button fxLayoutAlign="center center" matTooltip="Pagar" [routerLink]="['/pos-sales/payment']" mat-flat-button
+                    color="primary">Pagar</button>
+            </div>
+            <!-- [routerLink]="['/pos-sales/shopping-cart']" -->
+        </div>
+    </div>
+    <div fxFlex="50" fxFlex.lt-lg="100" style="margin:7px">
+        <div fxLayout="column" style="margin:5px; background-color: white; padding: 2px">
+            <h4>Caja 1</h4>
+            <div class="clearfix">
+                <span style="float: left">Dinero en Caja</span>
+                <span style="float: right; color: green"><b>$50.000</b></span>
+            </div>
+            <mat-divider></mat-divider>
+            <div style="display: block">
+                <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels"
+                    [chartType]="doughnutChartType">
+                </canvas>
+            </div>
+            <div class="clearfix">
+                <span style="float: left">
+                    <b>Total de Ventas del D&iacute;a</b>
+                    <br>
+                    $18.570
+                </span>
+                <span style="float: right">
+                    <b>Mesas Atendidas</b>
+                    <br>
+                    $31.430
+                </span>
+            </div>
+            <mat-divider></mat-divider>
+            <div fxLayout="row" fxLayoutAlign="space-around center" style="color: blue">
+                Ver Reporte Completo
+            </div>
+        </div>
+        <div fxLayout="column" style="margin:7px; background-color: white">
+            <h4>Productos Mas Vendidos</h4>
+            <mat-list>
+                <mat-list-item *ngFor="let order of ordersArray; let i = index">
+                    <ngx-avatar mat-list-icon [name]="order.name"></ngx-avatar>
+                    <h4 style="margin-left: 20px;" mat-line>{{order.name}}</h4>
+                    <p style="margin-left: 20px;" mat-line>{{order.description}}</p>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+</div>

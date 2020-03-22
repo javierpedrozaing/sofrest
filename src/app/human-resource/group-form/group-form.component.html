@@ -1,0 +1,109 @@
+<form [formGroup]="form" (ngSubmit)="submit(form.value, formDirective)" class="form-container" #formDirective="ngForm">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Grupo de Acceso</mat-card-title>
+            <div class="button-close">
+                <button type="button" routerLink="/human-resource/accessPermits" matTooltip="Volver al Listado" mat-button color="warn"
+                    class="float-right config-close">
+                    <mat-icon>keyboard_backspace</mat-icon>
+                </button>
+            </div>
+        </mat-card-header>
+        <mat-card-content>
+            <br>
+            <div flex fxLayout="row" fxLayout.xs="column">
+                <mat-form-field fxFlex="50">
+                    <mat-label>Rol</mat-label>
+                    <input matInput formControlName="role" placeholder="Rol">
+                </mat-form-field>
+            </div>
+            <div>
+                <br>
+                <div flex fxLayout="row">
+                    <div fxFlex="10">
+                        <img class="img-fluid" src="./assets/images/tpv.png" alt="">
+                    </div>
+                    <div fxFlex="90">
+                        <div fxLayout="column" fxLayoutAlign="center start">
+                            <div fxFill>
+                                <h5>Dispositivos M&oacute;viles
+                                    <mat-slide-toggle formControlName="tpv" class="float-right"></mat-slide-toggle>
+                                </h5>
+                            </div>
+                            <div fxFill>
+                                <span class="text-description">
+                                    Los empleados pueden acceder a la aplicación mediante un código PIN personal
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+            <div *ngIf="form.value.tpv">
+                <div flex fxLayout="row" fxLayout.xs="column" *ngFor="let option of optionsAccess.tpv; let i = index;"
+                    style="margin-left: 3vw">
+                    <mat-checkbox fxFlex="100" [checked]="option.checked" (change)="option.checked = !option.checked">
+                        <div fxLayout="column" fxLayoutAlign="center start" fxFill>
+                            <div fxFill>
+                                {{option.option}}
+                            </div>
+                            <div *ngIf="option.description" fxFill>
+                                <span class="text-description"> {{option.description}} </span>
+                            </div>
+                        </div>
+                    </mat-checkbox>
+                </div>
+            </div>
+            <!-- <div>
+                <br>
+                <div flex fxLayout="row">
+                    <div fxFlex="10">
+                        <img class="img-fluid" src="./assets/images/back-office.png" alt="">
+                    </div>
+                    <div fxFlex="90">
+                        <div fxLayout="column" fxLayoutAlign="center start">
+                                <div fxFill>
+                                        <h5>Back office
+                                                <mat-slide-toggle formControlName="back_office" class="float-right" ></mat-slide-toggle>
+                                        </h5>
+                                    </div>
+                                    <div fxFill>
+                                        <span class="text-description">
+                                            Empleados pueden iniciar sesión en el back office usando su correo electrónico y
+                                            contraseña
+                                        </span>
+                                    </div>
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+            </div> -->
+            <div *ngIf="form.value.back_office">
+                <div flex fxLayout="row" fxLayout.xs="column"
+                    *ngFor="let option of optionsAccess.back_office; let i = index;" style="margin-left: 3vw">
+                    <mat-checkbox fxFlex="100" [checked]="option.checked" (change)="option.checked = !option.checked">
+                        <div fxLayout="column" fxLayoutAlign="center start" fxFill>
+                            <div fxFill>
+                                {{option.option}}
+                            </div>
+                            <div *ngIf="option.description" fxFill>
+                                <span class="text-description"> {{option.description}} </span>
+                            </div>
+                        </div>
+                    </mat-checkbox>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <div class="container">
+        <div class="row justify-content-end">
+            <button mat-raised-button color="warn" type="button" matTooltip="Cancelar">Cancelar</button>
+            <span>&nbsp;</span>
+            <button mat-raised-button color="primary" type="submit"
+            matTooltip="Guardar Registro" [disabled]="!form.valid" matTooltip="Guardar Registro">Guardar</button>
+        </div>
+    </div>
+</form>

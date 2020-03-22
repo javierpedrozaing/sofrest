@@ -1,0 +1,51 @@
+<h1 mat-dialog-title>Ajuste Adicional
+    <button type="button" mat-button matTooltip="Cerrar" color="warn" class="float-right config-close" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+      </button>
+</h1>
+<form [formGroup]="form" (ngSubmit)="submit(form.value.adjust)" class="form-container">
+<div mat-dialog-content>
+    <div fxLayout="row">
+      <mat-form-field fxFlex="100">
+        <textarea matInput placeholder="Observaciones" formControlName="adjust"></textarea>
+      </mat-form-field>
+    </div>
+    <div *ngFor="let qty of [].constructor(data.qty)">
+      <div fxLayout="row" *ngIf="data.type === 'recipe'">
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>T&eacute;rmino de Cocci&oacute;n</mat-label>
+          <mat-select>
+            <mat-option value="Bien Cocido">
+              Bien Cocido
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Adicionales</mat-label>
+          <mat-select multiple>
+            <mat-option value="Aceitunas">
+              Aceitunas
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Atributos</mat-label>
+          <mat-select multiple>
+            <mat-option value="Glaseado">
+              Glaseado
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center">
+      <button
+        type="submit"
+        mat-flat-button
+        color="primary"
+        matTooltip="Agregar">
+        Agregar
+      </button>
+    </div>
+</div>
+</form>

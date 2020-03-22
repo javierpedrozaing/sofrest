@@ -1,0 +1,103 @@
+<mat-card>
+    <div class="container-section-header clearfix">
+      <h2 class="float-left">Gestionar Clientes Miembros</h2>
+      <button class="float-right" mat-flat-button color="primary" matTooltip="Nuevo Cliente"
+        [routerLink]="['/client-members/form']" *ngIf="!isMobile">
+        <mat-icon aria-hidden="false" aria-label="Add Icon">add</mat-icon> AÑADIR CLIENTE
+      </button>
+      <span class="float-right">&nbsp;</span>
+      <button class="float-right" *ngIf="showRemove && dataSource" matTooltip="Eliminar Seleccionados"
+        (click)="removeSelected()" mat-flat-button color="warn">
+        <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24"> RETIRAR
+      </button>
+    </div>
+  
+    <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" *ngIf="!isMobile">
+      <mat-form-field fxFlex="50">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+        <span matPrefix>
+          <mat-icon>search</mat-icon>
+        </span>
+      </mat-form-field>
+    </div>
+  
+    <table mat-table [dataSource]="dataSource" class="text-center" *ngIf="!isMobile">
+  
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+          <!-- <mat-checkbox [(ngModel)]="allSelected" (change)="selectAll(allSelected)"></mat-checkbox> -->
+          #
+        </th>
+        <td mat-cell class="text-center" *matCellDef="let element; let i = index">
+          <!-- <mat-checkbox [checked]="element.checked" (change)="checkedElement(!element.checked,i)"></mat-checkbox> -->
+          {{i + 1}}
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Razón Social</th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.tradename}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Teléfono </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.phone}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="ruc">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> RUC </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.ruc}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> E-Mail </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.email}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="options">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Opciones </th>
+        <td mat-cell *matCellDef="let element; let i = index" class="text-center">
+          <button mat-icon-button (click)="changeVisibility(element.id,i,element.state)">
+            <mat-icon *ngIf="element.state" color="success" matTooltip="Deshabilitar">visibility</mat-icon>
+            <mat-icon *ngIf="!element.state" color="warn" matTooltip="Habilitar">visibility_off</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" matTooltip="Editar" [routerLink]="['/client-members/form/',element.id]"><img
+              src="./assets/ui-icons/SVG/edit.svg" width="24" height="24"></button>
+          <button mat-icon-button color="warn" (click)="deleteClient(element.id, i)" matTooltip="Eliminar"><img
+              src="./assets/ui-icons/SVG/delete.svg" width="24" height="24"></button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons [hidden]="isMobile" ></mat-paginator>
+  
+    <mat-list *ngIf="isMobile">
+      <mat-list-item *ngFor="let data of dataSource.data; let i = index, let element" class="mat-element">
+        <mat-icon mat-list-icon>insert_drive_file</mat-icon>
+        <h4 mat-line>{{data.tradename}} ({{data.ruc}})</h4>
+        <p mat-line> {{data.phone}}</p>
+        <p mat-line> {{data.email}} </p>
+  
+        <p mat-line>
+          <button mat-icon-button (click)="changeVisibility(element.id,i,element.state)">
+            <mat-icon *ngIf="element.state" color="success" matTooltip="Deshabilitar">visibility</mat-icon>
+            <mat-icon *ngIf="!element.state" color="warn" matTooltip="Habilitar">visibility_off</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" matTooltip="Editar" [routerLink]="['/providers/form/',data.id]"><img
+              src="./assets/ui-icons/SVG/edit.svg" width="24" height="24"></button>
+          <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="deleteProvider(data.id, i)"><img
+              src="./assets/ui-icons/SVG/delete.svg" width="24" height="24"></button>
+        </p>
+  
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  
+    <button class="float-button" [routerLink]="['/providers/new']" mat-fab color="primary" *ngIf="isMobile">
+      <mat-icon aria-label="Añadir">
+        add
+      </mat-icon>
+    </button>
+  </mat-card>

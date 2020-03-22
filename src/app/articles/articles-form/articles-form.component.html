@@ -1,0 +1,208 @@
+<form [formGroup]="form" (ngSubmit)="submit(form.value,formDirective)" class="form-container" #formDirective="ngForm">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Registro de Artículo</mat-card-title>
+      <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <div flex fxLayout="row">
+          <mat-form-field fxFlex="50" appearance="outline">
+            <input matInput placeholder="Nombre">
+          </mat-form-field>
+          <mat-form-field fxFlex="50" appearance="outline">
+            <mat-label>Categor&iacute;a</mat-label>
+            <mat-select formControlName="category">
+              <mat-option *ngFor="let category of categories" [value]="category.id">
+                {{category.description}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div flex fxLayout="row">
+          Vendido Por:&nbsp;
+          <mat-radio-group fxFlex="100">
+            <mat-radio-button value="1">Unidad</mat-radio-button>&nbsp;
+            <mat-radio-button value="2">Peso</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div flex fxLayout="row">
+          <mat-form-field fxFlex="50" appearance="outline">
+            <input matInput placeholder="Precio">
+          </mat-form-field>
+          <mat-form-field fxFlex="50" appearance="outline">
+            <input matInput placeholder="Costo">
+          </mat-form-field>
+        </div>
+        <div flex fxLayout="row">
+          <mat-form-field fxFlex="50" appearance="outline">
+            <input matInput placeholder="Referencia" disabled value="1004">
+          </mat-form-field>
+          <mat-form-field fxFlex="50" appearance="outline">
+            <input matInput placeholder="Codigo de Barras">
+          </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <div fxFlex="30">
+                <span>
+                        Imagen de Artículo
+                </span>
+                    <file-upload  accept="image/*" formControlName="receiptEmail">
+                        <ng-template #placeholder>
+                                <span>
+                                        <mat-icon>cloud_upload</mat-icon>
+                                </span>
+                        </ng-template>
+                    </file-upload>
+            </div>
+        </div>
+        <mat-divider style="margin: 10px 0 10px 0"></mat-divider>
+        <h4>Inventario</h4>
+        <div flex fxLayout="column">
+          <div fxFlex="100">
+            <mat-slide-toggle formControlName="compound_article" color="primary">Art&iacute;culo Compuesto
+            </mat-slide-toggle>
+          </div>
+          <div fxFlex="100">
+            <mat-slide-toggle formControlName="use_stock" color="primary">Seguir el Inventario</mat-slide-toggle>
+          </div>
+        </div>
+        <div flex fxLayout="row" [hidden]="addArticleFormGroup.value.compound_article === false">
+          <mat-form-field fxFlex="100" appearance="outline">
+            <mat-label>Art&iacute;culo</mat-label>
+            <mat-select formControlName="article" (selectionChange)="addArticle(addArticleFormGroup.value.article)">
+              <mat-option>
+                <ngx-mat-select-search formControlName="articleFilter" ></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let article of articles" [value]="article">
+                {{article}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" [hidden]="addArticleFormGroup.value.compound_article === false">
+          <div fxFlex="100">
+            <table mat-table [dataSource]="modaldataSource">
+
+              <ng-container matColumnDef="component">
+                <th mat-header-cell *matHeaderCellDef>Componente</th>
+                <td mat-cell *matCellDef="let element">{{ element.component }}</td>
+                <td mat-footer-cell *matFooterCellDef>Costo Total </td>
+              </ng-container>
+
+              <ng-container matColumnDef="qty">
+                <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+                <td mat-cell *matCellDef="let element">{{ element.qty }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="cost">
+                <th mat-header-cell *matHeaderCellDef>Costo</th>
+                <td mat-cell *matCellDef="let element">{{ element.cost }}</td>
+                <td mat-footer-cell *matFooterCellDef> {{12.34 | currency}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="options">
+                <th mat-header-cell *matHeaderCellDef>Opciones</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  <button (click)="deleteArticle(i)" matTooltip="Quitar" mat-icon-button color="warn">
+                    <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          </div>
+        </div>
+        <div flex fxLayout="row" [hidden]="addArticleFormGroup.value.use_stock === false">
+          <mat-form-field fxFlex="50" appearance="outline">
+            <input matInput formControlName="mainDealer" placeholder="Proveedor Principal">
+          </mat-form-field>
+          <mat-form-field fxFlex="50" appearance="outline">
+            <input matInput formControlName="default_sales_cost" placeholder="Costo de Compra por Defecto">
+          </mat-form-field>
+        </div>
+        <mat-divider style="margin: 10px 0 10px 0"></mat-divider>
+        <h4>Locales</h4>
+        <div flex fxLayout="row">
+          <div fxFlex="50">
+            <mat-checkbox>El artículo está disponible para la venta en todos los locales</mat-checkbox>
+          </div>
+        </div>
+        <div flex fxLayout="row">
+          <div fxFlex="100">
+            <table mat-table [dataSource]="modaldataSourceShops">
+
+              <ng-container matColumnDef="available">
+                <th mat-header-cell *matHeaderCellDef>Disponible</th>
+                <td mat-cell *matCellDef="let element">
+                  <mat-checkbox></mat-checkbox>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="shop">
+                <th mat-header-cell *matHeaderCellDef>Local</th>
+                <td mat-cell *matCellDef="let element">{{ element.shop }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef>Precio</th>
+                <td mat-cell *matCellDef="let element">
+                  <mat-form-field>
+                    <input matInput placeholder="Precio">
+                  </mat-form-field>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsShops"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsShops"></tr>
+            </table>
+          </div>
+        </div>
+        <h4>Impuestos</h4>
+        <div flex fxLayout="column" style="margin: 10px 0 10px 0">
+          <div fxFlex="100">
+            <mat-slide-toggle formControlName="iva" color="primary">IVA (12%) Disponible en todos los locales
+            </mat-slide-toggle>
+          </div>
+          <div fxFlex="100">
+            <mat-slide-toggle formControlName="igv" color="primary">IGV (18%) Disponible en todos los locales
+            </mat-slide-toggle>
+          </div>
+        </div>
+        <mat-divider style="margin: 10px 0 10px 0"></mat-divider>
+        <h4>Modificadores</h4>
+        <div flex fxLayout="column" style="margin: 10px 0 10px 0">
+          <div fxFlex="100">
+            <mat-list>
+              <mat-list-item *ngFor="let modifier of modifiers">
+                <mat-slide-toggle color="primary"></mat-slide-toggle>
+                <h4 mat-line>{{modifier.name}}</h4>
+                <p mat-line> {{modifier.description}} </p>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+        <mat-divider style="margin: 10px 0 10px 0"></mat-divider>
+        <h4>Representaci&oacute;n en Dispositivos M&oacute;viles</h4>
+        <div flex fxLayout="row">
+          <mat-form-field fxFlex="50" appearance="outline">
+            <mat-label>Color</mat-label>
+            <input matInput formControlName="color" type="color" placeholder="Color">
+          </mat-form-field>
+        </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-divider [inset]="true" class="margin-top:2px"></mat-divider>
+
+  <div class="container">
+    <div class="row justify-content-end">
+      <button mat-raised-button color="warn" matTooltip="Reiniciar Registro" type="reset">Limpiar</button>
+      <span>&nbsp;</span>
+      <button mat-raised-button color="primary" type="submit" matTooltip="Guardar Registro" [disabled]="!form.valid">Guardar</button>
+    </div>
+  </div>
+</form>

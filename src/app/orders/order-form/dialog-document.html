@@ -1,0 +1,97 @@
+<div class="clearfix">
+    <h2 class="float-left" mat-dialog-title>Artículo</h2>
+    <button class="float-right" type="button" matTooltip="Cerrar" mat-button color="warn" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<form [formGroup]="form" (ngSubmit)="save(form.value)" class="form-container">
+    <div mat-dialog-content>
+        <div flex fxLayout="row">
+            <mat-form-field fxFlex appearance="outline">
+                <mat-select [formControl]="categoryCtrl" placeholder="Categorías" #singleSelect
+                    (selectionChange)="changeValueCategory($event)">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="categoryFilterCtrl" [placeholderLabel]="'Buscar'"
+                            [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let category of filteredCategories | async" [value]="category">
+                        {{category.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+                <mat-select [formControl]="productCtrl" placeholder="Sub-Categoría" #singleSelect
+                    (selectionChange)="changeValueSubCategory($event)">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="subCategoryFilterCtrl" [placeholderLabel]="'Buscar'"
+                            [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let subcategory of filteredSubCategories | async" [value]="subcategory">
+                        {{subcategory.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+                <mat-select [formControl]="productCtrl" placeholder="Productos" #singleSelect
+                    (selectionChange)="changeValue($event)">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="productFilterCtrl" [placeholderLabel]="'Buscar'"
+                            [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+                        {{product.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row">
+            <mat-form-field fxFlex="30" appearance="outline">
+                <mat-label>Código</mat-label>
+                <input matInput formControlName="code" placeholder="Código">
+            </mat-form-field>
+            <mat-form-field fxFlex="70" appearance="outline">
+                <mat-label>Artículo</mat-label>
+                <input matInput formControlName="article" placeholder="Artículo">
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row">
+            <mat-form-field fxFlex="25" appearance="outline">
+                <mat-label>I.G.V</mat-label>
+                <input matInput type="number" formControlName="igv" placeholder="I.G.V">
+            </mat-form-field>
+            <mat-form-field fxFlex="25" appearance="outline">
+                <mat-label>I.S.C</mat-label>
+                <input matInput type="number" formControlName="isc" placeholder="I.S.C">
+            </mat-form-field>
+            <mat-form-field fxFlex="25" appearance="outline">
+                <input matInput type="number" formControlName="value">
+            </mat-form-field>
+            <mat-form-field fxFlex="25" appearance="outline">
+                <mat-label>Unidad Kardex</mat-label>
+                <mat-select formControlName="kardex">
+                    <mat-option *ngFor="let kardex of kardexes" [value]="kardex">{{kardex}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row">
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Cantidad</mat-label>
+                <input matInput type="number" formControlName="qty" placeholder="Cantidad">
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Precio</mat-label>
+                <input matInput type="number" formControlName="price" placeholder="Precio">
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Precio Total</mat-label>
+                <input matInput type="number" formControlName="total_price" placeholder="Precio Total">
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+        <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro"  type="reset">Limpiar</button>
+        <span>&nbsp;</span>
+        <button flex mat-raised-button color="primary" matTooltip="Guardar Registro" type="submit" [disabled]="!form.valid">Guardar</button>
+    </div>
+</form>

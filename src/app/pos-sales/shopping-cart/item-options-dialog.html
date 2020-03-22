@@ -1,0 +1,17 @@
+<h2 mat-dialog-title class="text-center text-list"> 
+  <strong>Opciones por Item</strong>
+</h2>
+<mat-divider style="color: black;"></mat-divider>
+<div class="text-center"><span class="text-center text-list" (click)="onNoClick(1)"> Cantidad </span></div>
+<mat-divider style="color: black;"></mat-divider>
+<div class="text-center"><span class="text-center text-list" (click)="onNoClick(2)"> Modificar Item </span> </div>
+<mat-divider style="color: black;"></mat-divider>
+<div class="text-center"><span class="text-center text-list-red" (click)="onNoClick(3)"> Eliminar </span></div>
+<mat-divider style="color: black;"></mat-divider>
+<br>
+<div class="float-right" style="margin-right: 10px;">
+  <button type="button" mat-raised-button matTooltip="Cerrar" color="warn" class="float-right config-close"
+    (click)="onNoClick(null)">
+    <mat-icon>close</mat-icon> Cerrar
+  </button>
+</div>

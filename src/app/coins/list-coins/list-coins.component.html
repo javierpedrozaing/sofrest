@@ -1,0 +1,107 @@
+<div fxLayout="row" fxLayout.lt-lg="column">
+  <mat-card fxFlex="100">
+    <mat-card-title fxLayout="column">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxFlex="20" fxLayoutAlign="start">
+          Monedas
+        </div>
+        <div fxLayout="row" *ngIf="isMobile === false">
+          <div fxFlex="100" fxLayoutAlign="end">
+            <button mat-flat-button color="primary" (click)="openDialog()" matTooltip="Agregar Moneda">
+              <mat-icon>add</mat-icon> Agregar
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card-title>
+    <mat-card-content>
+
+      <div fxLayout="row">
+          <mat-form-field fxFlex="50" fxFlex.lt-lg="100">
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+              <span matPrefix>
+                  <mat-icon>search</mat-icon>
+              </span>
+            </mat-form-field>
+      </div>
+      <div fxLayout="row">
+        <div fxFlex="100" class="table-responsive">
+          <table mat-table [dataSource]="dataSource" *ngIf="!isMobile">
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Moneda</th>
+              <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="code">
+              <th mat-header-cell *matHeaderCellDef>C&oacute;digo</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.code}}
+              </td>
+            </ng-container><!--
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Estado</th>
+              <td mat-cell *matCellDef="let element">
+                <mat-icon *ngIf="element.status === true" color="primary">check_circle</mat-icon>
+                <mat-icon *ngIf="element.status === false">check_circle_outline</mat-icon>
+              </td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="symbol">
+              <th mat-header-cell *matHeaderCellDef>Simbolo</th>
+              <td mat-cell *matCellDef="let element">{{ element.symbol }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="options">
+              <th mat-header-cell *matHeaderCellDef>Opciones</th>
+              <td mat-cell *matCellDef="let element;let i=index">
+                <button mat-icon-button (click)="changeVisibility(element.id,i,element.state)">
+                  <mat-icon matTooltip="Deshabilitar" color="success" *ngIf="element.state">visibility</mat-icon>
+                  <mat-icon matTooltip="Habilitar" color="warn" *ngIf="!element.state">visibility_off</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" matTooltip="Editar" (click)="openDialog(element.id,i)">
+                  <img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24">
+                </button>
+                <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="deleteCoin(element.id,i)">
+                  <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons [hidden]="isMobile" ></mat-paginator>
+        </div>
+      </div>
+      <mat-list *ngIf="isMobile">
+          <mat-list-item *ngFor="let data of dataSource.data; let i = index; let element" class="mat-element">
+              <mat-icon mat-list-icon>insert_drive_file</mat-icon>
+            <h4 mat-line>{{data.code}} {{data.description}} ({{data.symbol}})</h4>
+            <p mat-line>
+              <button mat-icon-button (click)="changeVisibility(data.id, i, element.state)">
+                <mat-icon matTooltip="Deshabilitar" color="success" *ngIf="data.state">visibility</mat-icon>
+                <mat-icon matTooltip="Habilitar" color="warn" *ngIf="!data.state">visibility_off</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" matTooltip="Editar" (click)="openDialog(data.id,i)">
+                <img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24">
+              </button>
+              <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="deleteCoin(data.id,i)">
+                <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+              </button>
+            </p>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+<button class="float-button" (click)="openDialog()" *ngIf="isMobile" matTooltip="Agregar Moneda" mat-fab color="primary">
+  <mat-icon aria-label="Añadir">
+    add
+  </mat-icon>
+</button>

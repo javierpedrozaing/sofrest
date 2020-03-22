@@ -1,0 +1,23 @@
+<h1 mat-dialog-title> Mover Mesa 
+                <button type="button" mat-button matTooltip="Cerrar" color="warn" class="float-right config-close"
+                (click)="onNoClick()">
+                <mat-icon>close</mat-icon>
+            </button>
+</h1>
+<div mat-dialog-content>
+        <mat-form-field fxFlex appearance="outline">
+                <mat-label>Mesa</mat-label>
+                <mat-select>
+                        <mat-option value="1">Mesa 1</mat-option>
+                        <mat-option value="2">Mesa 2</mat-option>
+                        <mat-option value="3">Mesa 3</mat-option>
+                        <mat-option value="4">Mesa 4</mat-option>
+                        <mat-option value="5">Mesa 5</mat-option>
+                        <mat-option value="6">Mesa 6</mat-option>
+                </mat-select>
+            </mat-form-field>
+</div>
+<div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+  <button mat-raised-button (click)="onNoClick()" color="warn" matTooltip="Cancelar" >Cancelar</button>
+  <button mat-raised-button [mat-dialog-close]="" cdkFocusInitial  matTooltip="Mover Mesa" color="primary">Guardar</button>
+</div>

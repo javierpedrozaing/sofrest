@@ -1,0 +1,21 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="product">
+        <th mat-header-cell *matHeaderCellDef> Producto </th>
+        <td mat-cell *matCellDef="let element"> {{element.product}} </td>
+    </ng-container>
+    <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef> Precio </th>
+        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<div fxLayout="row" fxLayoutAlign="center center" style="position: fixed; bottom: 5px;">
+    <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+        <mat-button-toggle class="btn-mid-width">Separar Cuentas <mat-icon>arrow_upward</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle routerLink="/orders-mobile/place" class="btn-mid-width" style="background-color: #3f51b5; color: white">Pagar Todo <mat-icon>keyboard_arrow_right
+            </mat-icon>
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+</div>

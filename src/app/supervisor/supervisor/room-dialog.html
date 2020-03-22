@@ -1,0 +1,39 @@
+<form [formGroup]="addRoomFormGroup" class="form-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Nuevo Sal&oacute;n</mat-card-title>
+            <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content fxLayout="column">
+            <br>
+            <div flex fxLayout="row">
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="name" type="text" placeholder="Nombre del Sal&oacute;n">
+                </mat-form-field>
+            </div>
+            <div flex fxLayout="row">
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Direcci&oacute;n</mat-label>
+                    <input matInput formControlName="address" type="text"
+                        placeholder="Direcci&oacute;n del Sal&oacute;n">
+                </mat-form-field>
+            </div>
+            <div flex fxLayout="row">
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Observaci&oacute;n</mat-label>
+                    <input matInput formControlName="observation" type="text"
+                        placeholder="Anotaciones con respecto al Sal&oacute;n">
+                </mat-form-field>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <button mat-button color="warn" matTooltip="Limpiar" type="reset">Limpiar</button>
+                    <button mat-button color="primary" matTooltip="Guardar" type="submit">Guardar</button>
+                </div>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</form>

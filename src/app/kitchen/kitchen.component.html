@@ -1,0 +1,150 @@
+<div class="row">
+    <div class="col-lg-6 card-kitchen">
+        <mat-card class="card-background">
+            <mat-card-header>
+                <mat-card-title>
+                    <div class="container-header-kitchen clearfix">
+                        <h4 class="float-left">Pedidos</h4>
+                    </div>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <table mat-table [dataSource]="dataSource" class="container mat-elevation-z8 text-center">
+
+                    <ng-container matColumnDef="plato">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Plato </th>
+                        <td mat-cell *matCellDef="let element; let i =index" class="text-center"> {{element.plato}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="en_espera">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> En espera </th>
+                        <td mat-cell *matCellDef="let element" class="text-center"> {{element.en_espera}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Estado </th>
+                        <td mat-cell *matCellDef="let element" class="text-center"> {{element.status}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="encargado">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Encargado </th>
+                        <td mat-cell *matCellDef="let element" class="text-center"> {{element.encargado}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="options">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Opciones </th>
+                        <td mat-cell *matCellDef="let element" class="text-center">
+                            <button mat-button color="primary" matTooltip="Cambiar">Cambiar</button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </mat-card-content>
+        </mat-card>
+
+
+    </div>
+    <div class="col-lg-6 card-kitchen">
+        <mat-card style="height: 100%;" class="card-background">
+            <mat-card-header>
+              <mat-card-title>
+                <span style="font-size: 1vw;">
+                  PRODUCTOS EN ALMACEN
+                </span>
+                <mat-divider></mat-divider>
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="d-block">
+                    <canvas baseChart
+                            [datasets]="barChartData"
+                            [labels]="barChartLabels"
+                            [options]="barChartOptions"
+                            [plugins]="barChartPlugins"
+                            [legend]="barChartLegend"
+                            [chartType]="barChartType">
+                    </canvas>
+                  </div>
+            </mat-card-content>
+          </mat-card>
+    </div>
+
+    <div class="col-lg-6 card-kitchen">
+
+        <mat-card class="card-background">
+            <mat-card-header>
+                <mat-card-title>
+                    <div class="container-header-kitchen clearfix">
+                        <h4 class="float-left">Lista de platos</h4>
+                    </div>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <table mat-table [dataSource]="dataSource_2" class="container mat-elevation-z8 text-center">
+
+                    <ng-container matColumnDef="plato">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Plato </th>
+                        <td mat-cell *matCellDef="let element; let i =index" class="text-center"> {{element.plato}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Precio </th>
+                        <td mat-cell *matCellDef="let element" class="text-center"> {{element.price}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="categoria">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Categoria </th>
+                        <td mat-cell *matCellDef="let element" class="text-center"> {{element.categoria}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="production_a">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Area Producción </th>
+                        <td mat-cell *matCellDef="let element" class="text-center"> {{element.production_a}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="options">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Opciones </th>
+                        <td mat-cell *matCellDef="let element" class="text-center">
+                            <button mat-button color="primary" matTooltip="Editar">Editar</button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns_2"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns_2;"></tr>
+                </table>
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+
+    <div class="col-lg-6 card-kitchen">
+        <mat-card style="height: 100%;" class="card-background">
+            <mat-card-header>
+              <mat-card-title>
+                <span style="font-size: 1vw;">
+                  Porcentaje de pedidos atendidos actualmente
+                </span>
+                <mat-divider></mat-divider>
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="chart">
+                    <canvas baseChart
+                            [data]="pieChartData"
+                            [labels]="pieChartLabels"
+                            [chartType]="pieChartType"
+                            [options]="pieChartOptions"
+                            [plugins]="pieChartPlugins"
+                            [colors]="pieChartColors"
+                            [legend]="pieChartLegend">
+                    </canvas>
+                  </div>
+            </mat-card-content>
+          </mat-card>
+    </div>
+
+</div>

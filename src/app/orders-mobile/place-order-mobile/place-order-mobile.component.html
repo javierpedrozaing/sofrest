@@ -1,0 +1,135 @@
+<div fxLayout="row" style="background-color: #7986CB; color: white">
+    <div fxFlex="20" style="padding: 10px">
+        <button mat-raised-button color="accent" matTooltip="Regresar" routerLink="/orders-mobile/confirm">
+            <mat-icon>arrow_back</mat-icon>
+        </button></div>
+    <div fxFlex="80" style="padding: 10px" fxLayoutAlign="center center">PEDIDOS</div>
+</div>
+<button mat-raised-button id="toggle-linear"></button>
+<mat-horizontal-stepper [linear]="isLinear" labelPosition="bottom" #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Cliente</ng-template>
+            <div flex fxLayout="column">
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput placeholder="Nombre del Cliente" formControlName="name" required>
+                </mat-form-field>
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Apellido</mat-label>
+                    <input matInput placeholder="Apellido del Cliente" formControlName="lastname" required>
+                </mat-form-field>
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Tipo de Documento</mat-label>
+                    <mat-select formControlName="document_type" required>
+                        <mat-option *ngFor="let type of document_types" [value]="type.value">
+                            {{type.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>N&uacute;mero de Documento</mat-label>
+                    <input matInput placeholder="N&uacute;mero de Documento" formControlName="document_number" required>
+                </mat-form-field>
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Direcci&oacute;n</mat-label>
+                    <textarea matInput placeholder="Direcci&oacute;n" formControlName="address" required></textarea>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-around center">
+                <button matTooltip="Siguiente" mat-flat-button class="btn-full-width" color="primary" matStepperNext>Siguiente</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Pago</ng-template>
+            <div flex fxLayout="column">
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Nombre en la Tarjeta</mat-label>
+                    <input matInput placeholder="Nombre en la Tarjeta" formControlName="cardholder_name" required>
+                </mat-form-field>
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>N&uacute;mero de Tarjeta</mat-label>
+                    <input type="number" (keyup)="GetCardType(secondFormGroup.value.card_number)" matInput
+                        placeholder="N&uacute;mero de Tarjeta" formControlName="card_number" required>
+                    <mat-icon matSuffix><img *ngIf="card_type" height="24" src="{{card_type.img}}"></mat-icon>
+                </mat-form-field>
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Fecha de Vencimiento</mat-label>
+                    <input type="month" matInput placeholder="Fecha de Expiraci&oacute;n" formControlName="expire_date"
+                        required>
+                </mat-form-field>
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>CVV</mat-label>
+                    <input type="number" matInput placeholder="D&iacute;gitos de Seguridad" formControlName="card_cvv"
+                        required>
+                </mat-form-field>
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Direcci&oacute;n</mat-label>
+                    <textarea matInput placeholder="Direcci&oacute;n de Facturaci&oacute;n"
+                        formControlName="card_address" required></textarea>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-around center">
+                <button mat-flat-button class="btn-mid-width" matTooltip="Anterior" matStepperPrevious>Atr&aacute;s</button>
+                <button mat-flat-button class="btn-mid-width" matTooltip="Siguiente" color="primary" matStepperNext>Siguiente</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Checkout</ng-template>
+            <div fxLayout="row" fxLayoutAlign="space-around center">
+                <h2 class="ammount_text">$423.00</h2>
+            </div>
+            <div flex fxLayout="column">
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>N&uacute;mero de Tarjeta</mat-label>
+                    <input type="number" (change)="GetCardType(secondFormGroup.value.card_number)" matInput
+                        placeholder="N&uacute;mero de Tarjeta" disabled [value]="secondFormGroup.value.card_number"
+                        required>
+                    <mat-icon matSuffix><img *ngIf="card_type" height="24" src="{{card_type.img}}"></mat-icon>
+                </mat-form-field>
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Nombre en la Tarjeta</mat-label>
+                    <input disabled matInput placeholder="Nombre en la Tarjeta"
+                        [value]="secondFormGroup.value.cardholder_name" required>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" appearance="outline">
+                    <mat-label>Fecha de Vencimiento</mat-label>
+                    <input disabled type="month" matInput placeholder="Fecha de Expiraci&oacute;n"
+                        [value]="secondFormGroup.value.expire_date" required>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" appearance="outline">
+                    <mat-label>CVV</mat-label>
+                    <input disabled type="number" matInput placeholder="D&iacute;gitos de Seguridad"
+                        [value]="secondFormGroup.value.card_cvv" required>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-around center">
+                <button mat-flat-button class="btn-mid-width" matTooltip="Anterior" matStepperPrevious>Atr&aacute;s</button>
+                <button mat-flat-button class="btn-mid-width" color="primary" matTooltip="Siguiente" matStepperNext>Siguiente</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Completado</ng-template>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <div>
+                <mat-icon class="check_success">check</mat-icon>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+            <div class="payment_success_text">El Pago de Complet&oacute; Satisfactoriamente</div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-flat-button class="btn-mid-width" color="primary">
+                <mat-icon>mail</mat-icon>
+            </button>
+            <button routerLink="/orders-mobile/grid" mat-flat-button class="btn-mid-width" color="accent">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+    </mat-step>
+</mat-horizontal-stepper>

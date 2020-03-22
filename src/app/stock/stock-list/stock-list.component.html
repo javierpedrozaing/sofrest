@@ -1,0 +1,35 @@
+<div class="container-section-header clearfix">
+  <h2 class="float-left">Gestionar Inventario</h2>
+  <button class="float-right" mat-flat-button color="primary" (click)="openDialog()" matTooltip="Añadir Inventario">
+    <mat-icon aria-hidden="false" aria-label="Add Icon">add</mat-icon> Añadir Inventario
+  </button>
+</div>
+
+<table mat-table [dataSource]="dataSource" class="container mat-elevation-z8 text-center">
+
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef class="text-center"> N </th>
+    <td mat-cell *matCellDef="let element; let i =index" class="text-center"> {{i + 1}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="product">
+    <th mat-header-cell *matHeaderCellDef class="text-center"> Producto </th>
+    <td mat-cell *matCellDef="let element" class="text-center"> {{element.product}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="cant">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Cantidad </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.cant}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="options">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Opciones </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> 
+          <button mat-button color="primary" matTooltip="Editar">Editar</button>
+          <button mat-button color="warn" matTooltip="Eliminar">Eliminar</button>  
+      </td>
+    </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

@@ -1,0 +1,99 @@
+<form [formGroup]="form" (ngSubmit)="submit(form.value, formDirective)" class="form-container" #formDirective="ngForm">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Registro de Activo Fijo</mat-card-title>
+      <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+      <div class="button-close">
+        <button type="button" mat-button matTooltip="Cerrar" color="warn" class="float-right config-close" (click)="onNoClick()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <br>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field fxFlex="25" appearance="outline">
+          <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="admission_date" placeholder="Fecha">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field fxFlex="25" appearance="outline">
+          <mat-label>Monto</mat-label>
+          <input formControlName="amount" type="number" matInput placeholder="Monto">
+        </mat-form-field>
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Detalle</mat-label>
+          <input formControlName="detail" type="text" matInput placeholder="Detalle">
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Observación</mat-label>
+          <textarea formControlName="observation" type="text" matInput placeholder="Observación"></textarea>
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" fxLayoutAlign="none center">
+        <div fxFlex="50" fxLayout="row">
+          <mat-form-field appearance="outline" fxFlex="90">
+            <mat-label>Serial</mat-label>
+            <input formControlName="serial" type="text" matInput placeholder="Serial">
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" fxLayout="row">
+          <mat-form-field fxFlex="90" appearance="outline">
+            <mat-label>Tipo de Producto</mat-label>
+            <mat-select formControlName="type_product_id" [compareWith]="compareObjects">
+              <mat-option *ngFor="let item of products_type" [value]="item.id">{{item.description}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div fxFlex>
+            <button matTooltip="Nuevo Tipo de Producto" mat-button aria-label="Nuevo" type="button" color="primary" (click)="openDialogProductType()"
+              style="margin-top: 10px;">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <div fxFlex="50" fxLayout="row">
+          <mat-form-field appearance="outline" fxFlex="90">
+            <mat-label>Marca</mat-label>
+            <mat-select formControlName="brand_id" [compareWith]="compareObjects">
+              <mat-option *ngFor="let item of brands" [value]="item.id">{{item.description}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div fxFlex>
+            <button matTooltip="Nueva Marca" mat-button aria-label="Nuevo" type="button" color="primary" (click)="openDialogTrademark()"
+              style="margin-top: 10px;">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div fxFlex="50" fxLayout="row">
+          <mat-form-field appearance="outline" fxFlex="90">
+            <mat-label>Modelo</mat-label>
+            <mat-select formControlName="model" [compareWith]="compareObjects" (selectionChange)="getModelsByBrand(form.value.brand_id)">
+              <mat-option *ngFor="let item of models" [value]="item.id">{{item.description}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div fxFlex>
+            <button mat-button matTooltip="Nuevo Modelo" aria-label="Nuevo" type="button" color="primary" (click)="openDialogModel()"
+              style="margin-top: 10px;">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" fxLayoutAlign="end center">
+        <mat-slide-toggle class="margin-slide float-right" formControlName="state" color="primary">
+          {{form.value.state ? 'Activo' : 'Inactivo'}} </mat-slide-toggle>
+      </div>
+    </mat-card-content>
+    <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+      <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro"  type="reset">Limpiar</button>
+      <span>&nbsp;</span>
+      <button flex mat-raised-button color="primary" matTooltip="Guardar Registro" type="submit" [disabled]="!form.valid">Guardar</button>
+    </div>
+  </mat-card>
+</form>

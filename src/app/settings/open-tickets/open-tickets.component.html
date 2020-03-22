@@ -1,0 +1,46 @@
+<mat-card class="example-card">
+    <div class="clearfix">
+        <mat-form-field class="adapted-form float-right">
+            <mat-label>Local</mat-label>
+            <mat-select [(ngModel)]="store">
+                <mat-option value="option1">Local 1</mat-option>
+                <mat-option value="option2">Local 2</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <span class="float-left title-item">TICKETS ABIERTOS</span>
+    </div>
+    <mat-card-content>
+        <div class="clearfix">
+            <div class="float-left text-tickets">
+                <p style="margin-bottom: 0.3rem;"><strong>Usar tickets predefinidos</strong></p>
+                <p>Esta opción le permite asignar rápidamente nombres a los tickets abiertos. Por ejemplo, la mesa 1,
+                    mesa 2, etc.</p>
+            </div>
+            <mat-slide-toggle [(ngModel)]="showOptions" class="float-right" [color]="'primary'"></mat-slide-toggle>
+        </div>
+
+        <form [formGroup]="Tickets" class="example-form">
+            <div formArrayName="items" *ngFor="let item of getItems.controls; let i = index">
+                <div [formGroupName]="i">
+                    <mat-form-field class="example-full-width">
+                        <mat-icon matPrefix>menu</mat-icon>
+                        <input type="text" formControlName="name" matInput placeholder="Nuevo tickets">
+                        <mat-icon (click)="deleteItem(i)" matSuffix>delete</mat-icon>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+
+        <button *ngIf="showOptions === true" (click)="addTicket()" matTooltip="Agregar Tickets Predefinidos" mat-raised-button color="primary">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" matTooltip="Agregar Tickets Predefinados">add</mat-icon>
+            AGREGAR TICKETS PREDEFINIDOS
+        </button>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-actions>
+        <div class="clearfix">
+            <button class="float-right" matTooltip="Guardar" color="warn" mat-raised-button>Guardar</button>
+            <button class="float-right" matTooltip="Cancelar"color="primary"  mat-raised-button>Cancelar</button>
+        </div>
+    </mat-card-actions>
+</mat-card>

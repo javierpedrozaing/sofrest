@@ -1,0 +1,288 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Registro de Pedido</mat-card-title>
+        <div class="button-close">
+                <button type="button" mat-button matTooltip="Cerrar" color="warn" class="float-right config-close"
+                routerLink="/tables-and-orders/list-orders">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-horizontal-stepper [linear]="true" #stepper>
+            <!-- <mat-step [stepControl]="clientFormGroup">
+                <form [formGroup]="clientFormGroup">
+                    <ng-template matStepLabel>Datos del Cliente</ng-template>
+                    <div flex fxLayout="row" fxLayoutGap="20px">
+                        <mat-form-field fxFlex="25" appearance="outline">
+                            <mat-label>DNI/RUC</mat-label>
+                            <input matInput formControlName="dni" placeholder="DNI/RUC">
+                        </mat-form-field>
+                        <button mat-icon-button (click)="searchClient()" type="button" color="primary"
+                            style="margin-top: 10px !important;">
+                            <mat-icon>search</mat-icon>
+                        </button> -->
+                        <!-- <button mat-icon-button type="button" (click)="openDialog()" color="accent"
+                            style="margin-top: 10px !important;">
+                            <mat-icon>add</mat-icon>
+                        </button> 
+
+                        <mat-form-field fxFlex appearance="outline">
+                            <mat-label>Nombre</mat-label>
+                            <input matInput formControlName="name" placeholder="Nombre">
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex appearance="outline">
+                            <mat-label>Apellido</mat-label>
+                            <input matInput formControlName="surname" [disabled]="true" placeholder="Apellido">
+                        </mat-form-field>
+                    </div>
+
+                    <div flex fxLayout="row" fxLayoutGap="20px">
+                        <mat-form-field fxFlex appearance="outline">
+                            <mat-label>Telefono</mat-label>
+                            <input matInput formControlName="phone" placeholder="Telefono">
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex appearance="outline">
+                            <mat-label>Email</mat-label>
+                            <input matInput type="email" formControlName="email" placeholder="Email">
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex appearance="outline">
+                            <mat-label>Número de Comensales</mat-label>
+                            <input matInput formControlName="qty" placeholder="Número de Comensales" min="0"
+                                type="number">
+                        </mat-form-field>
+                    </div>
+
+                    <div flex fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center center">
+                        <mat-radio-group formControlName="type" fxLayoutGap="20px">
+                            <mat-radio-button [value]="1">Boleta</mat-radio-button>
+                            <mat-radio-button [value]="2">Factura</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div>
+                        <button mat-button class="float-right" color="primary" matStepperNext>
+                            <mat-icon>arrow_forward</mat-icon> Pedidos
+                        </button>
+                    </div>
+                </form>
+            </mat-step>-->
+            <mat-step [stepControl]="secondFormGroup">
+                <form [formGroup]="secondFormGroup">
+                    <ng-template matStepLabel>Pedidos</ng-template>
+                    <div flex fxLayout="row" fxLayoutAlign="end center">
+                        <button mat-flat-button class="float-right" matTooltip="Añadir" (click)="openDialogProduct(null,null)"
+                            color="primary" type="button">
+                            <mat-icon>add</mat-icon> Añadir
+                        </button>
+                    </div>
+                    <div flex fxLayout="row" fxLayoutGap="20px">
+                            <mat-form-field fxFlex appearance="outline" fxFlex="20">
+                                    <mat-label>Número de Comensales</mat-label>
+                                    <input matInput formControlName="qty" placeholder="Número de Comensales" min="0"
+                                        type="number">
+                                </mat-form-field>
+                                <button mat-icon-button color="primary" matTooltip="Cargar Comensales" (click)="chargeClients()" type="button" style="margin-top: 10px !important;"> 
+                                        <mat-icon>people</mat-icon>
+                                    </button>
+                                
+                        <mat-form-field fxFlex="30" appearance="outline">
+                            <mat-label>Mesa</mat-label>
+                            <mat-select formControlName="table" multiple>
+                                <mat-option *ngFor="let table of tables" [value]="table.name">
+                                    {{table.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div flex fxLayout="row">
+                        <div fxFlex="100" class="table-responsive">
+                            <table mat-table [dataSource]="dataSource">
+                                <ng-container matColumnDef="article">
+                                    <th mat-header-cell *matHeaderCellDef class="text-center">Producto/Plato</th>
+                                    <td mat-cell *matCellDef="let element" class="text-center">{{ element.article }}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="price">
+                                    <th mat-header-cell *matHeaderCellDef class="text-center">Precio</th>
+                                    <td mat-cell *matCellDef="let element" class="text-center">{{ element.price }}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="qty">
+                                    <th mat-header-cell *matHeaderCellDef class="text-center">Cantidad</th>
+                                    <td mat-cell *matCellDef="let element; let i = index;" class="text-center">
+                                        <div fxLayout="row" fxLayoutAlign="center center">
+                                            <mat-icon style="color: #d32f2f;cursor: pointer;" (click)="changeQty(i,-1)">
+                                                arrow_downward</mat-icon>
+                                            <mat-icon style="color: #0277bd;cursor: pointer;" (click)="changeQty(i,1)">
+                                                arrow_upward
+                                            </mat-icon>
+                                            <span>{{ element.qty }}</span>
+                                        </div>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="add">
+                                    <th mat-header-cell *matHeaderCellDef class="text-center">Con</th>
+                                    <td mat-cell *matCellDef="let element" class="text-center">
+                                        {{ (element.plate ? (element.add.length > 0 ? element.add : '-') : 'No Aplica') | arrayObjectToString:'name' }}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="without">
+                                    <th mat-header-cell *matHeaderCellDef class="text-center">Sin</th>
+                                    <td mat-cell *matCellDef="let element" class="text-center">
+                                        {{ (element.plate ? (element.exclude.length > 0 ? element.exclude : '-'): 'No Aplica') | arrayObjectToString:'name'}}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="total">
+                                    <th mat-header-cell *matHeaderCellDef class="text-center">Total</th>
+                                    <td mat-cell *matCellDef="let element" class="text-center">{{ element.total_price }}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="options">
+                                    <th mat-header-cell *matHeaderCellDef class="text-center"></th>
+                                    <td mat-cell *matCellDef="let element;let i =index" class="text-center">
+                                        <div fxLayout="row" fxLayoutAlign="start center">
+                                            <button mat-button color="primary" type="button" matTooltip="Editar" (click)="openDialogProduct(element,i)">
+                                                <img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24">
+                                            </button>
+                                            <button mat-button color="warn" type="button"  matTooltip="Quitar" (click)="removeElement(i)">
+                                                <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                                            </button>
+                                        </div>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                            </table>
+
+                        </div>
+                    </div>
+                    <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end center">
+                        <span style="font-size: 20px">
+                            <strong>Total: </strong> {{total | number:'.3'}}
+                        </span>
+                    </div>
+                    <div>
+                        <button mat-button class="float-left" color="primary" matTooltip="Regresar a Clientes" matStepperPrevious>
+                            <mat-icon>arrow_back</mat-icon> Cliente
+                        </button>
+                        <button mat-button class="float-right" color="primary" matTooltip="Ir a Detalles" matStepperNext>
+                            <mat-icon>arrow_forward</mat-icon> Detalles
+                        </button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Finalizar</ng-template>
+                <h4>Detalles del Cliente</h4>
+                <mat-divider></mat-divider>
+                <!-- <div flex fxLayout="row" style="margin-top: 15px">
+                    <div fxFlex>
+                        <strong> DNI :</strong>{{clientFormGroup.value ? clientFormGroup.value.dni : ''}}
+                    </div>
+                    <div fxFlex>
+                        <strong> Nombres :</strong> {{clientFormGroup.value ? clientFormGroup.value.name : ''}}
+                    </div>
+                    <div fxFlex>
+                        <strong> Apellidos :</strong> {{clientFormGroup.value ? clientFormGroup.value.surname : ''}}
+                    </div>
+                </div> -->
+                <div flex fxLayout="row" style="margin-top: 15px">
+                    <div fxFlex>
+                        <strong> Comensales :</strong>{{secondFormGroup.value ? secondFormGroup.value.qty : ''}}
+                    </div>
+                </div>
+                <br>
+                <h4>Detalles del Pedido</h4>
+                <mat-divider></mat-divider>
+                <div flex fxLayout="row">
+                    <div fxFlex="100" class="table-responsive">
+                        <table mat-table [dataSource]="dataSource">
+                            <ng-container matColumnDef="article">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Producto/Plato</th>
+                                <td mat-cell *matCellDef="let element" class="text-center">{{ element.article }}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="price">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Precio</th>
+                                <td mat-cell *matCellDef="let element" class="text-center">{{ element.price }}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="qty">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Cantidad</th>
+                                <td mat-cell *matCellDef="let element; let i = index;" class="text-center">
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <span>{{ element.qty }}</span>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="add">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Con</th>
+                                <td mat-cell *matCellDef="let element" class="text-center">
+                                    {{ (element.plate ? (element.add.length > 0 ? element.add : '-') : 'No Aplica') | arrayObjectToString:'name' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="without">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Sin</th>
+                                <td mat-cell *matCellDef="let element" class="text-center">
+                                    {{ (element.plate ? (element.exclude.length > 0 ? element.exclude : '-'): 'No Aplica') | arrayObjectToString:'name'}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="total">
+                                <th mat-header-cell *matHeaderCellDef class="text-center">Total</th>
+                                <td mat-cell *matCellDef="let element" class="text-center">{{ element.total_price }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="options">
+                                <th mat-header-cell *matHeaderCellDef class="text-center"></th>
+                                <td mat-cell *matCellDef="let element;let i =index" class="text-center">
+                                    <div fxLayout="row" fxLayoutAlign="start center">
+
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                        </table>
+
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div flex fxLayout="column" fxLayout.xs="column" fxLayoutAlign="end end">
+                    <span style="font-size: 15px">
+                        <strong>Mesa(s): </strong> {{secondFormGroup.value.table}}
+                    </span>
+                    <span style="font-size: 15px">
+                        <strong>Monto Total: </strong> {{total | number:'.3'}}
+                    </span>
+                </div>
+                <br>
+                <div class="text-center">
+                    <button mat-flat-button color="warn" matTooltip="Guardar">Guardar</button>
+                </div>
+                <div>
+                    <button mat-button class="float-left" color="primary" matTooltip="Pedidos" matStepperPrevious>
+                        <mat-icon>arrow_back</mat-icon> Pedidos
+                    </button>
+                </div>
+            </mat-step>
+        </mat-horizontal-stepper>
+    </mat-card-content>
+    <mat-card-actions>
+
+    </mat-card-actions>
+</mat-card>

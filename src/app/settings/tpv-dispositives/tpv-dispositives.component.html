@@ -1,0 +1,59 @@
+<mat-card class="example-card">
+        <div class="clearfix">
+            <mat-form-field class="adapted-form float-right" appearance="outline">
+                <mat-label>Local</mat-label>
+                <mat-select>
+                    <mat-option value="option1">Local 1</mat-option>
+                    <mat-option value="option2">Local 2</mat-option>
+                    <mat-option value="option3">Todos los locales</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button (click)="add()" class="float-left" mat-raised-button matTooltip="Agregar Dispositivo Móvil" color="primary">
+                <mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>
+                AGREGAR Dispositivo M&oacute;vil
+            </button>
+        </div>
+        <mat-card-content>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select">
+                    <th class="item-header" mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th class="item-header" mat-header-cell *matHeaderCellDef> Nombre </th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="store">
+                    <th class="item-header" mat-header-cell *matHeaderCellDef> Local </th>
+                    <td mat-cell *matCellDef="let element"> {{element.store}} </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="status">
+                    <th class="item-header" mat-header-cell *matHeaderCellDef> Estado </th>
+                    <td mat-cell *matCellDef="let element"> {{element.status === true ? 'ACTIVO' : 'NO ACTIVO'}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+                </tr>
+            </table>
+
+
+        </mat-card-content>
+    </mat-card>

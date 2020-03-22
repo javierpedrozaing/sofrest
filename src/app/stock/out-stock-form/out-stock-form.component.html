@@ -1,0 +1,148 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Egreso de Productos</mat-card-title>
+        <div class="button-close">
+            <button type="button" routerLink="/stock/products-out" matTooltip="Regresar" mat-button color="warn"
+                class="float-right config-close">
+                <mat-icon>keyboard_backspace</mat-icon>
+            </button>
+        </div>
+    </mat-card-header>
+    <mat-card-content>
+        <br>
+        <form [formGroup]="form" class="form-container">
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+                <mat-form-field fxFlex="50">
+                    <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="entry"
+                        placeholder="Fecha de Entrega">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field fxFlex="50">
+                    <mat-label>Hora</mat-label>
+                    <input type="time" matInput formControlName="entry_time" (click)="pickStartTime()">
+                </mat-form-field>
+            </div>
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+                <mat-form-field fxFlex="50" appearance="outline">
+                    <mat-label>Solicitante</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor=" let employee of employees" [value]="employee">
+                            {{employee.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" appearance="outline">
+                    <mat-label>Entregado Por</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor=" let employee of employees" [value]="employee">
+                            {{employee.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            </div>
+            <div flex fxLayout="row" fxLayout.xs="column">
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Observaciones</mat-label>
+                    <textarea formControlName="description" type="text" matInput placeholder="Descripción"></textarea>
+                </mat-form-field>
+            </div>
+
+        </form>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex appearance="outline">
+                <mat-select [formControl]="categoryCtrl" placeholder="Categorías" #singleSelect
+                    (selectionChange)="changeValueCategory($event)">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="categoryFilterCtrl" [placeholderLabel]="'Buscar'"
+                            [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let category of filteredCategories | async" [value]="category">
+                        {{category.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+                <mat-select [formControl]="productCtrl" placeholder="Sub-Categoría" #singleSelect
+                    (selectionChange)="changeValueSubCategory($event)">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="subCategoryFilterCtrl" [placeholderLabel]="'Buscar'"
+                            [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let subcategory of filteredSubCategories | async" [value]="subcategory">
+                        {{subcategory.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+                <mat-select [formControl]="productCtrl" placeholder="Productos" #singleSelect
+                    (selectionChange)="changeValue($event)">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="productFilterCtrl" [placeholderLabel]="'Buscar'"
+                            [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+                        {{product.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <mat-divider></mat-divider>
+        <h4>Artículos</h4>
+        <div flex fxLayout="row">
+            <div fxFlex="100" class="table-responsive">
+                <table mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef>Producto/Plato</th>
+                        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef>Precio</th>
+                        <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="qty">
+                        <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+                        <td mat-cell *matCellDef="let element; let i = index;">
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <mat-icon style="color: #d32f2f;cursor: pointer;" (click)="changeQty(i,-1)">
+                                    arrow_downward</mat-icon>
+                                <mat-icon style="color: #0277bd;cursor: pointer;" (click)="changeQty(i,1)">arrow_upward
+                                </mat-icon>
+                                <span>{{ element.qty }}</span>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="options">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let element">
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <button mat-button color="warn" matTooltip="Quitar" (click)="removeElement(i)">
+                                    <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end center">
+            <span>
+                <strong>Cantidad de Artículos: </strong> {{total}}
+            </span>
+        </div>
+    </mat-card-content>
+    <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+        <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro"  type="reset">Limpiar</button>
+        <span>&nbsp;</span>
+        <button flex mat-raised-button color="primary" matTooltip="Guardar Registro" type="submit" [disabled]="!form.valid">Guardar</button>
+    </div>
+</mat-card>

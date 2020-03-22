@@ -1,0 +1,7 @@
+<div [ngClass]="{'search-boxed-dark': statusTheme == true}" class="search-wrapper" [class.active]="isActive">
+  <div class="input-holder">
+    <input type="text" placeholder="Escriba par Buscar" class="search-input">
+    <button class="search-icon" (click)="isActiveSearch(true)"><span></span></button>
+  </div>
+  <button class="close" (click)="isActiveSearch(false)"></button>
+</div>

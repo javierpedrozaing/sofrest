@@ -1,0 +1,30 @@
+<form [formGroup]="form" (ngSubmit)="save(form.value)" class="form-container">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Autenticación</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <br>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>Usuario/Correo Electrónico</mat-label>
+                <input matInput formControlName="email" placeholder="Usuario/Correo Electrónico">
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>Contraseña</mat-label>
+                <input matInput type="password" formControlName="password" placeholder="Contraseña">
+            </mat-form-field>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="container">
+          <div class="row justify-content-center">
+            <button mat-button color="warn" matTooltip="Limpiar Registro" type="reset">Limpiar</button>
+            <button mat-button color="primary" type="submit" matTooltip="Enviar Datos" [disabled]="!form.valid">Enviar</button>
+          </div>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </form>

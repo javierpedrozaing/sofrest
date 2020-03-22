@@ -1,0 +1,650 @@
+<div fxLayout="row" style="overflow-x:hidden" *ngIf="!fastCash  && !detailClient && !detailPayment">
+    <!--Grid de Productos-->
+    <mat-card fxFlex="60" style="height: 100vh; overflow-y: auto; padding: 0px; margin: 0px;">
+        <mat-card-header fxLayout="row" fxLayoutAlign="start center"
+            style="height:6vh; color: honeydew; font-size: 1.5em; background-color: darkblue;" fxLayout="row">
+            <span style="cursor: pointer" (click)="common.isSidebarOpen = !common.isSidebarOpen;" [routerLink]="['/sales']">
+                <mat-icon>home</mat-icon>
+            </span>
+            <span style="cursor: pointer" fxFlex>Full Menu</span>
+            <span style="cursor: pointer; " fxFlex>Lo Mas Vendido</span>
+            <mat-form-field fxLayoutAlign="end center" fxFlex>
+                <input style="color: blanchedalmond;" matInput [formControl]="productFilterCtrl" placeholder="Buscar">
+                <span matPrefix>
+                    <mat-icon>search</mat-icon>
+                </span>
+            </mat-form-field>
+        </mat-card-header>
+        <div flex fxLayout="row" *ngIf="activePay === true || activeAdmPay === true || activeSpecialPay === true">
+            <button mat-icon-button color="primary"
+                (click)="activePay = false; activeAdmPay = false; activeSpecialPay = false">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+        <app-payment-action [activePay]="activePay" [activeAdmPay]="activeAdmPay" [items]="dataSource.data"
+            *ngIf="activePay === true || activeAdmPay === true">
+        </app-payment-action>
+        <div flex fxLayout="column" *ngIf="activeSpecialPay === false && !activePay && !paymentFormMode"
+            style="height: 88vh; min-height: 88vh; max-height: 88vh;overflow-y: auto;">
+            <div *ngIf="!showImg">
+                <div class="tabs-categories">
+                    <button class="col-sm" mat-button *ngFor="let category of categories; let i = index"
+                        (click)="selectedCategory(i)" class="category-button"
+                        [ngClass]="{'selected-category': category.selected}">
+                        <span>{{category.description}}</span>
+                    </button>
+                </div>
+            </div>
+            <mat-grid-list fxFlex="100" cols="5" rowHeight="1:1" *ngIf="showImg">
+                <mat-grid-tile *ngFor="let product of filteredProducts | async" (click)="addProductToCart(product)" style="border: 0.5px solid #9e9e9e;" [matTooltip]="product.name">
+                    <img [src]="product.image ? product.image : './assets/images/no-imagen.jpg'" onError="this.src='./assets/images/no-imagen.jpg'"height="150px">
+                    <mat-grid-tile-footer fxLayout="column" fxLayoutAlign="start start">
+                        <span style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;width: 100%;">{{product.name}}</span>
+                        <span>{{product.price}}</span>
+                    </mat-grid-tile-footer>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <div *ngIf="!showImg">
+                <div *ngFor="let product of filteredProducts | async" class="mat-element"
+                    (click)="addProductToCart(product)">
+                    <span class="product-description">{{product.name}} <span class="float-right"><b>S/
+                                {{product.price}}</b></span>
+                    </span>
+                </div>
+                <!-- <mat-list-item *ngFor="let product of filteredProducts | async" class="mat-element">
+                <h6 mat-line >{{product.name}}                 <span class="float-right">{{product.price}}</span> </h6>
+                <mat-divider></mat-divider>
+            </mat-list-item> -->
+            </div>
+        </div>
+        <div flex fxLayout="row" *ngIf="activeSpecialPay === true && activePay === false && activeAdmPay === false">
+            <mat-form-field fxFlex="40" appearance="outline">
+                <mat-label>Producto</mat-label>
+                <input matInput [(ngModel)]="name" [ngModelOptions]="{standalone: true}"
+                    placeholder="Ingrese el Producto">
+            </mat-form-field>
+            <mat-form-field fxFlex="20" appearance="outline">
+                <mat-label>Precio</mat-label>
+                <input matInput [(ngModel)]="price" [ngModelOptions]="{standalone: true}" type="number">
+            </mat-form-field>
+            <mat-form-field fxFlex="20" appearance="outline">
+                <mat-label>Cantidad</mat-label>
+                <input matInput [(ngModel)]="qty" [ngModelOptions]="{standalone: true}" type="number">
+            </mat-form-field>
+            <button (click)="addProductToCart({name:name, qty:qty, price:price}); name=null;price=null;qty=null"
+                matTooltip="Añadir" mat-mini-fab color="primary">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+
+        <div fxLayout="column" style="height: 6vh;">
+            <button type="button" fxFlex fxFill style="background-color: darkblue; color: white"
+                (click)="detailClient = true;openOrderTypeOptionsDialog()">PAGAR CUENTA</button>
+        </div>
+    </mat-card>
+    <!--Tabla de Productos Seleccionados-->
+    <mat-card fxFlex="40" style="height: 100vh; overflow-y: auto; padding: 0px">
+        <mat-card-header fxLayout="row" fxLayoutAlign="center center"
+            style="height:6vh; color: honeydew; font-size: 1.5em; background-color: #fd7e14;">
+            Detalle de la Venta
+        </mat-card-header>
+        <mat-card-content style="height: 74vh; margin-bottom: 0px; max-height: 74vh; overflow-y: auto;">
+            <!-- <div flex fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-select [formControl]="productCtrl" placeholder="Productos" #singleSelect>
+            <mat-option>
+              <ngx-mat-select-search [formControl]="productFilterCtrl" [placeholderLabel]="'Buscar'"
+                [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option (click)="addProductToCart(product)" *ngFor="let product of filteredProducts | async"
+              [value]="product">
+              {{product.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div> -->
+      <div style="padding: 0px; height: 40px; width: 100%; border-bottom: 1.5px solid #cbcbcb;" fxLayout="row" *ngFor="let element of dataSource.data;let i = index" (click)="openItemOptionsDialog(i)"
+      fxLayoutAlign="start center">
+      <div fxFlex="10" fxFill fxLayoutAlign="center center">
+          <span>{{element.qty}}</span>
+      </div>
+      <div fxFlex="55" fxFill fxLayoutAlign="start center">
+          <span>{{element.product}}</span>
+      </div>
+      <div fxFlex="35" fxFill style="background-color: #00008b; color: white;" fxLayoutAlign="end center">
+          <span style="padding: 0 5px;">{{element.price | number:'.2'}}</span>
+      </div>
+  </div>
+
+            <!-- <mat-list style="width:40vw; background-color: darkorange; position:absolute; bottom: 0px">
+                <mat-list-item>
+                    <span style="font-size: 1.5em; width:20vw">Sub Total:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw">{{getSubTotalCost() | currency}}</span>
+                </mat-list-item>
+                <mat-list-item>
+                    <span style="font-size: 1.5em; width:20vw">Impuesto:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw">{{getSubTotalCost()*0.18 | currency}}</span>
+                </mat-list-item>
+                <mat-list-item>
+                    <span style="font-size: 1.5em; width:20vw">Total:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw">{{getSubTotalCost()*1.18 | currency}}</span>
+                </mat-list-item>
+            </mat-list>
+            <br> -->
+            <!-- <div fxLayoutAlign="center center" [hidden]="hideSpecialPay === true">
+                <button (click)="activeSpecialPay = true" mat-flat-button color="warn"
+                    matTooltip="Factura Especial">Factura Especial</button>
+            </div> -->
+        </mat-card-content>
+        <div fxFlexLayout="column" style="height: 20vh;">
+            <mat-list style="width:40vw;  background-color: darkorange;" fxFill>
+                <mat-list-item style="height: 6.2vh;">
+                    <span style="font-size: 1.5em; width:20vw; color: white;">Sub Total:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw;color: white;">{{getSubTotalCost() | number:'.2'}}</span>
+                </mat-list-item>
+                <mat-list-item style="height: 6.2vh;">
+                    <span style="font-size: 1.5em; width:20vw;color: white;">Impuesto:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw;color: white;">{{subTotalPayment*0.18 | number:'.2'}}</span>
+                </mat-list-item>
+                <mat-list-item style="height: 6.2vh;">
+                    <span style="font-size: 1.5em; width:20vw;color: white;">Total:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw;color: white;">{{subTotalPayment*1.18 | number:'.2'}}</span>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </mat-card>
+</div>
+
+<div fxLayout="row" style="overflow-x:hidden;overflow-y:hidden" *ngIf="fastCash  && !detailClient && !detailPayment">
+    <!--Grid de Productos-->
+    <mat-card fxFlex="60" style="margin-left: 5px; height: 100vh; overflow-y: auto; padding: 0px; margin: 0px;">
+        <mat-card-header class="text-center" fxLayout="row" fxLayoutAlign="center center"
+            style="height:6vh; color: honeydew; font-size: 1.5em; background-color: darkblue;">
+            Efectivo Rápido
+        </mat-card-header>
+        <mat-card-content fxLayout="row" fxLayoutAlign="center center" style="margin-bottom: 0px;">
+            <div fxFlex="35" fxLayout="column">
+                <div fxFlex fxLayout="row">
+                    <button class="button-options-left text-center" fxFlex="50">
+                        <strong>1</strong>
+                    </button>
+                </div>
+                <div fxFlex fxLayout="row">
+                    <button class="button-options-left text-center" fxFlex>
+                        <strong>S./</strong>
+                    </button>
+                    <button class="button-options-left text-center" fxFlex>
+                        <strong>$</strong>
+                    </button>
+                </div>
+                <div fxFlex fxLayout="row">
+                    <button class="button-options-left text-center" fxFlex>
+                        <strong>C</strong>
+                    </button>
+                    <button class="button-options-left text-center" fxFlex>
+                        <mat-icon>arrow_left</mat-icon>
+                    </button>
+                </div>
+                <div fxFlex fxLayout="row">
+                    <button class="button-options-left text-center" fxFlex>
+                        <strong>ENTER</strong>
+                    </button>
+                </div>
+            </div>
+            <div fxFlex="65" fxLayout="column">
+                <div fxFlex fxLayout="row">
+                    <button class="button-options text-center" fxFlex>
+                        <strong>1</strong>
+                    </button>
+                    <button class="button-options text-center" fxFlex>
+                        <strong>2</strong>
+                    </button>
+                    <button class="button-options text-center" fxFlex>
+                        <strong>3</strong>
+                    </button>
+                </div>
+                <div fxFlex fxLayout="row">
+                    <button class="button-options text-center" fxFlex>
+                        <strong>4</strong>
+                    </button>
+                    <button class="button-options text-center" fxFlex>
+                        <strong>5</strong>
+                    </button>
+                    <button class="button-options text-center" fxFlex>
+                        <strong>6</strong>
+                    </button>
+                </div>
+                <div fxFlex fxLayout="row">
+                    <button class="button-options text-center" fxFlex>
+                        <strong>7</strong>
+                    </button>
+                    <button class="button-options text-center" fxFlex>
+                        <strong>8</strong>
+                    </button>
+                    <button class="button-options text-center" fxFlex>
+                        <strong>9</strong>
+                    </button>
+                </div>
+                <div fxFlex fxLayout="row">
+                    <button class="button-options text-center" fxFlex>
+                        <strong>0</strong>
+                    </button>
+                    <button class="button-options text-center" fxFlex>
+                        <strong>.</strong>
+                    </button>
+                    <button class="button-options text-center" fxFlex style="font-size: 20px;">
+                        <strong>Total</strong>
+                    </button>
+                </div>
+            </div>
+        </mat-card-content>
+        <div fxLayout="column" style="height: 6vh;">
+            <button type="button" fxFlex fxFill style="background-color: darkblue; color: white"
+                (click)="fastCash = !fastCash">Pagar</button>
+        </div>
+    </mat-card>
+    <!--Tabla de Productos Seleccionados-->
+    <mat-card fxFlex="40" style="height: 100vh; overflow-y: hidden; padding: 0px; margin: 0px;">
+        <mat-card-header class="text-center" fxLayout="row" fxLayoutAlign="center center"
+            style="height:6vh; color: honeydew; font-size: 1.5em; background-color: #fd7e14;">
+            Conversión del Monto
+        </mat-card-header>
+        <mat-card-content style="height: 74vh; margin-bottom: 0px; max-height: 74vh; overflow-y: auto;">
+            <div style="padding: 0px; height: 40px; width: 100%; border-bottom: 1.5px solid #cbcbcb;" fxLayout="row"
+                fxLayoutAlign="start center">
+                <div fxFlex="65" fxFill fxLayoutAlign="start center">
+                    <span>Test</span>
+                </div>
+                <div fxFlex="35" fxFill style="background-color: #00008b; color: white;" fxLayoutAlign="start center">
+                    <span>Test</span>
+                </div>
+            </div>
+        </mat-card-content>
+        <div fxFlexLayout="column" style="height: 20vh;">
+            <mat-list style="width:40vw;  background-color: darkorange;" fxFill>
+                <mat-list-item style="height: 6.2vh;">
+                    <span style="font-size: 1.5em; width:20vw; color: white;">Sub Total:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw;color: white;">{{getSubTotalCost() | number:'.2'}}</span>
+                </mat-list-item>
+                <mat-list-item style="height: 6.2vh;">
+                    <span style="font-size: 1.5em; width:20vw;color: white;">Impuesto:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw;color: white;">{{subTotalPayment*0.18 | number:'.2'}}</span>
+                </mat-list-item>
+                <mat-list-item style="height: 6.2vh;">
+                    <span style="font-size: 1.5em; width:20vw;color: white;">Total:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw;color: white;">{{subTotalPayment*1.18 | number:'.2'}}</span>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </mat-card>
+</div>
+
+<div fxLayout="row" style="overflow-x:hidden" *ngIf="detailClient && !fastCash && !detailPayment">
+    <!--Grid de Productos-->
+    <mat-card fxFlex="60" style="height: 100vh; overflow-y: auto; padding: 0px; margin: 0px;">
+        <mat-card-header fxLayout="row" fxLayoutAlign="center center"
+            style="height:6vh; color: honeydew; font-size: 1.5em; background-color: darkblue;" fxLayout="row">
+            <span *ngIf="setClientInfo">INFORMACION DEL CLIENTE</span>
+            <span *ngIf="setPaymentMode">FORMAS DE PAGO</span>
+            <span *ngIf="setDiscounttMode">DESCUENTOS</span>
+            <span *ngIf="setAdditionalMode">PROPINAS</span>
+        </mat-card-header>
+
+        <div flex fxLayout="column"
+            style="height: 88vh; min-height: 88vh; max-height: 88vh;overflow-y: auto;">
+            <div fxLayout="row">
+                <div fxFlex fxLayout="column" style="border: 1px solid black;"><img height="100px"
+                        src="https://image.flaticon.com/icons/svg/35/35724.svg" (click)="fastCash=false;
+                        detailClient=false;
+                        detailPayment=false;"></div>
+                <div (click)="ticket = true; invoice = false"
+                    [ngClass]="{'button-active': ticket === true, 'button-inactive': ticket === false}" fxFlex
+                    fxLayout="column"
+                    style="cursor: pointer; border: 1px solid black; font-size: 2em; text-align: center;">
+                    <span style="margin-top: 25px;">BOLETA</span>
+                </div>
+                <div (click)="invoice = true; ticket = false"
+                    [ngClass]="{'button-active': invoice === true, 'button-inactive': invoice === false}" fxFlex
+                    fxLayout="column"
+                    style="cursor: pointer; border: 1px solid black; font-size: 2em; text-align: center;">
+                    <span style="margin-top: 25px;">FACTURA</span>
+                </div>
+                <div fxFlex fxLayout="column" style="border: 1px solid black;"></div>
+            </div>
+            <div fxLayout="row" style="margin-top: 20px" fxLayoutAlign="center">
+                <div fxFlex="20" fxLayout="column" fxLayoutAlign="center">
+                    <img style="cursor: pointer; margin-bottom: 5px;" (click)="setstatusData('setClientInfo')"
+                        width="150px" height="150px"
+                        class="img-fluid" [ngClass]="{'external-coin': setClientInfo}"
+                        src="https://frameweld.com/frontend/images/icons/user-centered.svg">
+                    <img style="cursor: pointer; margin-bottom: 5px;" (click)="setstatusData('setPaymentMode')"
+                        width="150px" height="150px"
+                        class="img-fluid" [ngClass]="{'external-coin': setPaymentMode}"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAAAflBMVEX/dCX/////dij//fz/hUD/+vb/xaT/49P/7uT/eS7/o2//gz3/eCv/kFH/5df/+/n/fTP/lFf/0LX/383/9fD/upL/nGT/wZ7/8er/mV//sob/6d3/p3X/vJf/gTn/zK//ikf/2MH/rHz/tYz/0rn/2cP/roD/jUz/oGr/klTMh0ctAAANLklEQVR4nOVd57qquhZVEMQOUhSRJhZ8/xe8qEudkZQZCOI+d/zc39qSASlj1gyG3WBluWl8DhYje3CHPboEBz89WUZHDxwo/0Ujys1zeR0lE23wAW1izxbBYXOMPOWPVUskWhfh7HP4NCTOOY10lY9WR8RK91ntG3AxmpqRsserIaKPfWcuReI52S67k5pVo4CI7u6yJiSemB3y1Q8QifxWLB4Y7dx+iRjrQG5ZsOGY7XayNkQsf6SIxR32rs3Sb04kOkxU0rhBmzafYU2JLPeq5hSJ4PRVItG+ExYPKs2+ShMi212jMwON6fIrRFax3SmNCvOd/A4mTSS/dE3jhlnaMRGrw8VBIpScX3JE0s5n1RvzuDMiVvk9Gjc4Mh9Fgsg6+S6P6qNsOiBinL9N44Zyq5rIctEHj2r7wp70SCJr5boKDeT0whEpeqNRYY8yuzBEjC/vVp+4WmqIWNd+eVQLZayCyFKp9dQMk7w9EfeLhzkbmlB7iYjk3Sp2PMx2RNbd2IFNIJBefCLrvkcPwWfCJXLse+wkuEcjj8jPrI8neOuEQ8TtT5awsG5CJPqJfZeExpaQTCLbHzgH65gwbS0WEd3pe8x0jFgGCovI15wMsnAYcS4Gkbjv8bKxlyFy6nu0PNA3YSoR6wc3rDc0qnOYSuRHF/oTI5pDlUakV8MWgxJHxO17nGJQlkmdiPGTJyGJST1IVyfysycIhCMmkvc9Rhxqkv6TyL8wsW6YfLqIPons+h4hFgGfyPJ3bHQRjlwiYd/Dw2NkcIj8hLNhtEGlfA18NpHVD6x07bxFSgtyvRNENh0PEoF7ukCE8xbsWUS83kWvkz9GgjuUtYhBxO94mCKEr41ojNs8SzqRfj+IvYdmRoD7T0sqkT4/yCImT2qkiVrSiHhfjz4/kRXup0dBxwWXwCp5E+lny0rCeEyLEaa4/36oE9G/foZoo8DPWW4qI0P9xuT1/19Evuh51+yRs4+PETfhFzlBXsf7i4hSh4NWYX7D5AbbtpPZKLtcw3K/i9N8jMn0Ry7Z2XNePoks2w3czpzysIvN9JifXHc8Xi6X0R+sCtut5xmSqfBIF8jTQf8k0tQO0Ubh2cwjT301hYXTKSFJxGiy92qXc7rsqh5kODzgBhERROSXuh2YkYKUdg6QOsUniMgmaTgmJq2iJXCDynRAZCsVZbMPrVPyUUDqlDEggjxH70iKL3yMO5DBpgIQQYrNwS0lV4qG56bxblfE63GTWgSc5f2YW3cieAEfIPJ03izS8mV9a7NgI12MgNQp4xcR7J6VyKQVG5tP9TYJjpKHIk6n+C8iuB17UMrMKpeaBLngRMopwOkU50kEJ3w1qYTilLUPBlIZ1iidcpfANyIonZXkMgPgZBXZooQlCFwQcP1HxET87UVqpY6559JeQtagZv35j8hU/KcOOpH4BgOuj8A/HueNf22JSexZPIgglshFThoSn/gWyfgUGws8E4xOmW/vRCKxOJtJHWfk9p9UL8HK3VMeg+c46B9E6ZT8TgRzfkrtWMSz7fj5NYkvP8WeKCid4t+JYGwqamibBbhnJkAKEDELdCEC5j0HdyKomIjMmQ5/EB6AxBtjJyx9AKNTKrk1QMYSLnhxsQJPzu62l2FOw7A8k9I0xP4i4nTQrIqIhTPEjuIn/gHqikekjy6ZsL/oIeI+bkUEmegQip9IIfKIh9OLT1iZVzUgnNJpRQRpVNFzcmiAEe6/qJLhmodFTW1gfxGhU4qKCNYJP8USIXx9b+fs0EqnpHLZYX9QXBU1rYhgUzYo+R8MEL9ISESyxveC9cKIdUpYEUGbuWcsEXKbKYgjyARbyxz9aoQ6JfMGK3QVmI0VSBH5AkeFC7jAmYzeCYUbUhINRPm9YFr74ic+UDtiZ86+SP/WPXge3jIR6RQ7H4z51mR5es8FtE6hqwr7ccoDAYN+M0Kvwtwc5Ny9rVKpYA1h3yBDVTx2KbDd44msRDXb/oBpXP/xgAlc6G2G/CRhvA+vTmk+ZDDYCiQqWEU65TCIOQrlbv/oYDfArk6d2ArJlONA/ucqeAIiwYDjp7g8lieYC2idQpQ6EHl74NXit9/q1QiIOAO2dZ/9PQfsM3idAidX9h6OBaW8hKIWEskGzIN99HpfIFEer1PAeTH3XcvQb6O2iC0Sv9bFREZsIu+Xv30/XmI2EALJnmXZbc+Da8eWcVy2IALOcTAf0DqlbkJnnjeG7GQ+SBsi4H2B/Cm0Tqmw+dgQswT+w0LKxaTmi0AXnsx7zDnyZyYXZGhBBD4IiDYpf8qWuSeOZLvRCIkwH1XAnwEyUMYHPRye6D6aQDJ8Z4jc8hn7QEzg3AKiDa1T/pCXNbMoMyUDPidh1pPDkShQCUHRJiEsHohiBxz0kzCVjCdaB7GjJ+CIxgxuK0BZ1CsFEGPJ40MZhsHeP8rGhC0fEyM58GQ89C56TXSKAlgFLrnE5xlWVziTgU6hVQZ1gtVpj8xkqAwrnqkLK2O37y83b9LISx7LGN9UpjJ1ec4H4tUDdSGhUxrCc4urTBF6EnHdQcSrB74RKbknC906xSUuzf+NzOM76A7wCQ11Ch6G5a79ad21ikAocJkSrx7oFLlQHAW6vloZhudtrWg5do/ppjiUrybHDTAVObGJVw+cS3idonvW0s3X6Sb2d+fDfloGQRg6zmJxybJRktj19sYUzKeCTbgQhRWIVy+nU7zoZBZT5zKz27aOsM9LUQpEKgz0wFcPdQo3p8Rz03M4U1Suld3T5iP+H52EoTfi1WN0ymocB+qSuu3p8SGU+PbIPfQmCIZCiQiDYNQ2El5+kGwnzcMEZE7yiYx0cXiacGWBHY6iU9ydwvz6WxYr+G0+kQCTMAAlosXWKUbqKPsW9nX3KZL5RHxMCgfhygL2JHFYeptMAYEK9mXq5xThwCeSY5JqiJDbkqpT6ll/ktAmSXYtD/HatRi2I5fI3EKlORExSxAEexn1R77Pf25ni3B6Lvx4Y6afWK+PJ3ccWaLkei6RyxCVeEa4skDCzN9hGbEDfJOs3Jmn5VZB/jyXyGGISwWEqUH6p04xGQIpCfycX+oihRVvgM9UQFHmGVHeC/a4yqjfUqflxClOSq+B0I+8IOIrOVOYOAiNdxhWO46z+h/PQ4U3JtzhpfxY6CtdVpgStYBbCciQmdWn1SVWzAJxVcA7gdkTmfg5fD9sRT2fqrglAWKblmL3wzulXJj9QPQlYCnqpFUnfhqLtcgMuQMk+QszhDSY208vfpr5Uhm1InhuHCINxsc5hyyEIQKzFCs/UUjDG6e7UKLmCxbCCLNWiGr+WvHTRK6ohArd2EbjvLIpF4mc+CRKk8SpnESQ4WNJITrv6141TPd0XKemaW42m/gO3/eL4mbJl4GzyJJmXQjJYjFh+V4CDziim80l5zG43aFUTMPLCOdlkMdH+Z44SQ0GGUAyhO0zZYgxvlnuXTet/CioFJdeEEGG1y7H7LcfmVOFRi8HnyWu4qJj6Df50yn2hmo96GN/8a2um7WiY/Fyd2pBBnqn/UjCid4e9TJwcfEFNN63yUDzKXJEzxGSQiEohfniCjPCb7KjdaY30m+3yX8f1KB5hUgREH6Tbf0INMyvXE0CQW1eIa4w48Z39PTrNBjtRMSfhBffcXtpaEVv8CL+JMy6ni0iEt4BGC13xJ+ElYeSykbK1ECDi1auLRU1vmMhyv86AbMtlbi4hxbfOfbVXYzTKEx8vNfyUIz+2ghyWreJFddnvmzUXyPaGa+ZnrC94UceSt5bB6ha8E+24SSxwD6TFr8JQcNJYQtQEGTQ++yyKWwBKmzK+goyeH3tuncIm7IKO/I9MwS3vfabRrTJhSlmVDzehdXTvVYPoBoXiwqv78Z7lH1lwCygWkkLxWNa8ei3VyiyubeohPzaNw9qblKTBvjftwQJSDTA/+3G2PTKrP/4JRGoFiP94MqIibGIrHq/4I2OmexFKr96tQ2zLda/ddnQIGcOl3f9069dY8XtBcK9kOvXmsg3vJDrR7qvv8Ftl/P/cWndTzFpdY3gD62Tlhc7VtbJb1xd1/qqzeFw3I9jl8BEXKCGuY62V6v2hgRR1fUvXBC8UHRB8LDne2KmqMxI5CXa3BYX3QLZNQ59rXlP5i26zyWWyNBANjxVC3xxMppINb2+rutl2qdKEBlaX969FjLNhWWIsNOuu4DmS9WKyxH5YuAzlPkc8kSGw2P2DRqJXB+DJkSGq7jz+aXt5DPr5YlU8+vcrbYvm1RnNyFSHY8dLpWgWd1/MyLdUQnYt0t3Q6SiclCuv7SyeReG5kRubSWUeiNvJbnN0YZIJcDWytK0Fma7GqB2RCosi6w9i9G5dWeP1kSGQ909t+Iy2x8VFJUpIDK8cSkWzc6WyzlXUxqnhsgNUbqX/DCj0lTXmEQdkQp6lO4cVMKQfT2kS6X1WEqJ3OFFx80hWMxsyjEzt2eX4BAfl0qrFO9QT+QBwzqZ/j68PBsmaEnm7IvbjVcdPfB/cD3SKPRTlqcAAAAASUVORK5CYII=">
+                    <img style="cursor: pointer; margin-bottom: 5px;" (click)="setstatusData('setDiscounttMode')"
+                        width="150px" height="150px"
+                        class="img-fluid" [ngClass]="{'external-coin': setDiscounttMode}"
+                        src="https://assets.localcoinatm.com/images/wp-content/uploads/2018/09/18160344/300x300-Discount-Icon-01.png">
+                    <!-- <img style="cursor: pointer; margin-bottom: 5px;" (click)="setstatusData('setAdditionalMode')"
+                        width="150px" height="150px"
+                        class="img-fluid"
+                        src="https://assets.localcoinatm.com/images/wp-content/uploads/2018/09/18160344/300x300-Discount-Icon-01.png"> -->
+                </div>
+                <div fxFlex="80" fxLayout="column">
+                    <div *ngIf="setClientInfo">
+                        <form [formGroup]="clientForm">
+                            <div fxLayout="row">
+                                <mat-form-field fxFlex="30" appearance="fill" >
+                                    <input matInput placeholder="DNI/RUC" formControlName="identity" readonly  (click)="insertValue('identity')">
+                                </mat-form-field>
+                                <button mat-icon-button type="button" [disabled]="clientForm.value.identity === null" (click)="getClientByDNI(clientForm.value.identity)" matTooltip="Buscar" style="margin-top: 10px;" color="primary">
+                                    <mat-icon>search</mat-icon>
+                                </button>
+                            </div>
+                            <div fxLayout="row">
+                                <mat-form-field fxFlex="80" appearance="fill">
+                                    <input matInput placeholder="Documento" formControlName="document">
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row">
+                                <mat-form-field fxFlex="80" appearance="fill">
+                                    <input matInput placeholder="Nombre" formControlName="name">
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row">
+                                <mat-form-field fxFlex="80" appearance="fill">
+                                    <input matInput placeholder="Direcci&oacute;n" formControlName="address">
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row">
+                                <mat-form-field fxFlex="80" appearance="fill">
+                                    <input matInput placeholder="Email" formControlName="email">
+                                </mat-form-field>
+                            </div>
+                        </form>
+                    </div>
+                    <!--Formas de Pago-->
+                    <div *ngIf="setPaymentMode">
+                        <div>
+                            <!--Circulos de Formas de Pago-->
+                            <div class="circle" (click)="openCashDialog()">Efectivo</div>
+                            <div class="circle" (click)="openDebitDialog()">D&eacute;bito</div>
+                            <div class="circle" (click)="openCreditDialog()">Cr&eacute;dito</div>
+                            <div class="circle">Digital</div>
+                        </div>
+                        <div fxLayout="row">
+                            <mat-form-field fxFlex="80" appearance="fill">
+                                <input matInput [value]="'   '+totalCashPayment" readonly>
+                                <span style="border: 1px solid black" matPrefix>EFECTIVO&nbsp;</span>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row">
+                            <mat-form-field fxFlex="80" appearance="fill">
+                                <input matInput [value]="'   '+totalDebitPayment" readonly>
+                                <span style="border: 1px solid black" matPrefix>D&Eacute;BITO&nbsp;</span>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row">
+                            <mat-form-field fxFlex="80" appearance="fill">
+                                <input matInput [value]="'   '+totalCreditPayment"  readonly>
+                                <span style="border: 1px solid black" matPrefix>CR&Eacute;DITO&nbsp;</span>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row">
+                            <mat-form-field fxFlex="80" appearance="fill">
+                                <input matInput  [value]="(totalCashPayment + totalDebitPayment+ totalCreditPayment)-(subTotalPayment*1.18)-((total*(discountPercentage/100))+discountAmount) | number:'.2'" readonly>
+                                <span style="border: 1px solid black" matPrefix>RESTANTE&nbsp;</span>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- Descuentos -->
+                    <div *ngIf="setDiscounttMode">
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-raised-button color="primary" *ngIf="!enabledDiscounts" (click)="addDiscount()">
+                                HABILITAR DESCUENTOS
+                            </button>
+                        </div>
+                        <div fxLayout="row" *ngFor="let discountVar of discounts; let i = index" [hidden]="!enabledDiscounts" fxLayoutAlign="cencet start" fxLayoutGap="10px">
+                            <mat-form-field fxFlex="50" appearance="fill">
+                                <mat-label>Descuento</mat-label>
+                                <mat-select [(ngModel)]="discountVar.id" [ngModelOptions]="{standalone: true}"  >
+                                        <mat-option [value]="null" (click)="discountVar.value = null;discountAuxID[i]= null">Sin Asignar</mat-option>
+                                    <mat-option *ngFor="let discount of discountsData" [hidden]="discountAuxID.indexOf(discount.id) >-1" (click)="discountAuxID[i]= discountVar.id; discountVar.value = discount.amount; discountVar.mode = discount.discount_mode" [value]="discount.id">{{ discount.description }} ({{discount.amount}})</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field fxFlex="25" appearance="fill">
+                                <mat-label>Monto/Porcentaje</mat-label>
+                                <input matInput readonly [value]="discountVar.value || '0'" class="float-right">
+                                <mat-icon matSuffix *ngIf="discountVar.mode === 1">%</mat-icon>
+                            </mat-form-field>
+                            <button mat-fab (click)="addDiscountRow()" style="background-color: white;color:#fd7e14;border: 1px solid #fd7e14;" *ngIf="i === discounts.length-1">+</button>
+                        </div>
+                
+
+                    </div>
+                    <!-- Propinas -->
+                    <div *ngIf="setAdditionalMode">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="column" style="height: 6vh;">
+            <button type="button" fxFlex fxFill style="background-color: darkblue; color: white"
+                (click)="detailClient = false;
+                fastCash = false;
+                detailPayment = true;
+                ">PAGAR CUENTA</button>
+        </div>
+    </mat-card>
+    <!--Tabla de Productos Seleccionados-->
+    <mat-card fxFlex="40" style="height: 100vh; overflow-y: auto; padding: 0px">
+        <mat-card-header fxLayout="row" fxLayoutAlign="center center"
+            style="height:6vh; color: honeydew; font-size: 1.5em; background-color: #fd7e14;">
+            Detalle de la Venta
+        </mat-card-header>
+        <mat-card-content style="height: 74vh; margin-bottom: 0px; max-height: 74vh; overflow-y: auto;">
+            <div style="padding: 0px; height: 40px; width: 100%; border-bottom: 1.5px solid #cbcbcb;" fxLayout="row" *ngFor="let element of dataSource.data;let i = index" (click)="openItemOptionsDialog(i)"
+            fxLayoutAlign="start center">
+            <div fxFlex="10" fxFill fxLayoutAlign="center center">
+                <span>{{element.qty}}</span>
+            </div>
+            <div fxFlex="55" fxFill fxLayoutAlign="start center">
+                <span>{{element.product}}</span>
+            </div>
+            <div fxFlex="35" fxFill style="background-color: #00008b; color: white;" fxLayoutAlign="start center">
+                <span>{{element.price | currency}}</span>
+            </div>
+        </div>
+
+            <!-- <mat-list style="width:40vw; background-color: darkorange; position:absolute; bottom: 0px">
+                <mat-list-item>
+                    <span style="font-size: 1.5em; width:20vw">Sub Total:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw">{{getSubTotalCost() | currency}}</span>
+                </mat-list-item>
+                <mat-list-item>
+                    <span style="font-size: 1.5em; width:20vw">Impuesto:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw">{{getSubTotalCost()*0.18 | currency}}</span>
+                </mat-list-item>
+                <mat-list-item>
+                    <span style="font-size: 1.5em; width:20vw">Total:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw">{{getSubTotalCost()*1.18 | currency}}</span>
+                </mat-list-item>
+            </mat-list>
+            <br> -->
+            <!-- <div fxLayoutAlign="center center" [hidden]="hideSpecialPay === true">
+                <button (click)="activeSpecialPay = true" mat-flat-button color="warn"
+                    matTooltip="Factura Especial">Factura Especial</button>
+            </div> -->
+        </mat-card-content>
+        <div fxFlexLayout="column" style="height: 20vh;">
+            <mat-list style="width:40vw;  background-color: darkorange;" fxFill>
+                <mat-list-item style="height: 6.2vh;">
+                    <span style="font-size: 1.5em; width:20vw; color: white;">Sub Total:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw;color: white;">{{getSubTotalCost() | number:'.2'}}</span>
+                </mat-list-item>
+                <mat-list-item style="height: 6.2vh;">
+                    <span style="font-size: 1.5em; width:20vw;color: white;">Impuesto:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw;color: white;">{{subTotalPayment*0.18 | number:'.2'}}</span>
+                </mat-list-item>
+                <mat-list-item style="height: 6.2vh;">
+                    <span style="font-size: 1.5em; width:20vw;color: white;">Total:</span> <span
+                        style="font-size: 1.5em; text-align:right;width: 20vw;color: white;">{{subTotalPayment*1.18 | number:'.2'}}</span>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </mat-card>
+</div>
+
+<div fxLayout="row" style="overflow-x:hidden;overflow-y:hidden" *ngIf="detailPayment && !fastCash && !detailClient">
+    <!--Grid de Productos-->
+    <mat-card fxFlex="100" style="margin-left: 5px; height: 100vh; overflow-y: auto; padding: 0px; margin: 0px;">
+        <mat-card-header class="text-center" fxLayout="row" fxLayoutAlign="center center"
+            style="height:6vh; color: honeydew; font-size: 1.5em; background-color: darkblue;">
+            RESUMEN DEL PAGO
+        </mat-card-header>
+        <mat-card-content fxLayout="column" style="margin-bottom: 0px; height: 88vh;" fxLayoutAling="start">
+            <div style="height: 54vh;" fxLayout="row" fxLayoutAlign="start start">
+                <div fxFlex fxLayout="row">
+                    <div fxFlex="30">
+                        <img class="img-fluid"
+                            src="https://image.flaticon.com/icons/svg/35/35724.svg" (click)="
+                            detailClient=true;
+                            detailPayment=false;">
+                    </div>
+                    <div fxFlex="70" fxLayout="column" fxLayoutAling="start">
+                        <div fxFlex fxLayout="row" fxLayoutAlign="start center" style="font-size: 2.5em;padding: 10px;">
+                            <div fxFlex="80" style="border: 1px solid black;">
+                                CLIENTE
+                            </div>
+                        </div>
+                        <div fxFlex fxLayout="row" fxLayoutAlign="start center" style="font-size: 2.5em;padding: 10px;">
+                            <div fxFlex="80" style="border: 1px solid black;">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div fxFlex fxLayout="column">
+                    <div fxFlex fxLayout="row" fxLayoutAlign="start center" style="font-size: 2.5em;padding: 10px;">
+                        <div fxFlex="40" style="border: 1px solid black;">
+                            EFECTIVO
+                        </div>
+                        <div fxFlex style="border: 1px solid black;">
+                            &nbsp; {{totalCashPayment | number:'.2'}}
+                        </div>
+                    </div>
+                    <div fxFlex fxLayout="row" fxLayoutAlign="start center" style="font-size: 2.5em;padding: 10px;">
+                        <div fxFlex="40" style="border: 1px solid black;">
+                            DÉBITO
+                        </div>
+                        <div fxFlex style="border: 1px solid black;">
+                            &nbsp; {{totalDebitPayment | number:'.2'}}
+                        </div>
+                    </div>
+                    <div fxFlex fxLayout="row" fxLayoutAlign="start center" style="font-size: 2.5em;padding: 10px;">
+                        <div fxFlex="40" style="border: 1px solid black;">
+                            CRÉDITO
+                        </div>
+                        <div fxFlex style="border: 1px solid black;">
+                            &nbsp; {{totalCreditPayment | number:'.2'}}
+                        </div>
+                    </div>
+                    <div fxFlex fxLayout="row" fxLayoutAlign="start center" style="font-size: 2.5em;padding: 10px;">
+                        <div fxFlex="40" style="border: 1px solid black;">
+                            DIGITAL
+                        </div>
+                        <div fxFlex style="border: 1px solid black;">
+                            &nbsp;
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div style="height: 34vh; background-color: #fd7e14;" fxLayout="row" fxLayout="start center">
+                <div fxFlex fxFill fxLayout="column" style="color: white;font-size: 2vw;">
+                    <div fxLayout="row" fxFlex>
+                        <div fxFlex>
+                            Sub Total:
+                        </div>
+                        <div fxFlex>
+                            {{subTotalPayment | number:'.2'}}
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxFlex>
+                        <div fxFlex>
+                            Impuesto:
+                        </div>
+                        <div fxFlex>
+                          {{ subTotalPayment*0.18 | number:'.2'}}
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxFlex>
+                        <div fxFlex>
+                            Descuento:
+                        </div>
+                        <div fxFlex>
+                            {{ (total*(discountPercentage/100))+discountAmount | number:'.2'}}
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxFlex>
+                        <div fxFlex>
+                            Propina:
+                        </div>
+                        <div fxFlex>
+                            {{totalAdditionalPayment | number:'.2'}}
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxFlex>
+                        <div fxFlex>
+                            Total: 
+                        </div>
+                        <div fxFlex>
+                            {{ subTotalPayment*1.18 | number:'.2'}}
+                        </div>
+                    </div>
+                </div>
+                <div fxFlex fxFill fxLayout="column">
+                    <div fxLayout="row" style="color: black;font-size: 3.5vw;background-color: white;"
+                        fxLayoutAlign="start center">
+                        <div fxFlex>
+                            Total Pagado:
+                        </div>
+                        <div fxFlex>
+                            {{(totalCashPayment + totalDebitPayment+ totalCreditPayment) | number:'.2'}}
+                        </div>
+                    </div>
+                    <div fxLayout="row" style="color: black;font-size: 3.5vw;background-color: white;"
+                        fxLayoutAlign="start center">
+                        <div fxFlex>
+                            Vuelto:
+                        </div>
+                        <div fxFlex>
+                            {{(totalCashPayment + totalDebitPayment+ totalCreditPayment)-(subTotalPayment*1.18)-((total*(discountPercentage/100))+discountAmount) | number:'.2'}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+        <div fxLayout="column" style="height: 6vh;">
+            <button type="button" fxFlex fxFill style="background-color: darkblue; color: white"
+                (click)="openConfirmOptionsDialog()">CONFIRMAR</button>
+        </div>
+    </mat-card>
+</div>
+
+<!-- <div fxLayout="row" style="overflow-x:hidden" [hidden]="activePay === true || activeAdmPay === true">
+    <div fxFlex="100" fxLayoutAlign="center center" *ngIf="dataSource.data.length > 0">
+        <button class="float1" matTooltip="Factura Especial" [hidden]="activeSpecialPay === true"
+            (click)="activeSpecialPay = true" mat-mini-fab color="warn">
+            <mat-icon>stars</mat-icon>
+        </button>
+        <button class="float2" matTooltip="Pago Administrativo" [hidden]="activeSpecialPay === true"
+            (click)="emptyDataSource()" mat-mini-fab color="accent">
+            <mat-icon>note</mat-icon>
+        </button>
+        <button class="float3" matTooltip="Pagar" (click)="activePay = true" mat-mini-fab color="primary">
+            <mat-icon>payment</mat-icon>
+        </button>
+    </div>
+</div> -->

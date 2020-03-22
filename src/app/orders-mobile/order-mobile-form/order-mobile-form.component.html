@@ -1,0 +1,120 @@
+<div flex fxLayout="row" fxLayoutGap="20px">
+    <div flex fxLayout="column" fxFlex="40">
+        <mat-card>
+            <mat-card-content>
+                <div flex fxLayout="row" fxLayoutGap="20px">
+                    <button type="button" routerLink="/halls/halls/0" mat-icon-button color="warn" matTooltip="Volver a Listado de Mesas" class="float-right config-close">
+                        <mat-icon>keyboard_backspace</mat-icon>
+                      </button>
+                    <mat-form-field>
+                        <mat-label>Número de Comensales</mat-label>
+                        <input matInput [formControl]="clientsControl" min="0" type="number"
+                            (input)="verifyEntryValue($event)">
+                    </mat-form-field>
+                    <button mat-icon-button color="primary" matTooltip="Cargar Comensales" (click)="chargeClients()"
+                        type="button" style="margin-top: 10px !important;">
+                        <mat-icon>people</mat-icon>
+                    </button>
+                    <span fxFlex>&nbsp;</span>
+                    <button mat-icon-button color="primary" class="float-right" matTooltip="Añadir Comensal"
+                        (click)="addClient()" type="button" style="margin-top: 10px !important;">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+                <div flex fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="20px">
+                        <span class="float-right">Total: {{total | number:'.2'}}</span>
+                </div>
+                <mat-accordion>
+                    <mat-expansion-panel *ngFor="let client of clients; let i = index;" (opened)="selectedClient = i"
+                        [ngClass]="{'selected-expansion-panel': selectedClient ===i}">
+                        <mat-expansion-panel-header [ngClass]="{'selected-client': selectedClient ===i}">
+                            <mat-panel-title>
+                                Cliente #{{i+1}}
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div flex fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="end center">
+                            <span style="margin-top: auto !important;">Total :
+                                {{(!client.total ? 0 : client.total )| number:'.2'}}</span>
+                            <button mat-icon-button color="primary" matTooltip="Añadir Pedido"
+                                (click)="addNewOrderClient(i)" type="button" style="margin-top: 10px !important;">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" matTooltip="Eliminar Cliente" (click)="deleteClient(i)"
+                                type="button" style="margin-top: 10px !important;">
+                                <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                            </button>
+                        </div>
+                        <div flex fxLayout="column">
+                            <div *ngFor="let product of client.data; let indexOrder = index" class="mat-element"
+                                (click)="openDialogProduct(product,null,i,indexOrder)">
+                                <span class="product-description">{{product.article}} <span
+                                        class="float-right">{{product.total_price| number:'.2'}}</span> </span>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+
+            </mat-card-content>
+            <mat-card-actions>
+
+            </mat-card-actions>
+        </mat-card>
+
+    </div>
+    <div flex fxLayout="column" fxFlex="60" style="padding:10px; background-color: white;">
+        <div fxLayout="row">
+            <div class="tabs-categories">
+                <button class="col-sm" mat-button (click)="showImg = false" class="category-button"
+                    [ngClass]="{'selected-category': !showImg}">
+                    <span>Listado Global</span>
+                </button>
+                <button class="col-sm" mat-button (click)="showImg = true" class="category-button"
+                    [ngClass]="{'selected-category': showImg}">
+                    <span>Productos</span>
+                </button>
+            </div>
+        </div>
+        <div *ngIf="!showImg">
+            <div class="tabs-categories">
+                <button class="col-sm" mat-button *ngFor="let category of categories; let i = index"
+                    (click)="selectedCategory(i)" class="category-button"
+                    [ngClass]="{'selected-category': category.selected}">
+                    <span>{{category.name}}</span>
+                </button>
+            </div>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center">
+            <mat-form-field fxFlex="80">
+                <input matInput [formControl]="productFilterCtrl" placeholder="Buscar">
+                <span matPrefix>
+                    <mat-icon>search</mat-icon>
+                </span>
+            </mat-form-field>
+        </div>
+        <mat-grid-list fxFlex="100" cols="5" rowHeight="1:1" *ngIf="showImg">
+            <mat-grid-tile *ngFor="let product of filteredProducts | async" (click)="addProductClient(product)">
+                <img [src]="product.pic" height="150px">
+                <mat-grid-tile-footer>{{product.name}}</mat-grid-tile-footer>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <div *ngIf="!showImg">
+            <div *ngFor="let product of filteredProducts | async" class="mat-element"
+                (click)="addProductClient(product)">
+                <span class="product-description">{{product.name}} <span class="float-right">{{product.price}}</span>
+                </span>
+            </div>
+            <!-- <mat-list-item *ngFor="let product of filteredProducts | async" class="mat-element">
+                <h6 mat-line >{{product.name}}                 <span class="float-right">{{product.price}}</span> </h6>
+                <mat-divider></mat-divider>
+            </mat-list-item> -->
+        </div>
+    </div>
+</div>
+
+<button class="float-button" mat-fab color="primary" matTooltip="Formulario de Pago" [routerLink]="['/halls/halls/0']"  *ngIf="total>0">
+    <mat-icon aria-label="Guardar Pedido">
+            save_alt
+    </mat-icon>
+</button>

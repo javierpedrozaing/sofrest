@@ -1,0 +1,38 @@
+<form [formGroup]="dataSalon" (ngSubmit)="submit(dataSalon.value,null)" class="form-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Registro de Sal&oacute;n</mat-card-title>
+            <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+            <div class="button-close">
+                <button type="button" mat-button matTooltip="Cerrar" color="warn" class="float-right config-close"
+                    (click)="close()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </mat-card-header>
+        <mat-card-content fxLayout="column">
+            <br>
+            <div flex fxLayout="row" fxLayoutGap="5px">
+                <mat-form-field fxFlex="50" appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="description" type="text" placeholder="Nombre del Sal&oacute;n">
+                </mat-form-field>
+            </div>
+            <div fxLayoutAlign="space-between center" fxLayout="row">
+                <mat-form-field fxFlex="50" appearance="outline">
+                    <mat-label>Tipo de Sal&oacute;n</mat-label>
+                    <mat-select formControlName="hall_type_id">
+                      <mat-option *ngFor="let hallType of hallTypes" [value]="hallType.id">{{hallType.description}}</mat-option>
+                      </mat-select>
+                </mat-form-field>
+                <mat-slide-toggle [color]="'primary'" formControlName="state">{{dataSalon.value.state ? 'Activo' : 'Inactivo'}}</mat-slide-toggle>
+              </div>
+        </mat-card-content>
+        <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+            <button flex mat-raised-button color="warn" matTooltip="Limpiar" type="reset">Limpiar</button>
+            <span>&nbsp;</span>
+            <button flex mat-raised-button color="primary" type="submit" matTooltip="Guardar"
+                [disabled]="!dataSalon.valid">Guardar</button>
+        </div>
+    </mat-card>
+</form>

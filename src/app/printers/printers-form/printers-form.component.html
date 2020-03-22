@@ -1,0 +1,63 @@
+<form [formGroup]="form" (ngSubmit)="save(form.value)" class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Registro de Impresora</mat-card-title>
+      <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+      <div class="button-close">
+        <button type="button" routerLink="/printers/list" matTooltip="Regresar" mat-button color="warn"
+          class="float-right config-close">
+          <mat-icon>keyboard_backspace</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-chip-list *ngIf="headquarters.length === 0">
+      <mat-chip color="warn" selected>Debe crear al menos 1 (una) Sucursal</mat-chip>
+    </mat-chip-list>
+    <mat-chip-list *ngIf="areas.length === 0">
+      <mat-chip color="warn" selected>Debe crear al menos 1 (una) Área de Impresión</mat-chip>
+    </mat-chip-list>
+    <mat-card-content *ngIf="headquarters.length > 0 && areas.length > 0">
+      <br>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="description" placeholder="Nombre">
+        </mat-form-field>
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>IP</mat-label>
+          <input matInput formControlName="ip" placeholder="Direccion IP">
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Sucursal</mat-label>
+          <mat-select formControlName="headquarter">
+            <mat-option *ngFor="let hq of headquarters" [value]="hq.id">
+              {{hq.description}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>&Aacute;rea</mat-label>
+          <mat-select formControlName="area">
+            <mat-option *ngFor="let area of areas" [value]="area.id">
+              {{area.description}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <textarea matInput formControlName="observation" placeholder="Observaciones"></textarea>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <div flex fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button color="warn" type="reset" matTooltip="Reiniciar Registro">Limpiar</button>
+        <button mat-raised-button color="primary" type="submit" matTooltip="Guardar Registro"
+          [disabled]="!form.valid">Guardar</button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</form>

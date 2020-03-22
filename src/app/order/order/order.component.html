@@ -1,0 +1,33 @@
+<mat-card class="content-card" (click)="selected=true;" [ngClass]="{'selected-content': selected}" >
+  <mat-card-content class="">
+      <div class="content-img-food col-12">
+          <span class="helper"></span>
+          <img class="img-fluid img-content" src="{{'./assets/images/food.jpg'}}" *ngIf="!selected">
+          <mat-form-field class="input-number-style col-lg-8 col-md-9 col-sm-11 col-xs-12" *ngIf="selected">
+              <button mat-button matPrefix mat-icon-button (click)="decrement()" matTooltip="Quitar" class="input-number-style-color">
+                  <mat-icon>remove</mat-icon>
+                </button>
+              <input matInput [(ngModel)]="cant" required class="input-number-style-color">
+              <button mat-button matSuffix matTooltip="Añadir" mat-icon-button (click)="increment()" class="input-number-style-color">
+                  <mat-icon>add</mat-icon>
+              </button>
+          </mat-form-field>
+        </div>
+        <div class="content-food-description col-12">
+          <div class="col-12 name-and-ingredients" style="padding: 0 !important;">
+              <div class="col-12">
+                  <label for=""><strong>Plato 1</strong></label>
+              </div>
+              <div class="col-12 ingredients">
+                  <span class="mr-1">Ingrediente</span>
+                  <span class="mr-1">Ingrediente</span>
+                  <span class="mr-1">Ingrediente</span>
+              </div>
+          </div>
+          <div class="col-12 price-weight">
+              <span class="float-left" for="">300g</span>
+              <span class="float-right"for="">$80.00</span>
+          </div>
+        </div>
+  </mat-card-content>
+</mat-card>

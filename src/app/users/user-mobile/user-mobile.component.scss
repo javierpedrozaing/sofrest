@@ -1,0 +1,35 @@
+.title-group{
+    background-color: #bce0fd;
+    color: #2699fb;
+    height: 3.5vh;
+}
+.card-data{
+    background-color: #f1f9ff;
+    color: #2699fb;
+    border-bottom: 1px solid #cce8fd;
+    height: 10vh;
+}
+.float-button{
+    position: fixed;
+    bottom: 20px;
+    right: 32px;
+}
+.list-data{
+    position: fixed;
+    top: 60px;
+    right: 0px;
+    width: 32px;
+    height: calc(100% - 60px);
+    background-color: white;
+}
+.container-list{
+    height: calc(100% - 80px);
+}
+.color-text{
+    color: #bce0fd;
+    cursor: pointer;
+}
+.color-text-active{
+    color: #2699fb;
+    cursor: pointer;
+}

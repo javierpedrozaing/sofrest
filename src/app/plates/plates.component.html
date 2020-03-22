@@ -1,0 +1,96 @@
+<mat-card>
+  <div class="container-section-header clearfix">
+    <h2 class="float-left">Administrar Platos</h2>
+    <button class="float-right" [routerLink]="['/plates/form']" mat-flat-button color="primary" matTooltip="Agregar Plato" *ngIf="!isMobile">
+      <mat-icon aria-hidden="false" aria-label="Add Icon">add</mat-icon> Agregar Plato
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" *ngIf="!isMobile">
+
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> No. </th>
+      <td mat-cell *matCellDef="let element; let i = index"> {{i+1}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="image">
+      <th mat-header-cell *matHeaderCellDef> Foto </th>
+      <td mat-cell *matCellDef="let element">
+        <img height="70px" [src]="element.image">
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let element"> {{element.name || element.observation}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="terms">
+      <th mat-header-cell *matHeaderCellDef> Sabor </th>
+      <td mat-cell *matCellDef="let element"> {{element.taste ? element.taste.description : 'Sin Especificar'}} </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> ¿Activa? </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-icon color="primary" *ngIf="element.status===true" aria-hidden="false" aria-label="active">check_circle
+        </mat-icon>
+      </td>
+    </ng-container> -->
+
+    <ng-container matColumnDef="options">
+      <th mat-header-cell *matHeaderCellDef> Opciones </th>
+      <td mat-cell *matCellDef="let element; let idx = index">
+        <button mat-icon-button (click)="changeVisibility(element.id,idx,element.state)">
+          <mat-icon matTooltip="Deshabilitar" color="success" *ngIf="element.state">visibility</mat-icon>
+          <mat-icon matTooltip="Habilitar" color="warn" *ngIf="!element.state">visibility_off</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" matTooltip="Editar" [routerLink]="['/plates/form/',element.id]">
+          <img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24">
+        </button>
+        <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="deleteDish(element.id,idx)">
+          <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+        </button>
+        <button mat-icon-button color="primary" matTooltip="Ver Detalle" aria-label="Details" (click)="openDetail(element.id)">
+          <mat-icon>search</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons [hidden]="isMobile" ></mat-paginator>
+
+  <mat-list *ngIf="isMobile">
+    <mat-list-item *ngFor="let data of dataSource.data; let element; let idx = index" class="mat-element">
+      <div mat-list-icon color="primary">
+        <img class="img-fluid" height="70px" [src]="element.image">
+      </div>
+      <h4 mat-line>{{data.observation}} - {{data.weight}}</h4>
+      <p mat-line>{{data.size}} - {{data.taste ? data.taste.description : 'Sin Especificar'}}</p>
+      <p mat-line>
+        <button mat-icon-button (click)="changeVisibility(element.id,idx,element.state)">
+          <mat-icon matTooltip="Deshabilitar" color="success" *ngIf="element.state">visibility</mat-icon>
+          <mat-icon matTooltip="Habilitar" color="warn" *ngIf="!element.state">visibility_off</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" matTooltip="Editar" [routerLink]="['/plates/form/',element.id]">
+          <img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24">
+        </button>
+        <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="deleteDish(element.id,idx)">
+          <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+        </button>
+        <button mat-icon-button color="primary" matTooltip="Ver Detalle" aria-label="Details" (click)="openDetail(element.id)">
+          <mat-icon>search</mat-icon>
+        </button>
+      </p>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
+
+  <button class="float-button" [routerLink]="['/plates/form']" mat-fab color="primary" *ngIf="isMobile">
+    <mat-icon aria-label="Añadir">
+      add
+    </mat-icon>
+  </button>
+</mat-card>

@@ -1,0 +1,51 @@
+<div class="loginBg">
+  <!-- {{name}} -->
+  <div class="clock">
+    {{time | date: 'hh:mm:ss a'}}
+  </div>
+  <div class="date">
+    {{day | titlecase}} {{date}}
+  </div>
+  <div *ngIf="time" class="code-area">
+    <div class="welcome-line">
+      <span class="welcome-text">
+          <mat-button-toggle-group appearance="legacy" name="fontStyle" aria-label="Font Style">
+              <mat-button-toggle style="height: 5vh" value="bold">Check In</mat-button-toggle>
+              <mat-button-toggle style="height: 5vh" value="italic">Check Out</mat-button-toggle>
+            </mat-button-toggle-group>
+      </span>
+    </div>
+    <div class="enter-line">
+      <div style="float:right;">
+        <form [formGroup]="form" (ngSubmit)="init(form.value)">
+          <input type="text" style="width: 13vw;" class="code" formControlName="email" placeholder="Usuario">
+          <input type="password" class="code" formControlName="password"
+            placeholder="C&oacute;digo">
+          <button mat-button type="submit" color="primary">
+            <mat-icon aria-hidden="false">input</mat-icon>
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="img-avatar">
+      <img src="assets/logo_login.jpeg" alt="Avatar" class="avatar center">
+    </div>
+  </div>
+  <div class="img-avatar-mobile">
+    <img src="assets/logo_login.jpeg" alt="Avatar" class="avatar center">
+  </div>
+  <div class="code-mobile">
+    <form [formGroup]="form" (ngSubmit)="init(form.value)">
+      <input type="text" class="code center" formControlName="email" placeholder="Usuario">
+      <input type="password" class="code center" formControlName="password" placeholder="C&oacute;digo">
+      <button mat-raised-button type="submit" style="margin-top:5px" color="primary" matTooltip="Código">
+        <mat-icon aria-hidden="false">input</mat-icon>
+      </button>
+    </form>
+    <!-- <input type="text" class="code center" placeholder="Usuario">
+    <input type="password" class="code center" [(ngModel)]="code" placeholder="C&oacute;digo">
+    <button mat-raised-button (click)="init(code)" style="margin-top:5px" color="primary" matTooltip="Código">
+      <mat-icon aria-hidden="false">input</mat-icon>
+    </button> -->
+  </div>
+</div>

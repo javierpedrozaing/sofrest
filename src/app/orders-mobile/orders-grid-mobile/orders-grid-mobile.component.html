@@ -1,0 +1,19 @@
+<div fxLayout="row" style="background-color: #7986CB; color: white">
+    <div fxFlex="100" style="padding: 10px" fxLayoutAlign="center center">PEDIDOS</div>
+</div>
+<mat-grid-list cols="3" rowHeight="1:1">
+    <mat-grid-tile routerLink="/orders-mobile/{{order.route}}" [ngClass]="{'ready': order.status === 1, 'waiting': order.status === 0}"
+        *ngFor="let order of orders; let i = index">
+        <div fxLayout="column">
+            <div style="font-size: 1.2em; font-weight: bold">{{i + 1}}</div>
+            <div [hidden]="order.status === 2">{{order.customers}} Persona(s)</div>
+            <div [hidden]="order.status === 2">{{order.time}}</div>
+        </div>
+        <mat-grid-tile-footer fxLayout="row" fxLayoutAlign="center center">
+            <span style="font-size:0.85em" *ngIf="order.status === 1">LISTO</span>
+            <span style="font-size:0.85em" *ngIf="order.status === 2">SIN ASIGNAR</span>
+            <span style="font-size:0.85em" *ngIf="order.status === 0">SIN PEDIDOS</span>
+        </mat-grid-tile-footer>
+    </mat-grid-tile>
+</mat-grid-list>
+<button (click)="add()" style="position:fixed; bottom: 0px; right: 0px; margin: 10px" matTooltip="Añadir" mat-fab color="primary"><mat-icon>add</mat-icon></button>

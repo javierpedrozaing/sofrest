@@ -1,0 +1,8 @@
+<span mat-dialog-title style="font-size: 3.5rem;" class="text-center"> TIPO DE PEDIDO</span>
+<div mat-dialog-content style="font-size: 1.6rem;">
+    <div *ngFor="let elem of orders;trackBy:trackByIndex;" fxLayout="row" fxLayoutAlign="start center" style="margin-bottom: 5px;" fxLayoutGap="5px" (click)="onNoClick(elem.id)">
+      <mat-radio-group [(ngModel)]="orderTypeID"  [ngModelOptions]="{standalone: true}" >
+        <mat-radio-button [value]="elem.id" >{{elem.description}}</mat-radio-button>
+      </mat-radio-group>      
+    </div>
+</div>

@@ -1,0 +1,46 @@
+<form [formGroup]="form" (ngSubmit)="submit(form.value,null)" class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Registro de Sub-Categoría</mat-card-title>
+      <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+      <div class="button-close">
+        <button type="button" mat-button color="warn" matTooltip="Cerrar" class="float-right" (click)="onNoClick()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-chip-list *ngIf="categories.length === 0">
+      <mat-chip color="warn" selected>Debe crear al menos 1 (una) Categor&iacute;a</mat-chip>
+    </mat-chip-list>
+    <mat-card-content *ngIf="categories.length > 0">
+      <br>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Descripción</mat-label>
+          <input matInput formControlName="description" placeholder="Descripción">
+        </mat-form-field>
+      </div>
+      <div flex fxLayoutAlign.xs="center stretch" fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px" fxLayoutAlign="none center">
+        <mat-form-field fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" appearance="outline">
+          <mat-label>Categoría</mat-label>
+          <mat-select formControlName="category" [compareWith]="compareObjects">
+            <mat-option *ngFor="let category of categories" [value]="category.id">{{category.description}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" appearance="outline">
+          <mat-label>Cuenta Contable</mat-label>
+          <input matInput formControlName="accounting_account" placeholder="Cuenta Contable">
+        </mat-form-field>
+      </div>
+      <div fxLayoutAlign="end center" fxLayout="row">
+        <mat-slide-toggle [color]="'primary'" formControlName="state">{{form.value.state ? 'Activo' : 'Inactivo'}}
+        </mat-slide-toggle>
+      </div>
+    </mat-card-content>
+    <div *ngIf="categories.length > 0" fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+      <button flex mat-raised-button color="warn" type="reset" matTooltip="Reiniciar Registro" >Limpiar</button>
+      <span>&nbsp;</span>
+      <button flex mat-raised-button color="primary" type="submit" matTooltip="Guardar Registro" [disabled]="!form.valid">Guardar</button>
+    </div>
+  </mat-card>
+</form>

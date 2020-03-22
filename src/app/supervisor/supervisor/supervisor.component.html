@@ -1,0 +1,88 @@
+<!-- <div class=" clearfix padding-top-content">
+  <span class="title-cronograma float-left">
+    <span>INICIO</span>
+    {{  nameSala | uppercase}}
+  </span>
+  <button class="float-right" (click)="openDialog()" mat-flat-button color="primary"><mat-icon>add</mat-icon> Agregar Sal&oacute;n</button>
+  <mat-form-field  class="float-right">
+    <mat-label>Salones disponibles</mat-label>
+    <mat-select [(ngModel)]="selectedItem" (ngModelChange)="SalonChange($event)">
+      <mat-option *ngFor="let item of Salon" [value]="item">
+        {{item['name']}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div> -->
+<div class="table-supervisor">
+  <gridster (window:resize)="onResize($event)" id="tableMozo" [options]="options">
+
+    <gridster-item [item]="item" *ngFor="let item of dashboard;let i = index" (click)="selectTable(i)">
+      <div class="table-{{item['status']}}  table-config" [ngClass]="{'selected-table': item.selected}">
+
+        <div class="conten-table">
+            <p class="menu-content"><mat-icon #clickHoverMenuTrigger="matMenuTrigger" (touchend)="prevent($event)" [matMenuTriggerFor]="menu" [hidden]="!item['menu']">linear_scale</mat-icon></p>
+            <p class="name-table" *ngIf="!item.tables">Mesa {{item['name']}}</p>
+            <p class="name-table" *ngIf="item.tables">Mesas: {{item["tables"]}}</p>
+            <p class="name-table">4 asientos</p>
+            <mat-menu #menu="matMenu" style="position:initial">
+              <button *ngIf="item['status'] == 'available' || item['status'] == 'enabled'" (click)="lockTable(item,i,'busy')" matTooltip="Ocupado" mat-menu-item>
+                <mat-icon>lock</mat-icon>
+                <span>Ocupado</span>
+              </button>
+              <button *ngIf="item['status'] == 'busy'" (click)="lockTable(item,i,'available')" mat-menu-item matTooltip="Disponible">
+                <mat-icon>lock_open</mat-icon>
+                <span>Disponible</span>
+              </button>
+              <button *ngIf="item['tables']" (click)="separateTables(i)" mat-menu-item matTooltip="Separar Mesas">
+                <mat-icon>settings_ethernet</mat-icon>
+                <span>Separar Mesas</span>
+              </button>
+              <button mat-menu-item routerLink="/orders-mobile/orders-mobile-view" matTooltip="Orden Nueva">
+                <mat-icon>open_in_new</mat-icon>
+                <span>Orden Nueva</span>
+              </button>
+              <button mat-menu-item matTooltip="Reservación">
+                <mat-icon>link</mat-icon>
+                <span>Reservación</span>
+              </button>
+            </mat-menu>
+        </div>
+        <!-- (mousedown)="removeItem($event, item)" (touchstart)="removeItem($event, item)" -->
+        <!-- <button class="float-left" (click)="openStatus(item,i)" mat-icon-button color="primary">
+              <mat-icon aria-label="Example icon-button with a heart icon">drag_indicator</mat-icon>
+            </button> -->
+      </div>
+    </gridster-item>
+  </gridster>
+</div>
+<!-- {{dashboard | json}} -->
+
+<div class="padding-top-content-fixed">
+
+  <button matTooltip="Cambiar de Salon"
+  [matTooltipPosition]="'above'" style="margin-right: 8px;" mat-mini-fab color="primary" [matMenuTriggerFor]="menu"><mat-icon>list_alt</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <div *ngFor="let item of Salones;let i=index">
+    <button (click)="ChangeSalon(i)" mat-menu-item>{{item.name}}</button>
+    <mat-divider></mat-divider>
+  </div>
+</mat-menu>
+
+  <button matTooltip="Unir Mesas"
+  [matTooltipPosition]="'above'" style="margin-right: 8px;" (click)="enableUnion = true" *ngIf="!enableUnion" mat-mini-fab color="primary">
+      <mat-icon>donut_large</mat-icon> 
+  </button>
+
+  <button matTooltip="Aplicar Cambios"
+  [matTooltipPosition]="'above'" style="margin-right: 8px;" (click)="applyUnion()" *ngIf="enableUnion" mat-mini-fab color="accent">
+      <mat-icon>donut_large</mat-icon> 
+  </button>
+
+  <button matTooltip="Cancelar Unión"
+  [matTooltipPosition]="'above'"  style="margin-right: 8px;" mat-mini-fab color="warn" (click)="cancelUnion()" *ngIf="enableUnion">
+      <mat-icon>close</mat-icon>
+  </button>
+
+
+</div>

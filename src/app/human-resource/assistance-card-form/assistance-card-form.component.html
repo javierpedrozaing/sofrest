@@ -1,0 +1,74 @@
+<form [formGroup]="form" class="form-container" #formDirective="ngForm">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Tarjeta de Asistencia</mat-card-title>
+        <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+        <div class="button-close">
+          <button type="button" routerLink="/human-resource/assistance-card" matTooltip="Volver al Listado" mat-button color="warn" class="float-right config-close">
+            <mat-icon>keyboard_backspace</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <br>
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+            <mat-form-field fxFlex="50">
+                <mat-label>Empleado</mat-label>
+                <mat-select formControlName="employee" >
+                    <mat-option>Sin Especificar</mat-option>
+                    <mat-option *ngFor="let employee of employees" [value]="employee.id">{{employee.name}}</mat-option>
+                  </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex="50">
+                <mat-label>Local</mat-label>
+                <mat-select formControlName="store" >
+                    <mat-option>Sin Especificar</mat-option>
+                    <mat-option *ngFor="let store of stores" [value]="store.id">{{store.name}}</mat-option>
+                  </mat-select>
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+            <mat-form-field fxFlex="50">
+                <input matInput [matDatepicker]="picker" formControlName="entry" placeholder="Fecha de Entrada">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field fxFlex="50">
+                <input matInput [matDatepicker]="picker_out" formControlName="out" placeholder="Fecha de Salida">
+                <mat-datepicker-toggle matSuffix [for]="picker_out"></mat-datepicker-toggle>
+                <mat-datepicker #picker_out></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column">
+                <mat-form-field fxFlex="50">
+                        <mat-label>Hora Entrada</mat-label>
+                        <input type="time" matInput formControlName="entry_time" (click)="pickStartTime()">
+                      </mat-form-field>
+                <mat-form-field fxFlex="50">
+                        <mat-label>Hora de Salida</mat-label>
+                        <input type="time" matInput formControlName="out_time" (click)="pickStartOutTime()">
+                      </mat-form-field>
+                <ngx-material-timepicker #outTime></ngx-material-timepicker>
+        </div>
+        <label for=""> <strong>Total de Horas : </strong> {{totalHours | number:'.2'}} </label>
+      </mat-card-content>
+
+      <!-- <mat-divider [inset]="true" class="margin-top:2px"></mat-divider> -->
+      <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
+        <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro" type="reset">Limpiar</button>
+        <button flex mat-flat-button color="primary" matTooltip="Guardar Registro" [disabled]="!form.valid">Guardar</button>
+      </div>
+    </mat-card>
+
+    <!-- <mat-divider [inset]="true" class="margin-top:2px"></mat-divider>
+    <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end center" >
+      <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro" type="reset">Limpiar</button>
+      <button flex mat-flat-button color="primary" matTooltip="Guardar Registro" [disabled]="!form.valid">Guardar</button>
+    </div> -->
+
+  <!-- <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
+    <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro" type="reset">Limpiar</button>
+    <button flex mat-flat-button color="primary" matTooltip="Guardar Registro"
+      [disabled]="!addPurchaseOrderFormGroup.valid">Guardar</button>
+  </div> -->
+  </form>

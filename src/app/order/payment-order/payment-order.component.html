@@ -1,0 +1,67 @@
+<div fxLayout="row" fxLayout.xs="column">
+    <!-- <div fxFlex="45" fxFlex.lt-lg="100" style="margin:7px; background-color: white; padding: 7px">
+        <mat-grid-list cols="3" rowHeight="100px">
+            <mat-grid-tile *ngFor="let tile of tiles" [colspan]="tile.cols" [rowspan]="tile.rows"
+                [style.background]="tile.color" style="font-size: 2em; font-weight: bold">
+                {{tile.text}}
+            </mat-grid-tile>
+        </mat-grid-list>
+        <div class="clearfix">
+            <span style="float: right;"><b>SubTotal:</b> $45.98</span><br>
+            <span style="float: right;"><b>Discount:</b> 12%</span><br>
+            <span style="float: right;"><b>VAT:</b> 12.9%</span><br>
+            <span style="float: right; font-size: 1.5em"><b>USD 45.98</b></span><br>
+        </div>
+        <button mat-raised-button (click)="openDialog()" matTooltip="Pagar" class="btn-full-width" color="primary">Pagar</button>
+    </div> -->
+    <!-- <div fxFlex="10" fxFlex.lt-lg="100" style="margin:7px; background-color: white; padding: 7px">
+        <span style="font-size:x-small; font-weight: bold">Moneda R&aacute;pida</span>
+        <button mat-raised-button class="btn-full-width" color="primary">0.10</button>
+        <button mat-raised-button class="btn-full-width" color="primary">0.20</button>
+        <button mat-raised-button class="btn-full-width" color="primary">0.50</button>
+        <button mat-raised-button class="btn-full-width" color="primary">1.00</button>
+        <button mat-raised-button class="btn-full-width" color="primary">2.00</button>
+        <button mat-raised-button class="btn-full-width" color="primary">5.00</button>
+        <button mat-raised-button class="btn-full-width" color="primary">10.00</button>
+        <button mat-raised-button class="btn-full-width" color="primary">20.00</button>
+        <button mat-raised-button class="btn-full-width" color="primary">50.00</button>
+        <button mat-raised-button class="btn-full-width" color="primary">100.00</button>
+        <button mat-raised-button class="btn-full-width" color="primary">200.00</button>
+    </div> -->
+    <div fxFlex="100" fxFlex.lt-lg="100" style="margin:7px;">
+        <h4>Pedidos</h4>
+        <div>
+            <table mat-table [dataSource]="dataSource">
+
+                <ng-container matColumnDef="order">
+                    <th mat-header-cell *matHeaderCellDef> Pedido </th>
+                    <td mat-cell *matCellDef="let element"> {{element.order}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="owner">
+                    <th mat-header-cell *matHeaderCellDef> Encargado </th>
+                    <td mat-cell *matCellDef="let element"> {{element.owner}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="total">
+                    <th mat-header-cell *matHeaderCellDef> Total </th>
+                    <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="option">
+                    <th mat-header-cell *matHeaderCellDef> Opci&oacute;n </th>
+                    <td mat-cell *matCellDef="let element;let i = index;">
+                        <mat-checkbox [checked]="element.checked"
+                        (change)="checkedElement(!element.checked,i)"></mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+        <button mat-raised-button (click)="openDialog()" matTooltip="Pagar" class="btn-full-width" color="primary">Pagar</button>
+    </div>
+</div>

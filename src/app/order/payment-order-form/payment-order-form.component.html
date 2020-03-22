@@ -1,0 +1,169 @@
+<mat-card>
+  <h3 class="text-center"> Módulo de Pago </h3>
+  <mat-card-content>
+    <div fxLayout="row">
+      <div fxFlex="30">
+        <button (click)="backClicked()" matTooltip="Retornar a Pedidos" mat-stroked-button color="accent">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <button mat-stroked-button color="primary">
+          <fa-icon [icon]="faCreditCard"></fa-icon>
+        </button>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayout.lt-lg="column">
+      <div fxFlex="50" fxFlex.lt-lg="50" style="padding: 7px">
+        <h3>Datos de Facturaci&oacute;n</h3>
+        <form [formGroup]="billingFormGroup">
+          <div lex fxLayout="row">
+            <mat-form-field fxFlex="50" appearance="outline">
+              <mat-label>Tipo de Documento</mat-label>
+              <mat-select formControlName="document_type">
+                <mat-option value="option1">Pasaporte</mat-option>
+                <mat-option value="option2">RUC</mat-option>
+                <mat-option value="option3">DNI</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex="40" appearance="outline">
+              <mat-label>Documento</mat-label>
+              <input matInput placeholder="Documento" formControlName="dni" required>
+            </mat-form-field>
+            <button mat-mini-fab color="primary" type="button" style="margin-top: 10px;" matTooltip="Buscar"
+              (click)="search()" *ngIf="billingFormGroup.value.document_type && billingFormGroup.value.dni">
+              <mat-icon>search</mat-icon>
+            </button>
+          </div>
+          <div flex fxLayout="column">
+            <mat-form-field fxFlex="100" appearance="outline">
+              <mat-label>Nombre/Razón Social</mat-label>
+              <input matInput placeholder="Nombre/Razón Social" formControlName="name" required>
+            </mat-form-field>
+
+          </div>
+        </form>
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <h4>SubTotal : {{880 | number:'.3'}}</h4>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <h4>IGV (12%) : {{120 | number:'.3'}}</h4><br>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <h4>Total : {{total | number:'.3'}}</h4>
+        </div>
+      </div>
+      <div fxFlex="50" fxFlex.lt-lg="100" style="margin:7px; background-color: white; padding: 7px">
+        <mat-grid-list cols="3" rowHeight="100px">
+          <mat-grid-tile (click)="setKey(tile.text)" *ngFor="let tile of tiles" [colspan]="tile.cols" [rowspan]="tile.rows"
+            [style.background]="tile.color" style="font-size: 2em; font-weight: bold; cursor: pointer;">
+            {{tile.text}}
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+      <div fxFlex="50" fxFlex.lt-lg="50" style="padding: 7px">
+        <h3>Formas de Pago</h3>
+        <div flex fxLayout="column" *ngFor="let payment of payments; let i = index;">
+          <div fxLayout="row">
+            <mat-form-field fxFlex="25" appearance="outline">
+              <mat-label>Forma de Pago</mat-label>
+              <mat-select [(ngModel)]='payment.type'>
+                <mat-option value="cash">Efectivo</mat-option>
+                <mat-option value="card">Debito/Crédito</mat-option>
+                <mat-option value="paperMoney">Cheque</mat-option>
+                <mat-option value="gift">Gift Card</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="adapted-form col-lg-4" fxFlex="30" appearance="outline">
+              <mat-label>Monto</mat-label>
+              <input matInput min="0" [max]="total" type="number" step="0.01" placeholder="Monto" [(ngModel)]='payment.amount'>
+            </mat-form-field>
+            <mat-form-field class="adapted-form col-lg-4" fxFlex="25" *ngIf="payment.type === 'paperMoney' || payment.type === 'gift'" appearance="outline">
+              <mat-label *ngIf="payment.type === 'paperMoney'">Cheque #</mat-label>
+              <mat-label *ngIf="payment.type === 'gift'">Gift Card #</mat-label>
+              <input matInput type="text" placeholder="Referencia" [(ngModel)]='payment.reference'>
+            </mat-form-field>
+            <button mat-mini-fab matTooltip="Calcular" color="primary" aria-label="Calculate" type="button"
+              (click)="getRest(i)" class="" style="margin-top: 10px;">
+              <mat-icon>event_note</mat-icon>
+            </button>
+            <button mat-mini-fab matTooltip="Eliminar" color="warn" aria-label="Eliminar" type="button"
+              *ngIf="payments.length > 1" (click)="removePaymentMethod(i)" class="" style="margin-top: 10px;">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <button mat-mini-fab matTooltip="Agregar" aria-label="Nuevo" type="button" *ngIf="i === (payments.length - 1)"
+              (click)="addPaymentMethod()" class="" style="margin-top: 10px;">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <div fxLayout="column" *ngIf="payment.type === 'card'">
+              <form [formGroup]="cardFormGroup">
+                      <mat-form-field fxFlex="40" appearance="outline">
+                          <mat-label>Nombre en la Tarjeta</mat-label>
+                          <input matInput placeholder="Nombre en la Tarjeta" formControlName="cardholder_name"
+                              required>
+                      </mat-form-field>
+                      <mat-form-field fxFlex="30" appearance="outline">
+                          <mat-label>N&uacute;mero de Tarjeta</mat-label>
+                          <input type="number" (keyup)="GetCardType(cardFormGroup.value.card_number)" matInput
+                              placeholder="N&uacute;mero de Tarjeta" formControlName="card_number" required>
+                          <mat-icon matSuffix><img *ngIf="card_type" height="24" src="{{card_type.img}}">
+                          </mat-icon>
+                      </mat-form-field>
+                      <mat-form-field fxFlex="20" appearance="outline">
+                          <mat-label>Fecha de Vencimiento</mat-label>
+                          <input type="month" matInput placeholder="Fecha de Expiraci&oacute;n"
+                              formControlName="expire_date" required>
+                      </mat-form-field>
+                      <mat-form-field fxFlex="10" appearance="outline">
+                          <mat-label>CVV</mat-label>
+                          <input type="number" matInput placeholder="D&iacute;gitos de Seguridad"
+                              formControlName="cvv" required>
+                      </mat-form-field>
+              </form>
+          </div>
+        </div>
+        <button class="float-right" mat-flat-button color="primary" matTooltip="Añadir Descuento" *ngIf="!discount"
+          (click)="discount=true">
+          <mat-icon aria-hidden="false" aria-label="Add Icon">add</mat-icon> AÑADIR DESCUENTO
+        </button>
+        <!-- <button class="float-right" mat-flat-button color="warn" matTooltip="Remover Descuento" *ngIf="discount"
+          (click)="discount=false">
+          <mat-icon aria-hidden="false">remove</mat-icon> REMOVER DESCUENTO
+        </button> -->
+
+        <div flex fxLayout="row" *ngIf="discount">
+          <form [formGroup]="discountFormGroup">
+            <div flex fxLayout="row" fxLayout.xs="column">
+              <mat-form-field fxFlex="25" appearance="outline">
+                <mat-label>Tipo de Descuento</mat-label>
+                <mat-select formControlName='discount_type'>
+                  <mat-option value="option1">Descuento 1</mat-option>
+                  <mat-option value="option2">Descuento 2</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="adapted-form" fxFlex="50" appearance="outline">
+                <mat-label>Motivo</mat-label>
+                <input matInput placeholder="Motivo" formControlName="motive" required>
+              </mat-form-field>
+              <mat-form-field class="adapted-form" fxFlex="15" appearance="outline">
+                <mat-label>Monto</mat-label>
+                <input matInput min="0" [max]="total" type="number" placeholder="Monto" formControlName='discount_amount'>
+              </mat-form-field>
+              <button mat-mini-fab matTooltip="Eliminar Descuento" color="warn" aria-label="Eliminar" type="button" (click)="discount=false" style="margin-top: 10px; margin-left: 5px;">
+            <mat-icon>remove</mat-icon>
+          </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-dialog-actions fxLayoutAlign="end">
+    <div class="container">
+      <div class="row justify-content-center">
+        <button mat-raised-button color="primary" matTooltip="Pagar" (click)="execPayment()"
+          type="button">Pagar</button>
+      </div>
+    </div>
+  </mat-dialog-actions>
+
+</mat-card>

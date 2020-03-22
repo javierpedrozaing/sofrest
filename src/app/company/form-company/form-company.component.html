@@ -1,0 +1,60 @@
+<form [formGroup]="form" (ngSubmit)="save(form.value)" class="form-container">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Datos de la Empresa</mat-card-title>
+        <mat-card-subtitle> Información detallada de la compañía </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <br>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>Razón Social</mat-label>
+                <input matInput formControlName="business_name" placeholder="Razón Social">
+            </mat-form-field>
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>Nombre Comercial</mat-label>
+                <input matInput formControlName="commercial_name" placeholder="Nombre Comercial">
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex="100" appearance="outline">
+                <mat-label>Dirección</mat-label>
+                <input matInput formControlName="direction" placeholder="Dirección">
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>UBIGEO</mat-label>
+                <mat-select formControlName="ubigeo" >
+                    <mat-option>None</mat-option>
+                    <mat-option value="option1">Option 1</mat-option>
+                    <mat-option value="option2">Option 2</mat-option>
+                    <mat-option value="option3">Option 3</mat-option>
+                  </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" placeholder="Email">
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>Web</mat-label>
+                <input matInput formControlName="web" placeholder="Web">
+            </mat-form-field>
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>Teléfono</mat-label>
+                <input matInput formControlName="phone" placeholder="Teléfono">
+            </mat-form-field>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="container">
+          <div class="row justify-content-center">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid"
+            matTooltip="Guardar Registro">Guardar</button>
+          </div>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </form>

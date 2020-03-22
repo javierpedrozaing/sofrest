@@ -1,0 +1,36 @@
+<h1 mat-dialog-title>Agregar Usuario</h1>
+<div mat-dialog-content>
+    <form>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>Nombres</mat-label>
+                <input matInput placeholder="Ingrese los Nombres">
+            </mat-form-field>
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>Apellidos</mat-label>
+                <input matInput placeholder="Ingrese los Apellidos">
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex="100" appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="Correo Electr&oacute;nico">
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex="100" appearance="outline">
+                <mat-label>Contrase&ntilde;a</mat-label>
+                <input type="password" matInput placeholder="Ingrese su Clave">
+            </mat-form-field>
+            <mat-form-field fxFlex="100" appearance="outline">
+                <mat-label>Conf. Contrase&ntilde;a</mat-label>
+                <input type="password" matInput placeholder="Repita su Clave">
+            </mat-form-field>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-around center">
+    <button mat-flat-button color="primary" matTooltip="Crear Usuario">Crear Usuario</button>
+    <!-- <button mat-button (click)="onNoClick()">No Thanks</button>
+    <button mat-button cdkFocusInitial>Ok</button> -->
+</div>

@@ -1,0 +1,76 @@
+<form [formGroup]="form" (ngSubmit)="submit(form.value,null)" class="form-container">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Registro de Sucursal</mat-card-title>
+        <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+        <div class="button-close">
+          <button type="button" routerLink="/branches/list" matTooltip="Volver al Listado" mat-button color="warn" class="float-right config-close">
+            <mat-icon>keyboard_backspace</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <br>
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>Descripción</mat-label>
+                <input matInput formControlName="description" placeholder="Descripción">
+            </mat-form-field>
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>UBIGEO</mat-label>
+                <!-- <mat-select formControlName="ubigeo_id" [compareWith]="compareObjects">
+                  <mat-option *ngFor="let ubigeo of ubigeos" [value]="ubigeo.id">{{ubigeo.department}}/{{ubigeo.province}}/{{ubigeo.district}}</mat-option>
+                  </mat-select> -->
+                  <mat-select formControlName="ubigeo_id" [compareWith]="compareObjects" #singleSelectUbigeo>
+                  <mat-option>
+                      <ngx-mat-select-search [formControl]="ubigeoFilterCtrl" [placeholderLabel]="'Buscar'"
+                          [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option *ngFor="let ubigeo of filteredUbigeos | async" [value]="ubigeo.id">
+                    {{ubigeo.department}}/{{ubigeo.province}}/{{ubigeo.district}}
+                  </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+            <mat-form-field fxFlex="100" appearance="outline">
+                <mat-label>Dirección</mat-label>
+                <input matInput formControlName="address" placeholder="Dirección">
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+            <mat-form-field appearance="outline" fxFlex="50">
+                <mat-label>Referencia</mat-label>
+                <input matInput formControlName="reference" placeholder="Referencia">
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="50">
+              <mat-label>Código</mat-label>
+              <input matInput formControlName="code" placeholder="Código">
+          </mat-form-field>
+        </div>
+        <!-- <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+            <mat-form-field appearance="outline" fxFlex="50">
+                <mat-label>Tipo de Sucursal</mat-label>
+                <mat-select formControlName="headquarter_type_id" [compareWith]="compareObjects">
+                  <mat-option *ngFor="let headquarterType of headquarterTypes" [value]="headquarterType.id">{{headquarterType.description}}</mat-option>
+                  </mat-select>
+            </mat-form-field>
+            <span>
+              <button mat-mini-fab aria-label="Nuevo Tipo de Sucursal" color="primary" type="button" (click)="openDialog()" class="" style="margin-top: 10px;">
+                <mat-icon>add</mat-icon>
+            </button>
+            </span>
+        </div> -->
+        <div flex fxLayoutAlign="end center" fxLayout="row" fxLayoutGap="10px">
+          <mat-slide-toggle class="margin-slide float-right" formControlName="principal" [color]="'primary'"> ¿Principal?</mat-slide-toggle>
+
+          <mat-slide-toggle class="margin-slide float-right" formControlName="state" [color]="'primary'"> {{form.value.state ? 'Activo' : 'Inactivo'}} </mat-slide-toggle>
+        </div>
+      </mat-card-content>
+      <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+        <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro"  type="reset">Limpiar</button>
+        <span>&nbsp;</span>
+        <button flex mat-raised-button color="primary" matTooltip="Guardar Registro" type="submit" [disabled]="!form.valid">Guardar</button>
+      </div>
+    </mat-card>
+  </form>

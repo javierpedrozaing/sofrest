@@ -1,0 +1,16 @@
+<h1 mat-dialog-title> Cancelar Pedido 
+        <button type="button" mat-button matTooltip="Cerrar" color="warn" class="float-right config-close"
+        (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+ </h1>
+<div mat-dialog-content>
+        <mat-form-field fxFlex appearance="outline">
+                <mat-label>Observación</mat-label>
+                        <input matInput  placeholder="Observación">
+            </mat-form-field>
+</div>
+<div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+  <button mat-raised-button (click)="onNoClick()" color="warn" matTooltip="Cerrar" >Cerrar</button>
+  <button mat-raised-button [mat-dialog-close]="true" cdkFocusInitial matTooltip="Cancelar Pedido" color="primary">Cancelar</button>
+</div>

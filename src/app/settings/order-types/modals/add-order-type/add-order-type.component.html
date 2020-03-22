@@ -1,0 +1,66 @@
+<form [formGroup]="newOrderType" class="form-container" (ngSubmit)="submit(newOrderType.value,null)"> 
+    <mat-card class="example-card">
+        <mat-card-header>
+            <mat-card-title>TIPO DE PEDIDO</mat-card-title>
+            <div class="button-close">
+                <button type="button" mat-button color="warn" matTooltip="Cerrar" class="float-right config-close"
+                    (click)="close()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+                <mat-form-field fxFlex="70" appearance="outline">
+                    <mat-label>Descripción</mat-label>
+                    <input matInput formControlName="description" placeholder="Descripción">
+                </mat-form-field>
+                <mat-form-field fxFlex="30" appearance="outline">
+                    <mat-label>Código</mat-label>
+                    <input matInput formControlName="code" placeholder="Código">
+                </mat-form-field>
+            </div>
+
+            <!-- <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+                <mat-form-field fxFlex="30" appearance="outline">
+                    <mat-label>Orden de Operación</mat-label>
+                    <mat-select formControlName="operation_order_id" [compareWith]="compareObjects">
+                        <mat-option *ngFor="let item of operationOrders" [value]="item.id">{{item.description}}</mat-option>
+                      </mat-select>
+                </mat-form-field>
+            </div> -->
+
+
+            <div flex fxLayoutAlign="end center" fxLayout="row">
+                <mat-slide-toggle class="margin-slide float-right" formControlName="state" [color]="'primary'"> {{newOrderType.value.state ? 'Activo' : 'Inactivo'}} </mat-slide-toggle>
+            </div>
+            <!-- <mat-accordion>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Locales
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            Disponible en todos los locales
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="">
+                        <mat-checkbox class="col-12">Disponible en todos los locales</mat-checkbox>
+                        <mat-checkbox class="col-12">Local 1</mat-checkbox>
+                        <mat-checkbox class="col-12">Local 2</mat-checkbox>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion> -->
+
+        </mat-card-content>
+
+        <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+            <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro" type="reset">Limpiar</button>
+            <span>&nbsp;</span>
+            <button flex mat-raised-button color="primary" matTooltip="Guardar Registro" type="submit"
+                [disabled]="!newOrderType.valid">Guardar</button>
+        </div>
+    </mat-card>
+</form>

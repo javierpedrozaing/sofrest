@@ -1,0 +1,98 @@
+<div class="col-12" style="z-index: 1">
+    <button mat-button matTooltip="Cerrar" color="warn" class="float-right" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<h1 mat-dialog-title>Agregar Plato</h1>
+<div mat-dialog-content>
+    <form>
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+            <mat-form-field fxFlex="50" appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="Ingrese el Nombre del Plato">
+            </mat-form-field>
+            <mat-form-field fxFlex="25" appearance="outline">
+                <mat-label>Precio</mat-label>
+                <input matInput type="number" placeholder="Precio">
+            </mat-form-field>
+            <mat-form-field fxFlex="25" appearance="outline">
+                <mat-label>Moneda</mat-label>
+                <mat-select  [compareWith]="compareObjects">
+                    <mat-option *ngFor="let item of currencies" [value]="item.id">{{item.description}} ({{item.symbol}})</mat-option>
+                  </mat-select>
+            </mat-form-field>
+        </div>
+        <div style="margin-bottom: 10px;" flex fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
+            <div fxFlex appearance="outline">
+                <ngx-select-dropdown [multiple]="true" [config]="selectRecipesConfig" [options]="recipesArray">
+                </ngx-select-dropdown>
+            </div>
+            <file-upload simple fxFlex>
+                <ng-template let-file #placeholder>
+                    <ng-container *ngIf="file; else emptyList">
+                        {{ file.name }}
+                    </ng-container>
+
+                    <ng-template #emptyList>
+                        Foto del Plato ...
+                    </ng-template>
+                </ng-template>
+
+                <ng-template let-control="control" #button>
+                    Seleccionar
+                </ng-template>
+            </file-upload>
+        </div>
+        <h5>T&eacute;rmino</h5>
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px" *ngFor="let term of terms; let i = index;">
+            <div fxFlex="70" fxLayout="row">
+                <mat-form-field fxFlex="80" appearance="outline">
+                    <mat-label>Término {{i+1}}</mat-label>
+                    <input matInput placeholder="Término ">
+                </mat-form-field>
+                <div fxFlex="10" *ngIf="i === terms.length-1">
+                    <button mat-button aria-label="Nuevo" matTooltip="Añadir" type="button" color="primary" (click)="addTerm()"
+                        style="margin-top: 10px;">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+                <div fxFlex="10" *ngIf="terms.length>1">
+                    <button mat-button aria-label="Nuevo" matTooltip="Quitar" type="button" color="warn" (click)="deleteTerm(i)"
+                        style="margin-top: 10px;">
+                        <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <h5>Reglas</h5>
+        <div flex fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px"
+            *ngFor="let rule of rulesArray; let i = index">
+            <ngx-select-dropdown fxFlex="20" [(ngModel)]="selectedRule[i]" [ngModelOptions]="{standalone: true}"
+                [multiple]="false" [config]="selectRule" [options]="optionRule">
+            </ngx-select-dropdown>
+            <ngx-select-dropdown fxFlex="20" [multiple]="false" [config]="selectProduc" [options]="optionProduc">
+            </ngx-select-dropdown>
+            <mat-form-field *ngIf="selectedRule[i].name === 'Con'" fxFlex="20" appearance="outline">
+                <input matInput type="number" placeholder="Cantidad">
+            </mat-form-field>
+            <mat-form-field *ngIf="selectedRule[i].name === 'Con'" fxFlex="20" appearance="outline">
+                <input matInput type="number" placeholder="Cantidad M&aacute;xima">
+            </mat-form-field>
+            <div fxFlex="20">
+                <button mat-icon-button type="button" matTooltip="Añadir" style="margin-top:10px" (click)="addRule()" color="primary">
+                    <mat-icon aria-hidden="false" aria-label="add">add</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" matTooltip="Quitar" (click)="deleteRule(i)" style="margin-top:10px">
+                    <mat-icon aria-hidden="false" aria-label="add">delete</mat-icon>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+    <button flex mat-raised-button color="warn"  matTooltip="Reiniciar Registro" type="reset">Limpiar</button>
+    <span>&nbsp;</span>
+    <button mat-flat-button color="primary" matTooltip="Guardar Registro">Crear Plato</button>
+</div>

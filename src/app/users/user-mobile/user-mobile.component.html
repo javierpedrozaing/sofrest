@@ -1,0 +1,36 @@
+<div (window:scroll)="scrollEvent($event)" #shownDiv id="div-container">
+        <div *ngFor="let key of objectKeys(dataSource).sort()" class="" id="{{key}}">
+                <div class="title-group" fxLayout="row" fxLayoutAlign="start center" >
+                    <strong style="margin-left: 7px;">{{key}}</strong>
+                </div>
+                <div class="card-data" *ngFor="let data of dataSource[key]['data']">
+                    <div routerLink="/chats/messages-mobile" fxLayout="row" fxLayoutAlign="start center" style="height:100%;">
+                        <div fxFlex="15">
+                            <ngx-avatar skypeId="echo" size="50"></ngx-avatar>
+                        </div>
+                        <div>
+                            <div fxLayout="column" fxLayoutAlign="center start">
+                                <div>
+                                    <strong> {{data.name}} </strong>
+                                </div>
+                                <div>
+                                    <span> {{data.code}} - {{data.position}} </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</div>
+</div>
+<div class="list-data">
+    <div class="container-list" fxLayout="column" fxLayoutAlign="space-between stretch">
+        <span *ngFor="let key of listData; let i = index" class="color-text text-center" (click)="scroll(i)" [ngClass]="{'color-text-active': i === selectedIndex}">
+            <strong>{{key}}</strong>
+        </span>
+    </div>
+</div>
+<button class="float-button" [routerLink]="['/users/new-mobile']" mat-fab color="primary">
+    <mat-icon aria-label="Nueva Usuario">
+        add
+    </mat-icon>
+</button>

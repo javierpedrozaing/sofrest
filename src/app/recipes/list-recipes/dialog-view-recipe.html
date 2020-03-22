@@ -1,0 +1,15 @@
+<div class="col-12" style="z-index: 1">
+    <button mat-button color="warn" class="float-right" matTooltip="Cerrar" (click)="onNoClick()"><mat-icon>close</mat-icon></button>
+</div>
+<h1 mat-dialog-title>{{(response.name || 'Información de Receta') | uppercase}}</h1>
+<div mat-dialog-content>
+    <h5 class="float-right">Costo : {{(response.cost || 0) | number:'.2' }}</h5>
+    <mat-list role="list">
+        <mat-list-item *ngFor="let item of response.composite_product">
+            {{item.quantity}} - {{item.product ? item.product.name : 'Otro'}}
+        </mat-list-item>
+    </mat-list>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-around center">
+    <button mat-flat-button (click)="onNoClick()" matTooltip="Cerrar" color="warn">Cerrar</button>
+</div>

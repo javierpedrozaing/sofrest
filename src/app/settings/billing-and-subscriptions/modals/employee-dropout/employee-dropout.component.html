@@ -1,0 +1,23 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>Darse de baja de administración de empleados</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <p>
+            Darse de baja resultará en la eliminación de todos los empleados.
+        </p>
+
+
+        <p>
+            Seguirá teniendo acceso al servicio hasta el final del periodo de prueba.
+        </p>
+
+
+    </mat-card-content>
+    <mat-card-actions>
+        <div class="clearfix">
+            <button class="float-right" matTooltip="Darse de Baja" mat-button>DARSE DE BAJA</button>
+            <button (click)="close()" matTooltip="Cancelar" class="float-right" mat-button>CANCELAR</button>
+        </div>
+    </mat-card-actions>
+</mat-card>

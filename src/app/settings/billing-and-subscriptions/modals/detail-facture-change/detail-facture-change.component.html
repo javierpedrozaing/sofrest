@@ -1,0 +1,30 @@
+<mat-card>
+    <form [formGroup]="Facture" class="form-container">
+
+        <mat-card-header>
+            <mat-card-title>Detalles de Facturación</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <br>
+            <div class="row">
+                <mat-form-field class="col-lg-12" appearance="outline">
+                    <mat-label>Nombre del negocio</mat-label>
+                    <input type="text" matInput formControlName="name" placeholder="Nombre del negocio">
+                </mat-form-field>
+                <mat-form-field class="col-lg-12" appearance="outline">
+                    <mat-label>Datos de facturación</mat-label>
+                    <input type="email" matInput formControlName="email" placeholder="Datos de facturación">
+                </mat-form-field>
+            </div>
+            <p>Añada la dirección de facturación, número de identificación fiscal u otra información que necesite en sus facturas</p>
+        </mat-card-content>
+        <mat-card-actions>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <button mat-button (click)="close()" color="warn" type="reset" matTooltip="Cerrar">Cerrar</button>
+                    <button mat-button color="primary" type="submit" [disabled]="!Facture.valid" matTooltip="Guardar Registro">Guardar</button>
+                </div>
+            </div>
+        </mat-card-actions>
+    </form>
+</mat-card>

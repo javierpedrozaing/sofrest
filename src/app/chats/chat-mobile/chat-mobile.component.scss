@@ -1,0 +1,67 @@
+.header-image {
+    background-size: cover;
+  }
+
+.spacer {
+    flex: 1 1 auto;
+  }
+
+/deep/ .mat-card-header-text {
+    width: 100%;
+}
+
+.text-show{
+    font-size: 15px;
+    font-weight: bold;
+    color : #2899fb;
+}
+
+.card-footer{
+    border-radius: 20px !important;
+    border-top: 0 !important;
+}
+
+.type_msg{
+    background-color: white !important;
+    border: 0.5px solid #bce0fd;
+    color:white !important;
+    height: 60px !important;
+    overflow-y: auto;
+    border-radius: 25px !important;
+    margin-right: 20px;
+}
+.type_msg:focus{
+    border: 1px solid #bce0fd !important;
+}
+
+textarea {
+    resize: none;
+}
+
+.text-dark{
+    color: #2699fb !important;
+}
+
+.text-message{
+    color: #47a9fb !important;
+}
+
+.float-button{
+    background-color: #bce0fd !important;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.footer-button {
+    position: fixed; 
+    bottom: 0px;
+    right: 0px;
+}
+
+.msg-container{
+    width:100%;
+}
+
+.height-chat{
+    height: calc(100vh - 130px );
+}

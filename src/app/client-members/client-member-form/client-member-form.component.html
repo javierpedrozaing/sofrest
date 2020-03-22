@@ -1,0 +1,75 @@
+<form [formGroup]="form" (ngSubmit)="submit(form.value,null)" class="form-container">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Registro de Cliente Miembro</mat-card-title>
+        <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+        <div class="button-close">
+          <button type="button" routerLink="/client-members/list" matTooltip="Regresar" mat-button color="warn"
+            class="float-right config-close">
+            <mat-icon>keyboard_backspace</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <br>
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+          <mat-form-field fxFlex appearance="outline">
+            <mat-label>Razón Social</mat-label>
+            <input matInput formControlName="business_name" placeholder="Razón Social">
+          </mat-form-field>
+          <mat-form-field fxFlex appearance="outline">
+            <mat-label>Nombre Comercial</mat-label>
+            <input matInput formControlName="tradename" placeholder="Nombre Comercial">
+          </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+          <mat-form-field fxFlex="100" appearance="outline">
+            <mat-label>Dirección</mat-label>
+            <textarea formControlName="address" type="text" matInput placeholder="Dirección"></textarea>
+          </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+          <mat-form-field fxFlex appearance="outline">
+            <mat-label>RUC</mat-label>
+            <input matInput formControlName="ruc" placeholder="RUC">
+          </mat-form-field>
+          <mat-form-field fxFlex appearance="outline">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="phone" placeholder="Número telefónico">
+          </mat-form-field>
+          <mat-form-field fxFlex appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" placeholder="Correo Electr&oacute;nico">
+          </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+          <mat-form-field fxFlex appearance="outline">
+            <mat-label>Web</mat-label>
+            <input matInput formControlName="web" placeholder="URL del sitio web">
+          </mat-form-field>
+          <mat-form-field fxFlex appearance="outline">
+            <mat-label>Plan</mat-label>
+            <mat-select formControlName="plan_id" [compareWith]="compareObjects">
+                <mat-option *ngFor="let plan of plans" [value]="plan.id">{{plan.name}}</mat-option>
+                </mat-select>
+          </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column">
+          <mat-form-field fxFlex="100" appearance="outline">
+            <mat-label>Observación</mat-label>
+            <input matInput formControlName="observation" placeholder="Observación">
+          </mat-form-field>
+        </div>
+        <div flex fxLayoutAlign="end center" fxLayout="row" fxLayoutGap="10px">
+          <mat-slide-toggle class="margin-slide float-right" formControlName="state" [color]="'primary'">
+            {{form.value.state ? 'Activo' : 'Inactivo'}} </mat-slide-toggle>
+        </div>
+      </mat-card-content>
+      <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+        <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro" type="reset">Limpiar</button>
+        <span>&nbsp;</span>
+        <button flex mat-raised-button color="primary" matTooltip="Guardar Registro" type="submit"
+          [disabled]="!form.valid">Guardar</button>
+      </div>
+    </mat-card>
+  </form>

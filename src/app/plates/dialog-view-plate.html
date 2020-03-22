@@ -1,0 +1,24 @@
+<div class="col-12" style="z-index: 1">
+    <button mat-button color="warn" class="float-right" matTooltip="Cerrar" (click)="onNoClick()"><mat-icon>close</mat-icon></button>
+</div>
+<h1 mat-dialog-title>{{(response.name || 'Información de Receta') | uppercase}}</h1>
+<div mat-dialog-content>
+    <h5 class="float-right">Precio : {{response.coin ? response.coin.symbol : 'S/'}} {{(response.price || 0) | number:'.2' }}</h5>
+    
+    <h5 *ngIf="response.term_for_dish">Términos : {{ response.term_for_dish.length === 0 ? 'Sin Términos' : response.term_for_dish | arrayObjectToString:'description'}}</h5>
+    <h5 class="text-center">Recetas</h5>
+    <mat-list role="list">
+        <mat-list-item *ngFor="let item of response.dish_detail">
+            {{item.recipe ? item.recipe.name : 'Otro'}} {{item.price || 0}}
+        </mat-list-item>
+    </mat-list>
+    <h5 class="text-center">Reglas</h5>
+    <mat-list role="list">
+        <mat-list-item *ngFor="let item of response.dish_attribute">
+            {{item.attribute_type ? 'Con : ' : 'Sin :'}} {{item.product ? item.product.name : 'Otro'}} Precio : {{item.price || 0}}
+        </mat-list-item>
+    </mat-list>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-around center">
+    <button mat-flat-button (click)="onNoClick()" matTooltip="Cerrar" color="warn">Cerrar</button>
+</div>

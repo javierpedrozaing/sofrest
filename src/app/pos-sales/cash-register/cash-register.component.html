@@ -1,0 +1,100 @@
+<div fxLayout="row" fxLayout.lt-lg="column">
+    <mat-card fxFlex="100">
+        <mat-card-title fxLayout="column">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="80" fxLayoutAlign="start">
+                    Cajas
+                </div>
+                <div fxLayout="row" *ngIf="!isMobile">
+                    <div fxFlex="100" fxLayoutAlign="end">
+                        <button mat-flat-button color="primary" (click)="openDialog(null,null)" matTooltip="Nueva Caja">
+                            <mat-icon>add</mat-icon> Agregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-card-title>
+        <mat-card-content>
+            <div fxLayout="row">
+                <mat-form-field fxFlex="50">
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+                    <span matPrefix>
+                        <mat-icon>search</mat-icon>
+                    </span>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row">
+                <div fxFlex="100" class="table-responsive">
+                    <table mat-table [dataSource]="dataSource" class="text-center">
+
+                        <ng-container matColumnDef="name" class="text-center">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">Descripción</th>
+                            <td mat-cell *matCellDef="let element" class="text-center">{{ element.description }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="ip" class="text-center">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">IP</th>
+                            <td mat-cell *matCellDef="let element" class="text-center">{{ element.ip || 'Sin Especificar'}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="serial" class="text-center">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">N&uacute;mero de Serie</th>
+                            <td mat-cell *matCellDef="let element" class="text-center">{{ element.serial_number || 'Sin Especificar' }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="status" class="text-center">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">Estado</th>
+                            <td mat-cell *matCellDef="let element" class="text-center">
+                                <mat-icon *ngIf="element.opening_state === 1" style="color: green" matTooltip="Caja Aperturada">lock_open</mat-icon>
+                                <mat-icon *ngIf="element.opening_state === 2" style="color: red" matTooltip="Caja Cerrada">lock</mat-icon>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="options" class="text-center">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">Opciones</th>
+                            <td mat-cell *matCellDef="let element;let i =index" class="text-center">
+                                <button (click)="openCashRegisterDialog(element)" mat-icon-button *ngIf="element.opening_state === 2" 
+                                    matTooltip="Apertura de Caja" color="primary">
+                                    <mat-icon>lock_open</mat-icon>
+                                </button>
+                                <button (click)="closeCashRegisterDialog(element)" mat-icon-button *ngIf="element.opening_state === 1" 
+                                    matTooltip="Cierre de Caja" color="primary" >
+                                    <mat-icon>lock</mat-icon>
+                                </button>
+                                <button (click)="historicCashRegisterDialog(element)" mat-icon-button
+                                    matTooltip="Historico de Aperturas y Cierres" color="primary">
+                                    <mat-icon>history</mat-icon>
+                                </button>
+                                <button mat-icon-button (click)="changeVisibility(element.id,i, element.state)">
+                                    <mat-icon *ngIf="element.state" color="success" matTooltip="Deshabilitar">visibility
+                                    </mat-icon>
+                                    <mat-icon *ngIf="!element.state" color="warn" matTooltip="Habilitar">visibility_off
+                                    </mat-icon>
+                                </button>
+                                <button mat-icon-button color="primary" matTooltip="Editar"
+                                    (click)="openDialog(element.id,i)">
+                                    <img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24">
+                                </button>
+                                <button mat-icon-button color="warn" matTooltip="Eliminar"
+                                    (click)="deleteBox(element.id,i)">
+                                    <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<button class="float-button" *ngIf="isMobile" (click)="openDialog()" mat-fab color="primary">
+    <mat-icon aria-label="Añadir">
+        add
+    </mat-icon>
+</button>

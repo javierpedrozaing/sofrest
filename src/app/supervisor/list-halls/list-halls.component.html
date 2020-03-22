@@ -1,0 +1,59 @@
+<mat-card>
+  <div class="container-section-header clearfix">
+    <h2 [ngClass]="isMobile === true ? 'title-salon' : 'float-left'">Gestionar Salones</h2>
+    <button (click)="openDialog()" *ngIf="isMobile === false" class="float-right" matTooltip="Nuevo Salón" mat-flat-button color="primary">
+      <mat-icon aria-hidden="false" aria-label="Add Icon">add</mat-icon> Nuevo Salon
+    </button>
+  </div>
+
+</mat-card>
+
+<div class="example-container mat-elevation-z8">
+
+  <mat-table [dataSource]="dataSource" matSort class="text-center">
+
+    <ng-container class="position-config" matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> N° </mat-header-cell>
+      <mat-cell style="padding: 10px;" *matCellDef="let element; let i =index" data-label="" class="text-center"> {{i + 1}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Nombre </mat-header-cell>
+      <mat-cell *matCellDef="let element" data-label="Descripción" class="text-center"> {{element.description}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Tipo </mat-header-cell>
+      <mat-cell *matCellDef="let element" data-label="Tipo" class="text-center"> {{element.hall_type.description}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="options">
+      <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Opciones </mat-header-cell>
+      <mat-cell *matCellDef="let element;let i = index;" data-label="Opciones" class="text-center">
+        <button (click)="openSalon(element.id,i)" matTooltip="Gestionar Salón" routerLinkActive="router-link-active"  mat-icon-button color="primary">
+          <mat-icon>open_in_browser</mat-icon>
+      </button>
+        <button mat-icon-button color="primary" matTooltip="Editar" (click)="openDialog(element.id,i)">
+          <img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24">
+        </button>
+        <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="deleteLounge(element.id,i)">
+          <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <span *ngIf="!isMobile">
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    </span>
+
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
+
+<button *ngIf="isMobile" (click)="openDialog(90)" style="position:fixed; bottom: 0px; right: 0px; margin: 10px" mat-fab
+  color="primary">
+  <mat-icon>add</mat-icon>
+</button>

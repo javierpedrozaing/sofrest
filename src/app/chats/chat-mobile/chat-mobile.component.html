@@ -1,0 +1,36 @@
+
+<div class="card height-chat" >
+    <div class="card-header">
+      Chat
+    </div>
+    <div class="card-body" style="overflow-y: auto;">
+      <div *ngFor="let message of messages">
+          <mat-card style="padding: 8px !important;margin-bottom: 10px;">
+              <mat-card-header>
+                <div mat-card-avatar class="header-image" [style.background-image]="'url('+'./assets/user.png'+')'" ></div>
+                <mat-card-title class="" >
+                    <span class="text-show"><strong>{{message.name}}</strong></span>
+                    <span class="spacer">&nbsp;</span>
+                    <span class="text-show float-right">1 hr</span>
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <p style="margin-left:56px;color:#2899fb">
+                    {{message.message}}
+                </p>
+              </mat-card-content>
+          </mat-card>
+          <mat-divider></mat-divider>
+      </div>
+    </div>
+    <div class="card-footer text-muted">
+        <div class="msg-container">
+            <div fxLayout="row">
+                <textarea name="" fxFlex="90" class="form-control type_msg text-message" placeholder="Escribe el mensaje"></textarea>
+                <button class="float-button" mat-mini-fab>
+                  <mat-icon aria-label="Enviar" matTooltip="Enviar Mensaje" class="text-dark">arrow_forward</mat-icon>
+                </button>
+            </div>
+          </div>
+    </div>
+  </div> 

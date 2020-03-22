@@ -1,0 +1,39 @@
+<div fxLayout="row" flex fxLayoutGap="40px" fxLayoutGap.sm="20px" fxLayoutGap.xs="5px" fxLayoutAlign="end center">
+  <button class="accept-button" fxFlex (click)="submit()">
+    Aceptar
+  </button>
+  <button class="cancel-button" fxFlex (click)="onNoClick()">
+    Cancelar
+  </button>
+  <div fxFlex class="float-right">
+    <span class="arrow-options"> <strong><</strong> </span>
+    <button class="button-option">
+      &nbsp; 1 &nbsp;
+    </button>
+    <span class="arrow-options"> <strong>></strong> </span>
+  </div>
+</div>
+<br>
+
+<div  fxLayout="row" style="border-radius: 5px; height: 85%; border: 1px solid black;margin-left: 1px;margin-right: 1px;"  >
+  <div fxFlex class="text-center" style="">
+    <div class="flex-parent" >
+      <span class="text-config flex-child long-and-truncated">Resumen de Item</span>
+    </div>
+    <div class="height-container">
+      Test
+    </div>
+  </div>
+  <mat-divider [vertical]="true"></mat-divider>
+  <div fxFlex class="text-center" fxLayout="column">
+    <div  class="flex-parent">
+      <span class="text-config flex-child long-and-truncated">Configurar Item</span>
+    </div>
+    <div class="height-container">
+      Test
+    </div>
+    <button class="apply-button"  (click)="onNoClick()" style="height: 55px;">
+      Aplicar a todos
+    </button>
+  </div>
+</div>

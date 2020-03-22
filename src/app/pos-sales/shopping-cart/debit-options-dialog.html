@@ -1,0 +1,38 @@
+<h1 mat-dialog-title style="color: #fe6e00; font-size: 40px;" class="text-center" *ngIf="!credit"> DÉBITO</h1>
+<h1 mat-dialog-title style="color: #fe6e00; font-size: 40px;" class="text-center" *ngIf="credit"> CRÉDITO</h1>
+<div mat-dialog-content>
+  <div *ngFor="let elem of payments;let i = index" fxLayout="row" fxLayoutAlign="start center"
+    style="margin-bottom: 5px;" fxLayoutGap="5px">
+    <!-- <div fxFlex="60" fxLayout="row" fxLayoutAlign="start center" >
+        <span fxFlex="40" class="text-center" style="border: 1px solid black; color: white; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; font-size: 35px;">MONTO</span>
+        <span fxFlex="90" style="background-color: #fe6e00;border: 1px solid #fe6e00;font-size: 35px;" (click)="openFastCashOptionsDialog()">&nbsp;</span>
+      </div>
+        <span fxFlex="20" style="border: 1px solid black;font-size: 35px;" matTooltip="Comprobante" fxLayoutGap="5px">&nbsp;</span>
+        <p fxFlex="20" style="border: 1px solid black; font-size: 1.9vw;"  matTooltip="Tarjeta" fxLayoutGap="5px" (click)="openCardType(i)">&nbsp;{{elem.card_type ? elem.card_type.description : 'Tarjeta' }}</p> -->
+    <mat-form-field fxFlex="25" appearance="fill">
+      <mat-label>Monto</mat-label>
+      <input (click)="openFastCashOptionsDialog(i,'amount')" matInput readonly [value]="elem.amount || '0'">
+    </mat-form-field>
+    <mat-form-field fxFlex="25" appearance="fill">
+      <mat-label>Propina</mat-label>
+      <input (click)="openFastCashOptionsDialog(i,'additional')" matInput readonly [value]="elem.additional || '0'">
+    </mat-form-field>
+    <mat-form-field fxFlex="25" appearance="fill" (click)="insertValue(i)">
+      <mat-label>Referencia</mat-label>
+      <input matInput readonly [value]="elem.reference">
+    </mat-form-field>
+    <mat-form-field fxFlex="25" appearance="fill">
+      <mat-label>Tarjeta</mat-label>
+      <input matInput readonly  (click)="openCardType(i)"[value]="elem.card_type ? elem.card_type.description : 'Sin Especificar'">
+    </mat-form-field>
+
+  </div>
+</div>
+<div mat-dialog-actions class="text-center" fxLayoutAlign="cencet center" fxLayout="row">
+  <div fxFlex="100">
+    <!-- <button mat-fab (click)="add()"
+      style="background-color: white;color:black;border: 1px solid black;font-size: 30px;">+</button> -->
+      <button mat-fab (click)="add()" style="background-color: white;color:#fd7e14;border: 1px solid #fd7e14;" >+</button>
+  </div>
+  
+</div>

@@ -1,0 +1,45 @@
+<mat-card>
+  <div class="container-section-header clearfix">
+    <h2 class="float-left">Inventario de Almacén</h2>
+    <button type="button" [routerLink]="['/stores/list']" matTooltip="Volver al Listado" mat-button color="warn" class="float-right config-close">
+      <mat-icon>keyboard_backspace</mat-icon>
+    </button>
+  </div>
+  
+  <table mat-table [dataSource]="dataSource" class="text-center">
+
+    <ng-container matColumnDef="product">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Producto </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.product ? element.product.name : '' | uppercase}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="measurement_unit">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Unidad de Medida </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.measurement_unit ? element.measurement_unit.description : '' | uppercase}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Cantidad </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.quantity}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="minimum_stock">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Stock Mínimo </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.minimum_stock}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="maximum_stock">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Stock Máximo </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.maximum_stock}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="cant">
+    <th mat-header-cell *matHeaderCellDef class="text-center"> Stock Mínimo </th>
+    <td mat-cell *matCellDef="let element" class="text-center"> {{element.cant}} </td>
+</ng-container>
+        
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons ></mat-paginator>
+</mat-card>

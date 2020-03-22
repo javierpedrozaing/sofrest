@@ -1,0 +1,19 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Unir Mesas</mat-card-title>
+        <mat-card-subtitle>Seleccione las mesas que desea unir</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content fxLayout="column">
+        <div class="row">
+            <div *ngFor="let item of data" class="col-lg-3 col-sm-3 col-md-3">
+                <mat-checkbox [(ngModel)]="name">{{item.name}}</mat-checkbox>
+            </div>
+        </div>
+        
+    </mat-card-content>
+    <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+        <button flex mat-raised-button color="warn" type="reset">Limpiar</button>
+        <span>&nbsp;</span>
+        <button flex mat-raised-button color="primary" type="submit" >Guardar</button>
+    </div>
+</mat-card>

@@ -1,0 +1,34 @@
+<form [formGroup]="form" (ngSubmit)="save(form.value)" class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Registro de Inventario</mat-card-title>
+      <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <br>
+      <div flex fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Producto</mat-label>
+          <mat-select formControlName="product" >
+              <mat-option>None</mat-option>
+              <mat-option value="option1">Option 1</mat-option>
+              <mat-option value="option2">Option 2</mat-option>
+              <mat-option value="option3">Option 3</mat-option>
+          </mat-select>
+      </mat-form-field>
+          <mat-form-field fxFlex="50" appearance="outline">
+              <mat-label>Cantidad</mat-label>
+              <input matInput formControlName="cant" min="0" type="number" placeholder="Cantidad">
+          </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="container">
+        <div class="row justify-content-center">
+          <button mat-button color="warn" type="reset" matTooltip="Reiniciar Formulario" >Limpiar</button>
+          <button mat-button color="primary" type="submit"  matTooltip="Guardar" [disabled]="!form.valid">Guardar</button>
+        </div>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</form>

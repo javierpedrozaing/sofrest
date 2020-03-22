@@ -1,0 +1,112 @@
+<mat-card>
+    <div class="container-section-header clearfix">
+        <h2 class="float-left">Planilla</h2>
+        <button class="float-right" mat-flat-button matTooltip="Exportar Planilla">
+            <mat-icon aria-hidden="false" aria-label="Add Icon" >cloud_download</mat-icon> Exportar Planilla
+        </button>
+    </div>
+
+    <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+        <mat-form-field fxFlex="50">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+            <span matPrefix>
+                <mat-icon>search</mat-icon>
+            </span>
+        </mat-form-field>
+    </div>
+
+    <div class="container-section-header clearfix">
+            <span class="float-left" style="font-size: 20px"> Total Salario Bruto : {{grossSalary | number : '.4'}} </span>
+            <span class="float-right" style="font-size: 20px"> Total Salario Neto : {{netSalary | number : '.4'}} </span>
+    </div>
+
+    <div class="table-responsive text-nowrap" *ngIf="!isMobile">
+        <table mat-table [dataSource]="dataSource" class="text-center" *ngIf="!isMobile">
+
+            <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef class="text-center">
+                    <mat-checkbox [(ngModel)]="allSelected" (change)="selectAll(allSelected)"></mat-checkbox>
+                </th>
+                <td mat-cell class="text-center" *matCellDef="let element; let i = index">
+                    <mat-checkbox [checked]="element.canChecked  ? element.checked : false"
+                        (change)="checkedElement(!element.checked,i)" [disabled]="!element.canChecked"></mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Nombre </th>
+                <td mat-cell *matCellDef="let element" class="text-center"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+                <th mat-header-cell class="text-center" *matHeaderCellDef> Correo Electrónico </th>
+                <td mat-cell class="text-center" *matCellDef="let element"> {{element.email}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="phone">
+                <th mat-header-cell class="text-center" *matHeaderCellDef> Número de teléfono </th>
+                <td mat-cell class="text-center" *matCellDef="let element"> {{element.phone}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="role">
+                <th mat-header-cell class="text-center" *matHeaderCellDef> Cargo </th>
+                <td mat-cell class="text-center" *matCellDef="let element"> {{element.role}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="grossSalary">
+                <th mat-header-cell class="text-center" *matHeaderCellDef> Salario Bruto </th>
+                <td mat-cell class="text-center" *matCellDef="let element"> {{element.grossSalary}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="netSalary">
+                <th mat-header-cell class="text-center" *matHeaderCellDef> Salario Neto </th>
+                <td mat-cell class="text-center" *matCellDef="let element"> {{element.netSalary}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell class="text-center" *matHeaderCellDef> ¿Activo? </th>
+                <td mat-cell class="text-center" *matCellDef="let idx = index; let element">
+                    <button mat-icon-button (click)="changeVisibility(idx, element.status)">
+                        <mat-icon *ngIf="element.status===true" matTooltip="Deshabilitar" color="success">
+                            visibility</mat-icon>
+                        <mat-icon *ngIf="element.status===false" matTooltip="Habilitar" color="warn">
+                            visibility_off</mat-icon>
+                    </button>
+                    <!-- <button mat-icon-button matTooltip="Deshabilitar" *ngIf="element.status" (click)="element.status = !element.status" style="color:#00c853">
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Habilitar" *ngIf="!element.status" color="warn" (click)="element.status = !element.status">
+                      <mat-icon>visibility_off</mat-icon>
+                  </button> -->
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
+        *ngIf="!isMobile && dataSource.data.length>0">
+    </mat-paginator>
+
+    <mat-list *ngIf="isMobile">
+            <mat-list-item *ngFor="let data of dataSource.data; let idx = index; let element" class="mat-element">
+                <!-- <ngx-avatar class="img-fluid" src="./assets/images/modifiers.png" size="40"></ngx-avatar>
+                <h4 mat-line>{{data.modifier}}</h4>
+                <p mat-line> {{data.options}} </p> -->
+                <h4 mat-line>{{data.name}} - {{data.email}}</h4>
+                <p mat-line> {{data.phone}} - {{data.role}} </p>
+                <p mat-line> {{data.grossSalary}} - {{data.netSalary}} </p>
+                <p mat-line>
+                    <button mat-icon-button (click)="changeVisibility(idx, element.status)">
+                        <mat-icon *ngIf="element.status===true" matTooltip="Deshabilitar" color="success">
+                            visibility</mat-icon>
+                        <mat-icon *ngIf="element.status===false" matTooltip="Habilitar" color="warn">
+                            visibility_off</mat-icon>
+                    </button>
+                </p>
+                <mat-divider></mat-divider>
+            </mat-list-item>
+        </mat-list>
+
+</mat-card>

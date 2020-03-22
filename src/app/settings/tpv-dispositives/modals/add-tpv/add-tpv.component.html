@@ -1,0 +1,32 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>NUEVO Dispositivo M&oacute;vil</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <form [formGroup]="newtPV" class="form-container">
+
+            <mat-form-field class="adapted-form col-lg-12" appearance="outline">
+                <mat-label>Tipo de lealtad</mat-label>
+                <input type="text" matInput formControlName="name" placeholder="Nombre">
+            </mat-form-field>
+
+            <mat-form-field class="adapted-form col-lg-12" appearance="outline">
+                <mat-label>Local</mat-label>
+                <mat-select formControlName="store">
+                    <mat-option value="option1">Local 1</mat-option>
+                    <mat-option value="option2">Local 2</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </form>
+
+    </mat-card-content>
+
+    <mat-card-actions>
+        <div class="clearfix">
+            <button class="float-right" matTooltip="Guardar"  mat-button>GUARDAR</button>
+            <button (click)="close()" matTooltip="Cancelar" class="float-right" mat-button>CANCELAR</button>
+        </div>
+    </mat-card-actions>
+</mat-card>

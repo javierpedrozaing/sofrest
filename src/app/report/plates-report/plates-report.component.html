@@ -1,0 +1,95 @@
+<mat-card>
+    <div class="container-section-header clearfix">
+        <h2 class="float-left">Reportes de Platos</h2>
+    </div>
+
+    <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around center" fxLayoutGap="20px">
+        <form [formGroup]="form" fxFlex>
+            <mat-form-field fxFlex>
+                <input matInput placeholder="Rango de Fecha" [satDatepicker]="picker2" formControlName="date">
+                <sat-datepicker #picker2 [rangeMode]="true">
+                </sat-datepicker>
+                <sat-datepicker-toggle matSuffix [for]="picker2"></sat-datepicker-toggle>
+            </mat-form-field>
+        </form>
+        <mat-form-field fxFlex>
+            <mat-label>Platos</mat-label>
+            <mat-select [(ngModel)]="plate" multiple>
+                <mat-select-trigger>
+                    {{plate.length>0 ? ( plate.length === plates.length ? 'Todos los platos' : plate[0].name ) : ''}}
+                    <span *ngIf="plate.length != plates.length && plate.length>1" class="">
+                        (+{{plate.length - 1}})
+                    </span>
+                </mat-select-trigger>
+                <div style="padding: 10px">
+                    <mat-checkbox coloor="primary" [(ngModel)]="allSelectedPlate"
+                        (change)="selectAllPlate(allSelectedPlate)">Todos los platos</mat-checkbox>
+                </div>
+                <div style="padding: 10px">
+                    <mat-checkbox coloor="primary" [(ngModel)]="lessSold" (change)="selectedLessSold(lessSold)">Platos
+                        menos vendidos</mat-checkbox>
+                </div>
+                <mat-divider></mat-divider>
+                <mat-option (click)="changePlate()" *ngFor="let plate of plates" [value]="plate">{{plate.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="row">
+            <div style="display: block" fxFlex="100">
+                    <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
+                      [options]="doughnutChartOption">
+                    </canvas>
+                  </div>
+    </div>
+    <!--<div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end center" *ngIf="!isMobile">
+         <mat-form-field fxFlex="25">
+        <mat-label>Empleados</mat-label>
+        <mat-select [(ngModel)]="employees" multiple>
+            <mat-select-trigger>
+                {{employees.length>0 ? ( employees.length === employeesData.length ? 'Todos los Empleados' : employees[0].name ) : ''}}
+                <span *ngIf="employees.length != employeesData.length && employees.length>1" class="">
+                    (+{{plate.length - 1}})
+                </span>
+            </mat-select-trigger>
+            <div style="padding: 10px">
+                <mat-checkbox coloor="primary" [(ngModel)]="allSelectedEmployees"
+                    (change)="selectAllEmployees(allSelectedEmployees)">Todos los Empleados</mat-checkbox>
+            </div>
+            <mat-divider></mat-divider>
+            <mat-option (click)="changeEmployee()" *ngFor="let employee of employeesData" [value]="employee">
+                {{employee.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    </div> -->
+
+    <!-- <div fxFlex="100">
+            <div style="display: block">
+                <canvas *ngIf="visibleChart === 'gross_sales'" baseChart width="400" height="auto"
+                [datasets]="lineChartDataGrossSales"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartType"
+                [plugins]="lineChartPlugins"></canvas>
+                <canvas *ngIf="visibleChart === 'refunds'" baseChart width="400" height="auto"
+                [datasets]="lineChartDataRefunds"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartType"
+                [plugins]="lineChartPlugins"></canvas>
+                <canvas *ngIf="visibleChart === 'discounts'" baseChart width="400" height="auto"
+                [datasets]="lineChartDataDiscounts"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartType"
+                [plugins]="lineChartPlugins"></canvas>
+              </div>
+        </div> -->
+</mat-card>

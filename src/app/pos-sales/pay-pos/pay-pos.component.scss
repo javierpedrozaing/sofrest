@@ -1,0 +1,10 @@
+.btn-full-width {
+    width: 100%!important;
+    min-width: unset!important;
+    margin: 1px;
+}
+.disabled-total {
+    pointer-events: none !important;
+    cursor: not-allowed;
+    font-weight: bold;
+}

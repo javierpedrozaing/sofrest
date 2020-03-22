@@ -1,0 +1,101 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Registrar Producción</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <br>
+        <form [formGroup]="form" (ngSubmit)="save(form.value)" class="form-container">
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+                <!-- <mat-form-field fxFlex="50" appearance="outline">
+                    <mat-label>Producción</mat-label>
+                    <input matInput formControlName="production" placeholder="Producción">
+                </mat-form-field> -->
+                <mat-form-field fxFlex="20" appearance="outline">
+                    <mat-label>Local</mat-label>
+                    <mat-select formControlName="shop">
+                        <mat-option *ngFor="let store of stores" [value]="store.id">{{store.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field fxFlex="80" appearance="outline">
+                    <mat-label>Descripción</mat-label>
+                    <input matInput formControlName="description" placeholder="Descripción">
+                </mat-form-field>
+            </div>
+            <!-- <div flex fxLayout="row" fxLayout.xs="column">
+                <mat-form-field fxFlex="100" appearance="outline">
+                    <mat-label>Descripción</mat-label>
+                    <input matInput formControlName="description" placeholder="Descripción">
+                </mat-form-field>
+            </div> -->
+        </form>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+            <mat-form-field fxFlex="40" appearance="outline">
+                <mat-label>Recetas</mat-label>
+                <mat-select [formControl]="categoryCtrl" placeholder="Recetas" #singleSelect
+                    (selectionChange)="changeValueCategory($event.value)">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="categoryFilterCtrl" [placeholderLabel]="'Buscar'"
+                            [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let category of filteredCategories | async" [value]="category">
+                        {{category.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-md="column" *ngFor="let listOption of listOptions; let i = index;">
+            <mat-form-field fxFlex="40" class="adapted-form float-right" appearance="outline">
+                <mat-select [(ngModel)]="listOption.product" [compareWith]="compareObjects" placeholder="Productos"
+                    #singleSelect (selectionChange)="getTotal()">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="productFilterCtrl" [placeholderLabel]="'Buscar'"
+                            [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+                        {{product.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex="40" appearance="outline">
+                <mat-label>Cantidad</mat-label>
+                <input matInput type="number" [(ngModel)]="listOption.qty" min="0" placeholder="Cantidad"
+                    (change)="getTotal()">
+            </mat-form-field>
+            <div fxFlex="20">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <button *ngIf="i === listOptions.length-1" type="button" style="margin-top: 10px;"
+                        (click)="addOption()" matTooltip="Añadir" mat-icon-button color="primary">
+                        <mat-icon aria-hidden="false" aria-label="add">add</mat-icon>
+                    </button>
+
+                    <button *ngIf="listOptions.length > 1" matTooltip="Quitar" type="button" style="margin-top: 10px;"
+                        (click)="deleteOption(i)" mat-icon-button color="warn">
+                        <mat-icon aria-hidden="false"  aria-label="add">delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end center">
+            <span>
+                <strong>Total: </strong> {{total | number:'.3'}}
+            </span>
+        </div>
+        <form [formGroup]="form" class="form-container">
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end center" fxLayoutGap="20px">
+                <mat-form-field fxFlex="50" appearance="outline">
+                    <mat-label>Cantidad </mat-label>
+                    <input matInput type="number" formControlName="qty" placeholder="Cantidad">
+                </mat-form-field>
+                <mat-form-field fxFlex="50" appearance="outline">
+                    <mat-label>Valor </mat-label>
+                    <input matInput type="number" formControlName="amount" placeholder="Valor">
+                </mat-form-field>
+            </div>
+        </form>
+    </mat-card-content>
+    <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+        <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro"  type="reset">Limpiar</button>
+        <span>&nbsp;</span>
+        <button flex mat-raised-button color="primary" matTooltip="Guardar Registro" type="submit" [disabled]="!form.valid">Guardar</button>
+    </div>
+</mat-card>

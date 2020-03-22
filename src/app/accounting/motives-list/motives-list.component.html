@@ -1,0 +1,88 @@
+<mat-card>
+        <div class="container-section-header clearfix">
+            <h2 class="float-left">Listado de Motivos</h2>
+            <button class="float-right" mat-flat-button *ngIf="!isMobile" color="primary" matTooltip="Agregar" [routerLink]="['/accounting/motives/form']">
+                <mat-icon aria-hidden="false" aria-label="Add Icon">add</mat-icon> Agregar
+            </button>
+        </div>
+    
+        <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <mat-form-field fxFlex="50">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+                <span matPrefix>
+                    <mat-icon>search</mat-icon>
+                </span>
+            </mat-form-field>
+        </div>
+    
+        <div class="table-responsive text-nowrap" *ngIf="!isMobile">
+            <table mat-table [dataSource]="dataSource"
+                class="text-center" *ngIf="!isMobile">
+    
+                <ng-container matColumnDef="position">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> N </th>
+                    <td mat-cell *matCellDef="let element; let i =index" class="text-center"> {{i + 1}} </td>
+                </ng-container>
+    
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Nombre </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{element.name}} </td>
+                </ng-container>
+    
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Descripción </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{element.description}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Monto de Referencia </th>
+                        <td mat-cell *matCellDef="let element" class="text-center"> {{element.amount | number:'.3'}} </td>
+                    </ng-container>
+    
+                <ng-container matColumnDef="options">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"> Opciones </th>
+                    <td mat-cell *matCellDef="let element;let i =index" class="text-center">
+                        <button mat-icon-button color="primary" matTooltip="Editar"
+                        [routerLink]="['/accounting/motives/form',element.id]"
+                        >
+                            <img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24">
+                        </button>
+                        <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="deleteReasonSpending(element.id,i)">
+                            <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                        </button>
+                    </td>
+                </ng-container>
+    
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" *ngIf="!isMobile">
+        </mat-paginator>
+    
+        <mat-list *ngIf="isMobile">
+            <mat-list-item *ngFor="let data of dataSource.data; let element" class="mat-element">
+                <!-- <ngx-avatar class="img-fluid" src="./assets/images/modifiers.png" size="40"></ngx-avatar> -->
+                <!-- <h4 mat-line>{{data.modifier}}</h4>
+                <p mat-line> {{data.options}} </p> -->
+                <h4 mat-line>{{data.name}}</h4>
+                <p mat-line> {{data.description}} </p>
+                <p mat-line> {{data.amount | number:'.3'}} </p>
+                <p mat-line>
+                    <button mat-icon-button color="primary" matTooltip="Editar" [routerLink]="['/accounting/motives/form',data.id]">
+                        <img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24">
+                    </button>
+                    <button mat-icon-button color="warn" matTooltip="Eliminar">
+                        <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                    </button>
+                </p>
+                <mat-divider></mat-divider>
+            </mat-list-item>
+        </mat-list>
+    
+        <button class="float-button" [routerLink]="['/motives/form']" *ngIf="isMobile" mat-fab color="primary">
+            <mat-icon aria-label="Añadir">
+                add
+            </mat-icon>
+        </button>
+    </mat-card>

@@ -1,0 +1,68 @@
+<div fxLayout="row" flex fxLayoutGap="40px">
+  <button class="cancel-button" fxFlex="50" (click)="onNoClick()">
+    Cancelar
+  </button>
+  <button class="accept-button" fxFlex="50" (click)="submit()">
+    Asignar
+  </button>
+</div>
+<br>
+<div fxLayout="row" flex fxLayoutGap="40px">
+  <button class="input-options" fxFlex="15" (click)="add()">
+    <strong>+</strong>
+  </button>
+  <span class="input-options text-center" fxFlex="70">
+    <strong>{{quantity}}</strong>
+  </span>
+  <button class="input-options" fxFlex="15" (click)="sust()">
+    <strong>-</strong>
+  </button>
+</div>
+<br>
+<div fxLayout="row" flex fxLayoutGap="5px">
+  <button class="button-options text-center" fxFlex (click)="entryValue(1)">
+    <strong>1</strong>
+  </button>
+  <button class="button-options text-center" fxFlex (click)="entryValue(2)">
+    <strong>2</strong>
+  </button>
+  <button class="button-options text-center" fxFlex (click)="entryValue(3)">
+    <strong>3</strong>
+  </button>
+</div>
+<br>
+<div fxLayout="row" flex fxLayoutGap="5px">
+  <button class="button-options text-center" fxFlex (click)="entryValue(4)">
+    <strong>4</strong>
+  </button>
+  <button class="button-options text-center" fxFlex (click)="entryValue(5)">
+    <strong>5</strong>
+  </button>
+  <button class="button-options text-center" fxFlex (click)="entryValue(6)">
+    <strong>6</strong>
+  </button>
+</div>
+<br>
+<div fxLayout="row" flex fxLayoutGap="5px">
+  <button class="button-options text-center" fxFlex (click)="entryValue(7)">
+    <strong>7</strong>
+  </button>
+  <button class="button-options text-center" fxFlex (click)="entryValue(8)">
+    <strong>8</strong>
+  </button>
+  <button class="button-options text-center" fxFlex (click)="entryValue(9)">
+    <strong>9</strong>
+  </button>
+</div>
+<br>
+<div fxLayout="row" flex fxLayoutGap="5px">
+  <button class="erase-options text-center" fxFlex (click)="clearOption()">
+    <strong>Limpiar</strong>
+  </button>
+  <button class="button-options text-center" fxFlex (click)="entryValue(0)">
+    <strong>0</strong>
+  </button>
+  <button class="clear-options text-center" fxFlex (click)="eraseLast()">
+    <strong>Borrar</strong>
+  </button>
+</div>

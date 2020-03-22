@@ -1,0 +1,345 @@
+<mat-card>
+  <form [formGroup]="addTransferOrderFormGroup" (ngSubmit)="submit(addTransferOrderFormGroup.value, null)">
+    <div *ngIf="!isSaved">
+
+      <mat-card-header>
+        <mat-card-title>Registro de Orden de Transferencia</mat-card-title>
+        <div class="button-close">
+          <button type="button" routerLink="/stock/transfer-orders" matTooltip="Volver al Listado" mat-button color="warn"
+            class="float-right config-close">
+            <mat-icon>keyboard_backspace</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+
+
+      <!-- <div class="clearfix">
+        <h2 class="float-left">Registro de Orden de Transferencia</h2>
+        <div class="float-right">
+          <button type="button" routerLink="/stock/transfer-orders" matTooltip="Volver al Listado" mat-button
+            color="warn" class="float-right config-close">
+            <mat-icon>keyboard_backspace</mat-icon>
+          </button>
+        </div>
+      </div> -->
+
+      <div mat-dialog-content fxLayout="column">
+
+        <div class="row">
+          <mat-form-field class="col-sm" appearance="outline">
+            <mat-label>Proveedor</mat-label>
+            <mat-select formControlName="provider_id" required [compareWith]="compareObjects">
+              <mat-option *ngFor="let provider of providers" [value]="provider.id">
+                {{provider.business_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="col-sm" appearance="outline">
+            <input formControlName="waiting_for" [min]="minDate" matInput [matDatepicker]="picker"
+              placeholder="Fecha de Orden de Transferencia">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="col-sm" appearance="outline">
+            <mat-label>Hora</mat-label>
+            <input type="time" matInput formControlName="hour" (click)="pickStartTime()">
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-sm col-md-6 col-lg-6" appearance="outline">
+            <mat-label>Local de Origen</mat-label>
+            <mat-select formControlName="headquarter_orgin_id" required>
+              <mat-option *ngFor="let shop of headquarters" [value]="shop.id">
+                {{shop.description}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="col-sm col-md-6 col-lg-6" appearance="outline">
+            <mat-label>Local Destino</mat-label>
+            <mat-select formControlName="headquarter_destination_id">
+              <mat-option *ngFor="let shop of headquarters" [value]="shop.id">
+                {{shop.description}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- <div flex fxLayout="row">
+            <mat-form-field fxFlex="50" appearance="outline">
+              <input formControlName="date" [min]="minDate" matInput [matDatepicker]="picker"
+                placeholder="Fecha de Orden de Transferencia">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field fxFlex="50" appearance="outline">
+              <mat-label>Hora</mat-label>
+              <input type="time" matInput formControlName="entry" (click)="pickStartTime()">
+            </mat-form-field>
+          </div> -->
+        <div class="row">
+          <mat-form-field class="col" appearance="outline">
+            <textarea formControlName="observation" matInput placeholder="Observaciones"></textarea>
+          </mat-form-field>
+        </div>
+
+        <h3>Art&iacute;culos</h3>
+        <div flex fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
+          <mat-form-field fxFlex appearance="outline">
+            <mat-select [formControl]="categoryCtrl" placeholder="Categorías" #singleSelect
+              (selectionChange)="getSubCategoriesByCat(categoryCtrl.value)">
+              <mat-option>
+                <ngx-mat-select-search [formControl]="categoryFilterCtrl" [placeholderLabel]="'Buscar'"
+                  [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let category of filteredCategories | async" [value]="category.id">
+                {{category.description}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field fxFlex appearance="outline">
+            <mat-select [formControl]="subCategoryCtrl" placeholder="Sub Categoría" #singleSelect
+              (selectionChange)="getProductsBySubcategory(subCategoryCtrl.value)">
+              <mat-option>
+                <ngx-mat-select-search [formControl]="subCategoryFilterCtrl" [placeholderLabel]="'Buscar'"
+                  [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let subcategory of filteredSubCategories | async" [value]="subcategory.id">
+                {{subcategory.description}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field fxFlex appearance="outline">
+            <mat-select [formControl]="productCtrl" placeholder="Artículo" #singleSelect
+              (selectionChange)="addArticle(productCtrl.value)">
+              <mat-option>
+                <ngx-mat-select-search [formControl]="productFilterCtrl" [placeholderLabel]="'Buscar'"
+                  [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+                {{product.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div fxLayout="row" *ngIf="!isMobile">
+        <div fxFlex="100">
+          <!-- <table mat-table [dataSource]="modaldataSource">
+    
+            <ng-container matColumnDef="article">
+              <th mat-header-cell *matHeaderCellDef>Art&iacute;culo</th>
+              <td mat-cell *matCellDef="let element">{{ element.article }}</td>
+            </ng-container>
+    
+            <ng-container matColumnDef="initial_stock">
+              <th mat-header-cell *matHeaderCellDef>Stock Inicial</th>
+              <td mat-cell *matCellDef="let element">{{ element.initial_stock }}</td>
+            </ng-container>
+    
+            <ng-container matColumnDef="end_stock">
+              <th mat-header-cell *matHeaderCellDef>Destino de Stock</th>
+              <td mat-cell *matCellDef="let element">{{ element.end_stock }}</td>
+            </ng-container>
+    
+            <ng-container matColumnDef="qty">
+              <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+              <td mat-cell *matCellDef="let element">
+                <mat-icon style="color: #d32f2f;cursor: pointer;"
+                  (click)="element.qty < 1 ? element.qty=0 : element.qty = element.qty-1" matTooltip="Disminuir Cantidad">
+                  arrow_downward</mat-icon>
+                <mat-icon style="color: #0277bd;cursor: pointer;" matTooltip="Aumentar Cantidad"
+                  (click)="element.qty = element.qty+1">arrow_upward
+                </mat-icon>
+                <mat-form-field>
+                  <input matInput>
+                </mat-form-field>
+              </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="options">
+              <th mat-header-cell *matHeaderCellDef>Opciones</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <button (click)="deleteArticle(i)" matTooltip="Quitar" mat-icon-button color="warn">
+                  <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                </button>
+              </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table> -->
+          <table mat-table [dataSource]="modaldataSource">
+
+            <ng-container matColumnDef="article">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Art&iacute;culo</th>
+              <td mat-cell *matCellDef="let element" class="text-center">{{ element.article }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="initial_stock">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Unidad</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                <mat-form-field style="width: 70px;">
+                  <mat-select [(ngModel)]="element.unit" [ngModelOptions]="{standalone: true}" required>
+                    <mat-option *ngFor="let unit of units" [value]="unit.id">
+                      {{unit.description}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="coin">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Precio Unitario</th>
+              <td mat-cell *matCellDef="let element" class="text-center">
+                <mat-form-field style="width: 70px;">
+                  <input matInput type="number" min="0" [(ngModel)]="element.coin" (change)="calculateTotal()"
+                    (input)="verifyEntryValue($event,i,coin)" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="entries">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Costo</th>
+              <td mat-cell *matCellDef="let element;let i =index" class="text-center">
+                <mat-form-field style="width: 70px;">
+                  <input matInput type="number" min="0" [(ngModel)]="element.cost_price" (change)="calculateTotal()"
+                    (input)="verifyEntryValue($event,i,cost_price)" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="qty">
+              <th mat-header-cell *matHeaderCellDef class="text-center">Cantidad</th>
+              <td mat-cell *matCellDef="let element; let i =index;" class="text-center">
+                <mat-icon style="color: #d32f2f;cursor: pointer;"
+                  (click)="element.qty < 1 ? element.qty=0 : element.qty = element.qty-1"
+                  matTooltip="Disminuir Cantidad">
+                  arrow_downward</mat-icon>
+                <mat-icon style="color: #0277bd;cursor: pointer;" matTooltip="Aumentar Cantidad"
+                  (click)="element.qty = element.qty+1">arrow_upward
+                </mat-icon>
+                <mat-form-field style="width: 70px;">
+                  <input matInput type="number" min="0" [(ngModel)]="element.qty" [ngModelOptions]="{standalone: true}"
+                    (input)="verifyEntryValue($event,i,qty)" (change)="calculateTotal()">
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="sub_total">
+              <th mat-header-cell *matHeaderCellDef>Sub Total</th>
+              <td mat-cell *matCellDef="let element">{{ (element.qty * element.coin) | numberVerifier }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="qty_total">
+              <th mat-header-cell *matHeaderCellDef>Total</th>
+              <td mat-cell *matCellDef="let element">{{ (element.qty * element.coin) | numberVerifier }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="options">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> Opciones </th>
+              <td mat-cell *matCellDef="let element; let idx = index" class="text-center">
+                <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="deleteArticle(idx)"
+                  type="button"><img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24"></button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+      </div>
+
+      <div fxLayout="row" *ngIf="isMobile">
+        TABLA MOVIL
+      </div>
+
+      <div class="row justify-content-end">
+        <mat-form-field class="col-ms-6 col-md-3 col-lg-3" appearance="outline">
+          <mat-label>IGV</mat-label>
+          <input matInput formControlName="igv" type="number" placeholder="IGV">
+        </mat-form-field>
+        <mat-form-field class="col-ms-6 col-md-3 col-lg-3" appearance="outline">
+          <mat-label>Impuestos</mat-label>
+          <input matInput formControlName="tax" type="number" placeholder="Impuestos">
+        </mat-form-field>
+      </div>
+
+      <div flex fxLayoutAlign="end center" fxLayout="row">
+        <mat-slide-toggle class="margin-slide float-right" formControlName="state" [color]="'primary'">
+          {{ addTransferOrderFormGroup.value.state ? 'Activo' : 'Inactivo'}} </mat-slide-toggle>
+      </div>
+
+      <div style="margin-top: 10px;" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+        <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro" type="reset">Limpiar</button>
+        <button flex mat-flat-button color="primary" matTooltip="Guardar Registro"
+          [disabled]="!addTransferOrderFormGroup.valid">Guardar</button>
+      </div>
+    </div>
+  </form>
+</mat-card>
+<!-- <div *ngIf="isSaved">
+  <div fxLayout="row">
+    <div fxFlex="50">
+      <h5><b>&Oacute;rdenes de Transferencia</b></h5>
+    </div>
+    <div fxFlex="50" fxLayoutAlign="end">
+      <button mat-button [matMenuTriggerFor]="menu">Opciones</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item matTooltip="Generar PDF">Generar PDF</button>
+        <button mat-menu-item matTooltip="Generar CSV">Generar CSV</button>
+        <button mat-menu-item matTooltip="Imprimir Etiquetas">Imprimir Etiquetas</button>
+      </mat-menu>
+    </div>
+  </div>
+  <div fxLayout="row">
+    <div fxFlex="100">
+      <h2>T200</h2>
+      <h5>Transferido ({{addTransferOrderFormGroup.value.date | date: 'dd/MM/yyyy'}})</h5>
+      <h6><b>Fecha:</b> {{addTransferOrderFormGroup.value.date | date: 'dd/MM/yyyy'}}</h6>
+      <h6><b>Ordenado por:</b> Propietario</h6>
+    </div>
+  </div>
+  <div fxLayout="row">
+    <div fxFlex="50">
+      <h6><b>Local de origen:</b></h6>
+      {{addTransferOrderFormGroup.value.origin_shop}}<br>
+      San Juan de Lurigancho
+    </div>
+    <div fxFlex="50">
+      <h6><b>Local Destino:</b></h6>
+      {{addTransferOrderFormGroup.value.destination_shop}}<br>
+      San Juan de Lurigancho
+    </div>
+  </div>
+  <div fxLayout="row">
+    <div fxFlex="100">
+      <h6><b>Anotaciones:</b></h6>
+      <p>{{addTransferOrderFormGroup.value.observations}}</p>
+      <mat-divider></mat-divider>
+    </div>
+  </div>
+  <div fxLayout="row">
+    <div fxFlex="100">
+      <h3><b>Art&iacute;culos</b></h3>
+    </div>
+  </div>
+  <div fxLayout="row">
+    <div fxFlex="50">
+      <h6><b>Art&iacute;culo</b></h6>
+      <div *ngFor="let article of modaldataSource.data">
+        <p>(REF 10002) {{article.article}}‎</p>
+      </div>
+    </div>
+    <div fxFlex="50">
+      <h6><b>Cantidad</b></h6>
+      <div *ngFor="let article of modaldataSource.data">
+        <p>{{article.qty}}</p>
+      </div>
+    </div>
+  </div>
+</div> -->

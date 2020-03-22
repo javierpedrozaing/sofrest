@@ -1,0 +1,53 @@
+<form [formGroup]="form" (ngSubmit)="save(form.value)" class="form-container">
+    <div flex fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Nombres</mat-label>
+          <input matInput formControlName="name" placeholder="Ingrese los Nombres">
+        </mat-form-field>
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Apellidos</mat-label>
+          <input matInput formControlName="surname" placeholder="Ingrese los Apellidos">
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Dirección</mat-label>
+          <input matInput formControlName="direction" placeholder="Dirección">
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" placeholder="Correo Electr&oacute;nico">
+        </mat-form-field>
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="phone" placeholder="Número Telefónico">
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Rol</mat-label>
+          <mat-select formControlName="role">
+            <mat-option>None</mat-option>
+            <mat-option value="option1">Rol 1</mat-option>
+            <mat-option value="option2">Rol 2</mat-option>
+            <mat-option value="option3">Rol 3</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Contrase&ntilde;a</mat-label>
+          <input type="password" formControlName="password" matInput placeholder="Contrase&ntilde;a">
+        </mat-form-field>
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Conf. Contrase&ntilde;a</mat-label>
+          <input type="password" formControlName="confirm_password" matInput placeholder="Conf. Contrase&ntilde;a">
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" class="footer-button" fxLayout.xs="column">
+            <button mat-flat-button fxFlex="100" color="primary" type="submit"
+            matTooltip="Guardar">Guardar</button>
+        </div>
+  </form>

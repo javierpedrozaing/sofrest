@@ -1,0 +1,89 @@
+<mat-card>
+    <div class="container-section-header clearfix">
+        <h2 class="float-left">Listado de Modelos</h2>
+        <button class="float-right" matTooltip="Agregar Sub-Categoría" mat-flat-button *ngIf="!isMobile" color="primary" (click)="openDialog()">
+            <mat-icon aria-hidden="false" aria-label="Add Icon">add</mat-icon> Agregar
+        </button>
+        <!-- <span class="float-right">&nbsp;</span>
+      <button class="float-right" *ngIf="showRemove && dataSource" (click)="removeSelected()" mat-flat-button
+        color="warn">
+        <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24"> RETIRAR
+      </button> -->
+    </div>
+
+    <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+        <mat-form-field fxFlex="100">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+            <span matPrefix>
+                <mat-icon>search</mat-icon>
+            </span>
+        </mat-form-field>
+    </div>
+
+    <div class="table-responsive text-nowrap" *ngIf="!isMobile">
+        <table mat-table [dataSource]="dataSource"
+            class="text-center" *ngIf="!isMobile">
+
+            <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> N </th>
+                <td mat-cell *matCellDef="let element; let i =index" class="text-center"> {{i + 1}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Marca </th>
+                <td mat-cell *matCellDef="let element" class="text-center"> {{element.brand ? element.brand.description : 'Sin Especificar'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Descripción </th>
+                <td mat-cell *matCellDef="let element" class="text-center"> {{element.description}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="options">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Opciones </th>
+                <td mat-cell *matCellDef="let element; let idx = index" class="text-center">
+                  <button mat-icon-button (click)="changeVisibility(element.id,idx, element.state)">
+                    <mat-icon color="success" matTooltip="Deshabilitar" *ngIf="element.state">visibility</mat-icon>
+                    <mat-icon color="warn" matTooltip="Habilitar" *ngIf="!element.state">visibility_off</mat-icon>
+                </button>
+                    <button mat-icon-button color="primary" (click)="openDialog(element.id,idx)" matTooltip="Editar">
+                      <img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24">
+                    </button>
+                    <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="deleteModel(idx)">
+                      <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" *ngIf="!isMobile">
+    </mat-paginator>
+
+    <mat-list *ngIf="isMobile">
+        <mat-list-item *ngFor="let data of dataSource.data; let element; let idx = index" class="mat-element">
+            <h4 mat-line>{{data.description}}</h4>
+            <p mat-line>
+              <button mat-icon-button (click)="changeVisibility(data.id,idx, element.state)">
+                <mat-icon color="success" matTooltip="Deshabilitar" *ngIf="data.state">visibility</mat-icon>
+                <mat-icon color="warn" matTooltip="Habilitar" *ngIf="!data.state">visibility_off</mat-icon>
+            </button>
+                <button mat-icon-button color="primary" (click)="openDialog(data.id,idx)" matTooltip="Editar">
+                  <img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24">
+                </button>
+                <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="deleteModel(idx)">
+                  <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                </button>
+            </p>
+            <mat-divider></mat-divider>
+        </mat-list-item>
+    </mat-list>
+
+    <button class="float-button" (click)="openDialog()" *ngIf="isMobile" mat-fab color="primary">
+        <mat-icon aria-label="Añadir">
+            add
+        </mat-icon>
+    </button>
+</mat-card>

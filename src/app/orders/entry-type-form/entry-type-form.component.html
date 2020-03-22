@@ -1,0 +1,30 @@
+<form [formGroup]="form" (ngSubmit)="save(form.value)" class="form-container">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Registro de Tipo de Ingreso</mat-card-title>
+        <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+        <div class="button-close">
+          <button type="button" routerLink="/orders/entry-type" matTooltip="Regresar" mat-button color="warn" class="float-right config-close">
+            <mat-icon>keyboard_backspace</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <br>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex="100" appearance="outline">
+                <mat-label>Descripción</mat-label>
+                <input matInput formControlName="description" placeholder="Descripción">
+            </mat-form-field>
+        </div>
+        <div flex fxLayoutAlign="end center" fxLayout="row">
+            <mat-slide-toggle class="margin-slide float-right" formControlName="status" [color]="'primary'"> {{form.value.status ? 'Activo' : 'Inactivo'}} </mat-slide-toggle>
+        </div>
+      </mat-card-content>
+      <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+        <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro"  type="reset">Limpiar</button>
+        <span>&nbsp;</span>
+        <button flex mat-raised-button color="primary" matTooltip="Guardar Registro" type="submit" [disabled]="!form.valid">Guardar</button>
+      </div>
+    </mat-card>
+  </form>

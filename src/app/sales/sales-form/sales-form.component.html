@@ -1,0 +1,170 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Registro de Venta</mat-card-title>
+    <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="Sales" (ngSubmit)="save(Sales.value)" class="form-container">
+      <div class="row content-adapted-form">
+
+        <div class="col-lg-6">
+
+          <mat-form-field class="adapted-form col-lg-6" appearance="outline">
+            <mat-label>Tipo de Documento</mat-label>
+            <mat-select formControlName="type_document">
+              <mat-option>None</mat-option>
+              <mat-option value="option1">Boleta</mat-option>
+              <mat-option value="option2">Factura</mat-option>
+              <mat-option value="option3">Otro</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="adapted-form col-lg-6" appearance="outline">
+            <mat-label>Serie</mat-label>
+            <input matInput formControlName="serie" placeholder="Serie">
+          </mat-form-field>
+
+
+          <mat-form-field class="adapted-form col-lg-6" appearance="outline">
+            <mat-label>Correlativo</mat-label>
+            <input matInput formControlName="correlative" placeholder="Correlativo">
+          </mat-form-field>
+
+          <mat-form-field class="adapted-form col-lg-6" appearance="outline">
+            <input matInput [matDatepicker]="dp" placeholder="Verbose datepicker" formControlName="fec_create">
+            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker #dp></mat-datepicker>
+          </mat-form-field>
+
+          <div class="row conponent-custom">
+            <mat-form-field class="adapted-form col-lg-10" appearance="outline">
+              <mat-label>Cliente</mat-label>
+              <input matInput formControlName="client" placeholder="Nombre de cliente">
+            </mat-form-field>
+
+            <div class="adapted-form col-lg-2 custom-add">
+              <button style="margin-top: 10px;" mat-mini-fab aria-label="Nuevo Tipo de Almacén" type="button"
+                (click)="AddClient()">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="row conponent-custom">
+            <mat-form-field class="adapted-form col-lg-10" appearance="outline">
+              <mat-label>Metodo de Pago</mat-label>
+              <mat-select formControlName="payment_method">
+                <mat-option>None</mat-option>
+                <mat-option value="option1">Option 1</mat-option>
+                <mat-option value="option2">Option 2</mat-option>
+                <mat-option value="option3">Option 3</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="adapted-form col-lg-2 custom-add">
+              <button style="margin-top: 10px;" mat-mini-fab aria-label="Nuevo Tipo de Almacén" type="button"
+                (click)="Payment()">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+
+          </div>
+
+          <div class="row conponent-custom">
+            <mat-form-field class="adapted-form col-lg-10" appearance="outline">
+              <mat-label>Forma de Pago</mat-label>
+              <mat-select formControlName="way_to_pay">
+                <mat-option>None</mat-option>
+                <mat-option value="option1">Option 1</mat-option>
+                <mat-option value="option2">Option 2</mat-option>
+                <mat-option value="option3">Option 3</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="adapted-form col-lg-2 custom-add">
+              <button style="margin-top: 10px;" mat-mini-fab aria-label="Nuevo Tipo de Almacén" type="button"
+                (click)="PayWay()">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="row conponent-custom">
+            <mat-form-field class="adapted-form col-lg-10" appearance="outline">
+              <mat-label>Tipo de Venta</mat-label>
+              <mat-select formControlName="type_sale">
+                <mat-option>None</mat-option>
+                <mat-option value="option1">Delivery</mat-option>
+                <mat-option value="option2">Caja</mat-option>
+                <mat-option value="option3">Otro</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="adapted-form col-lg-2 custom-add">
+              <button style="margin-top: 10px;" mat-mini-fab aria-label="Nuevo Tipo de Almacén" type="button"
+                (click)="SaleType()">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-lg-6">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Buscar Producto</mat-label>
+            <input matInput formControlName="searchText" (keyup)="searchTerm$.next($event.target.value)" placeholder="Buscar producto">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+          <ul class="list-group list-group-card">
+              <li *ngFor="let item of productListStock" class="list-group-item item-card">
+                <div class="clearfix">
+                  <span class="float-left">{{item.name}}</span>
+                  <mat-icon class="float-right" (click)="addProductList(item)" matSuffix>add_shopping_cart</mat-icon>
+                  <!-- <span class="float-right">{{item.price |currency}}</span> -->
+                </div>
+              </li>
+            </ul>
+
+          <ul class="list-group list-product-select">
+            <li *ngFor="let item of productList;let idx=index" class="list-group-item">
+              <div class="clearfix">
+                <span class="float-left">{{item.name}}</span>
+                
+                <mat-icon class="float-right"  (click)="deleteProductList(idx)" matSuffix>delete</mat-icon>
+                <span style="margin-right: 20px;" class="float-right">{{item.price | currency}}</span>
+                <span class="float-right general-cantidad">
+                    <mat-icon (click)="removeCantidad(idx)" matSuffix>remove</mat-icon>
+                    <span class="number-cantidad">{{item.cant}}</span>
+                    <mat-icon (click)="addCantidad(idx)" matSuffix>add</mat-icon>
+                </span>
+                
+                <!-- <span class="float-right">{{item.price |currency}}</span> -->
+              </div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="clearfix">
+        <div class="float-right">
+          <p class="result-buy"><span class="title-result">Sub-Total :</span> {{subTotal().subtotal | currency}}</p>
+          <p class="result-buy"><span class="title-result">IGV :</span> 5%</p>
+          <p class="result-buy"><span class="title-result">Total :</span>{{subTotal().total | currency}}</p>
+        </div>
+      </div>
+      <!-- <div flex fxLayout="row" fxLayout.xs="column">
+          <mat-slide-toggle class="margin-slide float-right" formControlName="status" color="primary"> {{form.value.status ? 'Activo' : 'Inactivo'}} </mat-slide-toggle>
+      </div> -->
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <div class="container">
+      <div class="row justify-content-center">
+        <button mat-button color="warn" type="reset" matTooltip="Reiniciar Registro">Limpiar</button>
+        <button mat-button color="primary" type="submit"  matTooltip="Guardar Registro" [disabled]="!Sales.valid">Guardar</button>
+      </div>
+    </div>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,149 @@
+<form [formGroup]="form" (ngSubmit)="submit(form.value, formDirective)" class="form-container" #formDirective="ngForm">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Registro de Personal</mat-card-title>
+      <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+      <div class="button-close">
+        <button type="button" routerLink="/human-resource/list-employees" matTooltip="Volver al Listado" mat-button color="warn" class="float-right config-close">
+          <mat-icon>keyboard_backspace</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <br>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Nombres y Apellidos</mat-label>
+          <input matInput formControlName="name" placeholder="Nombres y Apellidos">
+        </mat-form-field>
+        <mat-form-field fxFlex="20" appearance="outline">
+          <mat-label>Tipo de Documento</mat-label>
+          <mat-select formControlName="document_type_id" [compareWith]="compareObjects">
+            <mat-option *ngFor="let item of documentTypes" [value]="item.id">{{item.description}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex appearance="outline">
+          <mat-label>Documento</mat-label>
+          <input matInput formControlName="document" placeholder="Documento">
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput formControlName="email" placeholder="Correo Electrónico">
+          <span matPrefix>
+            <mat-icon>email</mat-icon>&nbsp;
+          </span>
+        </mat-form-field>
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Número Telefónico</mat-label>
+          <input matInput formControlName="phone" placeholder="Número Telefónico">
+          <span matPrefix>
+            <mat-icon>phone</mat-icon>&nbsp;
+          </span>
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Dirección</mat-label>
+          <textarea formControlName="address" type="text" matInput placeholder="Dirección"></textarea>
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Rol</mat-label>
+          <mat-select formControlName="role" [compareWith]="compareObjects">
+            <mat-option>Sin Especificar</mat-option>
+            <mat-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+          <mat-form-field fxFlex="50" appearance="outline">
+            <mat-label>Sueldo Bruto</mat-label>
+            <input matInput type="number" formControlName="gross_salary" placeholder="Sueldo Bruto">
+          </mat-form-field>
+          <mat-form-field fxFlex="50" appearance="outline">
+              <mat-label>Sueldo Neto</mat-label>
+              <input matInput type="number" formControlName="net_salary" placeholder="Sueldo Neto">
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayoutGap="5px">
+          <span>
+            <button class="button-add" type="button" color="primary" mat-mini-fab
+            style="margin-top: 10px !important;">
+            <mat-icon>lock</mat-icon>
+          </button>
+          </span>
+          <mat-form-field fxFlex="5" fxFlex.xs="7" appearance="outline">
+            <input matInput type="password" #pin0 (input)="verifyEntryValue($event,0)" placeholder="" [(ngModel)]="pinCode[0]" [ngModelOptions]="{standalone: true}" class="text-center">
+          </mat-form-field>
+          <mat-form-field fxFlex="5" fxFlex.xs="7" appearance="outline">
+            <input matInput type="password" #pin1 (input)="verifyEntryValue($event,1)" placeholder="" [(ngModel)]="pinCode[1]" [ngModelOptions]="{standalone: true}" class="text-center">
+          </mat-form-field>
+          <mat-form-field fxFlex="5" fxFlex.xs="7" appearance="outline">
+            <input matInput type="password" #pin2 (input)="verifyEntryValue($event,2)" placeholder="" [(ngModel)]="pinCode[2]" [ngModelOptions]="{standalone: true}" class="text-center">
+          </mat-form-field>
+          <mat-form-field fxFlex="5" fxFlex.xs="7" appearance="outline">
+            <input matInput type="password" #pin3 (input)="verifyEntryValue($event,3)" placeholder="" [(ngModel)]="pinCode[3]" [ngModelOptions]="{standalone: true}" class="text-center">
+          </mat-form-field>
+          <span>
+            <button class="button-add" type="button" color="primary" mat-mini-fab
+            style="margin-top: 10px !important;">
+            <mat-icon>lock</mat-icon>
+          </button>
+          </span>
+          <mat-form-field fxFlex="5" fxFlex.xs="7" appearance="outline">
+            <input matInput type="password" #pinVerify0 (input)="verifyEntryValueVerify($event,0)" placeholder="" [(ngModel)]="pinCodeVerify[0]" [ngModelOptions]="{standalone: true}" class="text-center">
+          </mat-form-field>
+          <mat-form-field fxFlex="5" fxFlex.xs="7" appearance="outline">
+            <input matInput type="password" #pinVerify1 (input)="verifyEntryValueVerify($event,1)" placeholder="" [(ngModel)]="pinCodeVerify[1]" [ngModelOptions]="{standalone: true}" class="text-center">
+          </mat-form-field>
+          <mat-form-field fxFlex="5" fxFlex.xs="7" appearance="outline">
+            <input matInput type="password" #pinVerify2 (input)="verifyEntryValueVerify($event,2)" placeholder="" [(ngModel)]="pinCodeVerify[2]" [ngModelOptions]="{standalone: true}" class="text-center">
+          </mat-form-field>
+          <mat-form-field fxFlex="5" fxFlex.xs="7" appearance="outline">
+            <input matInput type="password" #pinVerify3 (input)="verifyEntryValueVerify($event,3)" placeholder="" [(ngModel)]="pinCodeVerify[3]" [ngModelOptions]="{standalone: true}" class="text-center">
+          </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="center center">
+          <mat-chip-list *ngIf="verifiedPassword!==null">
+            <mat-chip color="warn" selected *ngIf="!verifiedPassword">PIN NO COINCIDEN</mat-chip>
+            <mat-chip color="primary" selected *ngIf="verifiedPassword">PIN COINCIDEN</mat-chip>
+          </mat-chip-list>
+        </div>
+        <div fxLayoutAlign="end center" fxLayout="row">
+          <mat-slide-toggle [color]="'primary'" formControlName="state">{{form.value.state ? 'Activo' : 'Inactivo'}}</mat-slide-toggle>
+        </div>
+      <mat-accordion>
+      </mat-accordion>
+
+    </mat-card-content>
+  </mat-card>
+  <mat-expansion-panel [expanded]="showStore" (opened)="showStore = true" (closed)="showStore = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Sucursales
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-checkbox [checked]="allSelected" (change)="selectAll(!allSelected)">Acesso a todas las Sucursales</mat-checkbox>
+    <div style="margin-left: 10px">
+      <div flex fxLayout="row" fxLayout.xs="column" *ngFor="let store of stores; let i = index;">
+        <mat-checkbox fxFlex="100" [checked]="store.checked" (change)="checkStore(!store.checked,i)">{{store.description}}
+        </mat-checkbox>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <button mat-button type="button" class="float-right" (click)="showStore = false">Ocultar</button>
+  </mat-expansion-panel>
+
+  <mat-divider [inset]="true" class="margin-top:2px"></mat-divider>
+  <div class="container">
+    <div class="row justify-content-end">
+      <button mat-raised-button color="warn" type="reset" (click)="resetPassword()" matTooltip="Reiniciar Registro" >Limpiar</button>
+      <span>&nbsp;</span>
+      <button mat-raised-button color="primary" type="submit" matTooltip="Guardar Registro" [disabled]="!form.valid">Guardar</button>
+    </div>
+  </div>
+</form>

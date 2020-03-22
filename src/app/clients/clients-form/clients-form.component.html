@@ -1,0 +1,90 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Registro de Cliente</mat-card-title>
+    <mat-card-subtitle>Complete los datos del formulario para el registro</mat-card-subtitle>
+    <div class="button-close" *ngIf="showClose">
+      <button type="button" (click)="onNoClick()" matTooltip="Cerrar" mat-button color="warn" class="float-right config-close">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="Client" (ngSubmit)="submit(Client.value,null)" class="form-container">
+
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <mat-form-field appearance="outline" fxFlex="50">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" placeholder="Nombre">
+        </mat-form-field>
+        <mat-form-field fxFlex="10" appearance="outline">
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="document_type_id" [compareWith]="compareObjects">
+            <mat-option *ngFor="let doc of documentstypes" [value]="doc.id">{{doc.description}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="30">
+          <mat-label>Documento</mat-label>
+          <input matInput formControlName="document" placeholder="Documento">
+        </mat-form-field>
+        <button mat-icon-button type="button" (click)="setClientData()" matTooltip="Buscar" color="primary">
+          <mat-icon>search</mat-icon>
+      </button>
+      </div>
+
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" placeholder="Correo Electr&oacute;nico">
+        </mat-form-field>
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Web</mat-label>
+          <input matInput formControlName="web" placeholder="RUC">
+        </mat-form-field>
+      </div>
+
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="phone" placeholder="Número telefónico">
+        </mat-form-field>
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>UBIGEO</mat-label>
+          <mat-select formControlName="ubigeo_id" [compareWith]="compareObjects" #singleSelectUbigeo>
+            <mat-option>
+                <ngx-mat-select-search [formControl]="ubigeoFilterCtrl" [placeholderLabel]="'Buscar'"
+                    [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let ubigeo of filteredUbigeos | async" [value]="ubigeo.id">
+              {{ubigeo.department}}/{{ubigeo.province}}/{{ubigeo.district}}
+            </mat-option>
+        </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div flex fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Dirección</mat-label>
+          <textarea formControlName="address" type="text" matInput placeholder="Dirección"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div flex fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="100" appearance="outline">
+          <mat-label>Observación</mat-label>
+          <input matInput formControlName="observation" placeholder="Observación">
+        </mat-form-field>
+      </div>
+
+      <div fxLayoutAlign="end center" fxLayout="row">
+        <mat-slide-toggle [color]="'primary'" formControlName="state">{{Client.value.state ? 'Activo' : 'Inactivo'}}</mat-slide-toggle>
+      </div>
+
+      <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+        <button mat-raised-button color="warn" matTooltip="Reiniciar Registro" type="reset">Limpiar</button>
+        <button mat-raised-button color="primary" matTooltip="Guardar Registro" type="submit"
+          [disabled]="!Client.valid">Guardar</button>
+      </div>
+    </form>
+  </mat-card-content>
+
+</mat-card>

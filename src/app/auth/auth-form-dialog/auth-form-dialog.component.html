@@ -1,0 +1,28 @@
+<div flex fxLayout="row" fxLayoutAlign="space-between center">
+    <h2 class="float-left">Autenticación</h2>
+    <button mat-button color="warn" type="button" class="float-right" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<form [formGroup]="form" (ngSubmit)="save(form.value)" class="form-container">
+    <div mat-dialog-content>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Usuario/Correo Electrónico</mat-label>
+                <input matInput formControlName="email" placeholder="Usuario/Correo Electrónico">
+            </mat-form-field>
+        </div>
+        <div flex fxLayout="row" fxLayout.xs="column">
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Contraseña</mat-label>
+                <input matInput type="password" formControlName="password" placeholder="Contraseña">
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+        <button flex mat-raised-button color="warn" type="reset" matTooltip="Reiniciar Registro">Limpiar</button>
+        <span>&nbsp;</span>
+        <button flex mat-raised-button color="primary" type="submit" matTooltip="Guardar Registro" cdkFocusInitial
+            [disabled]="!form.valid">Enviar</button>
+    </div>
+</form>

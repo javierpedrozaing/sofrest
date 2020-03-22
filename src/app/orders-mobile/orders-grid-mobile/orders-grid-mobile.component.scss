@@ -1,0 +1,12 @@
+.ready {
+  background: lightgreen;
+}
+.waiting {
+  background: indigo;
+  color: white;
+}
+/deep/.mat-grid-tile .mat-figure {
+  align-items: flex-start !important;
+  justify-content: initial !important;
+  padding: 5px !important;
+}

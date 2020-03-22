@@ -1,0 +1,81 @@
+<div class="d-flex">
+  <div class="header-btn-lg pr-0" style="padding: 0px !important; margin-left: 0px !important;">
+    <div class="widget-content p-0">
+      <div class="widget-content-wrapper">
+        <div class="widget-content-left">
+          <div class="btn-group" ngbDropdown placement="bottom-right">
+            <button type="button" class="btn btn-link p-0 mr-2 d-inline-block" ngbDropdownToggle>
+              <span>
+                <div class="icon-wrapper icon-wrapper-alt rounded-circle">
+                  <img width="42" src="./assets/images/avatars/user.png" alt="" class="rounded-circle">
+                </div>
+              </span>
+            </button>
+            <div ngbDropdownMenu>
+              <div class="header-card" [ngClass]="{'header-card-dark': statusT}">
+                <div class="clearfix">
+                  <div class="float-left">
+                    <img width="38" src="./assets/images/avatars/user.png" alt="" class="rounded-circle" >
+                    <span class="title-name" style="color: black !important">{{data.name || ''}}</span>
+                  </div>
+                  <!-- <p class="title-description">A short profile description</p> -->
+                  <button mat-flat-button style="color: black; background-color: #fd7e14" class="float-right mb-2" matTooltip="Cerrar Sesión" routerLink="/login">Salir</button>
+                </div>
+              </div>
+              <mat-divider></mat-divider>
+              <div class="theme">
+                <div class="clearfix">
+                  <span style="color: black" class="float-left">Posici&oacute;n del Men&uacute;</span>
+                  <div class="btn-group-sm float-right btn-group btn-group-toggle" ngbRadioGroup name="radioBasic"
+                    [(ngModel)]="statusM">
+                    <label ngbButtonLabel class="btn-secondary">
+                      <input ngbButton (click)="changeMenu(false)" type="radio" [value]="false"> Izquierda
+                    </label>
+                    <label ngbButtonLabel class="btn-dark">
+                      <input ngbButton (click)="changeMenu(true)" type="radio" [value]="true"> Derecha
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="theme">
+                <div class="clearfix">
+                  <span style="color: black" class="float-left">Interfaz </span>
+                  <div class="btn-group-sm float-right btn-group btn-group-toggle" ngbRadioGroup name="radioBasic"
+                    [(ngModel)]="statusT">
+                    <label ngbButtonLabel class="btn-secondary">
+                      <input ngbButton (click)="changeTheme(false)" type="radio" [value]="false"> Claro
+                    </label>
+                    <label ngbButtonLabel class="btn-dark">
+                      <input ngbButton (click)="changeTheme(true)" type="radio" [value]="true"> Oscuro
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <!-- <button class="dropdown-item">Chat</button> -->
+              <button style="color: black" class="dropdown-item">Recuperar Contraseña</button>
+              <button style="color: black" class="dropdown-item">Mi cuenta</button>
+              <div class="row">
+                <div routerLink="/chats/messages" class="col-sm-6 item-grid">
+                  <div class="content-item">
+                    <i class="pe-7s-chat icon-item"> </i>
+                    <p style="color: black" class="title-icon-messaje">Chat</p>
+                  </div>
+                </div>
+                <div class="col-sm-6 item-grid">
+                  <div class="content-item">
+                    <i class="pe-7s-ticket icon-item"> </i>
+                    <p style="color: black" class="title-icon-tickets">Tickets de Soporte</p>
+                  </div>
+                </div>
+              </div>
+              <button class="dropdown-item footer-header">
+                <button mat-flat-button style="color: black; background-color: #fd7e14" class="mb-2">Abrir mensajes</button>
+              </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

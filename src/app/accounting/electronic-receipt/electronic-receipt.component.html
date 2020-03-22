@@ -1,0 +1,67 @@
+<mat-card>
+    <div class="container-section-header clearfix">
+        <h2 class="float-left">Comprobantes Electrónicos</h2>
+    </div>
+
+    <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center">
+        <mat-form-field fxFlex="50">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+            <span matPrefix>
+                <mat-icon>search</mat-icon>
+            </span>
+        </mat-form-field>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" class="text-center" *ngIf="!isMobile">
+
+        <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef class="text-center"> N° </th>
+            <td mat-cell *matCellDef="let element; let i =index" class="text-center"> {{i + 1}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="correlative">
+            <th mat-header-cell *matHeaderCellDef class="text-center"> Tipo de pago </th>
+            <td mat-cell *matCellDef="let element" class="text-center"> {{element.type_sale}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef class="text-center"> Metodo de pago </th>
+            <td mat-cell *matCellDef="let element" class="text-center"> {{element.payment_method}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fec_create">
+            <th mat-header-cell *matHeaderCellDef class="text-center"> Fecha </th>
+            <td mat-cell *matCellDef="let element" class="text-center"> {{element.fec_create}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="options">
+            <th mat-header-cell *matHeaderCellDef class="text-center"> Opciones </th>
+            <td mat-cell *matCellDef="let element" class="text-center">
+                <button mat-icon-button color="primary" matTooltip="Generar Nota de Débito"
+                [routerLink]="['/accounting/debit']"><mat-icon>note</mat-icon></button>
+                <button mat-icon-button color="primary" matTooltip="Generar Nota de Crédito"
+                [routerLink]="['/accounting/credit']"><mat-icon>turned_in_not</mat-icon></button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" *ngIf="!isMobile">
+    </mat-paginator>
+
+    <mat-list *ngIf="isMobile">
+        <mat-list-item *ngFor="let data of dataSource.data" class="mat-element">
+            <mat-icon mat-list-icon>insert_drive_file</mat-icon>
+            <h4 mat-line>{{data.type_sale}} - {{data.payment_method}}</h4>
+            <p mat-line> {{data.fec_create}} </p>
+            <p mat-line>
+                <button mat-icon-button color="primary" matTooltip="Generar Nota de Débito"
+                [routerLink]="['/accounting/debit']"><mat-icon>note</mat-icon></button>
+                <button mat-icon-button color="primary" matTooltip="Generar Nota de Crédito"
+                [routerLink]="['/accounting/credit']"><mat-icon>turned_in_not</mat-icon></button>
+            </p>
+            <mat-divider></mat-divider>
+        </mat-list-item>
+    </mat-list>
+</mat-card>

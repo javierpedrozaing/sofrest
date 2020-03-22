@@ -1,0 +1,35 @@
+.tabs-categories{
+    text-align: center;
+    background-color: #ffffff;
+    margin-bottom: 10px;}
+.selected-category{
+    border-bottom: 2px solid #fbd729;
+    background-color: #eee;
+}
+.selected-client{
+    background-color: #eee;
+}
+.category-button{
+    margin-right: 10px;
+    margin-left: 10px;
+    border-radius: 0px;
+}
+.mat-element{
+    border-bottom: 1px solid #b0bec5;
+    height: 35px;
+    .product-description{
+        margin-top: auto !important;
+    }
+}
+.mat-element:hover{
+    background-color: #eee;
+    cursor: pointer;
+}
+.selected-expansion-panel{
+    border: 1px solid #3f51b5;
+}
+.float-button{
+    position: fixed;
+    bottom: 60px;
+    right: 25px;
+}

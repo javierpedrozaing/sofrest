@@ -1,0 +1,7 @@
+<div mat-dialog-content style="font-size: 1.6rem;">
+    <div *ngFor="let elem of cardTypes;trackBy:trackByIndex;" fxLayout="row" fxLayoutAlign="start center" style="margin-bottom: 5px;" fxLayoutGap="5px">
+          <div class="card-type" [ngClass]="{'card-type-selected' : (cardTypeID) ? cardTypeID.id === elem.id : false}" fxFlex (click)="setType(elem)">
+            {{elem.description | uppercase}}
+          </div>
+    </div>
+</div>

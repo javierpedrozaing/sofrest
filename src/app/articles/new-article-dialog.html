@@ -1,0 +1,345 @@
+<div *ngIf="!isSaved">
+  <div class="clearfix">
+    <h2 class="float-left">Crear Art&iacute;culo</h2>
+    <button type="button" mat-button matTooltip="Cerrar" color="warn" class="float-right" (click)="onNoClick()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content fxLayout="column">
+    <form [formGroup]="addArticleFormGroup" (ngSubmit)="submit(addArticleFormGroup.value, null)" class="form-container">
+      <div fxLayout="row" fxLayout.lt-md="column">
+        <div fxFlex>
+          <mat-checkbox formControlName="production_item">Art&iacute;culo de Producci&oacute;n</mat-checkbox>
+        </div>
+        <div fxFlex>
+          <mat-checkbox formControlName="sale_item">Art&iacute;culo en Venta</mat-checkbox>
+        </div>
+        <div fxFlex>
+          <mat-checkbox formControlName="portioning_item">Art&iacute;culo de Porcionamiento</mat-checkbox>
+        </div>
+      </div>
+      <div flex fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="2px">
+        <mat-form-field fxFlex="40" appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" placeholder="Nombre">
+        </mat-form-field>
+        <mat-form-field fxFlex appearance="outline">
+          <mat-label>Tipo de Producto</mat-label>
+          <mat-select formControlName="type_product_id" [compareWith]="compareObjects">
+            <mat-option *ngFor="let item of product_types" [value]="item.id">{{item.description}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex appearance="outline">
+          <mat-label>Categor&iacute;a</mat-label>
+          <mat-select formControlName="category_id"
+            (selectionChange)="getSubCategoriesByCat(addArticleFormGroup.value.category_id)"
+            [compareWith]="compareObjects">
+            <mat-option *ngFor="let category of categories" [value]="category.id">{{category.description}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex appearance="outline">
+          <mat-label>Sub-Categor&iacute;a</mat-label>
+          <mat-select formControlName="sub_category_id" [compareWith]="compareObjects">
+            <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory.id">{{subcategory.description}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="addArticleFormGroup.value.sale_item" fxLayout="row" fxLayoutGap="5px">
+        <mat-divider style="margin: 10px 0 10px 0"></mat-divider>
+
+      <div fxLayout="column" fxFlex="50">
+        <h4>Impuestos</h4>
+        <div fxLayout="row">
+          <mat-form-field fxFlex="50" appearance="outline">
+            <mat-label>IGVs</mat-label>
+            <mat-select formControlName="tax" [compareWith]="compareObjects" multiple placeholder="Seleccione">
+              <mat-option *ngFor="let tax of taxes" [hidden]="tax.type !== 0" [value]="tax.id">{{tax.description}} ({{tax.amount}}%)</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field fxFlex="50" appearance="outline">
+            <mat-label>IGVs ISC</mat-label>
+            <mat-select formControlName="tax_isc" [compareWith]="compareObjects" placeholder="Seleccione">
+              <mat-option *ngFor="let tax of taxes" [hidden]="tax.type !== 1" [value]="tax.id">{{tax.description}} ({{tax.amount}}%)</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="column" fxFlex="50">
+        <h4>Modificadores</h4>
+          <mat-form-field fxFlex="100" appearance="outline">
+            <mat-select formControlName="modifier" multiple placeholder="Seleccione">
+              <mat-option *ngFor="let modifier of modifiers" [value]="modifier.id">{{modifier.description}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+      </div>
+    </div>
+    <div *ngIf="addArticleFormGroup.value.sale_item && !verifyIGV()" fxLayout="row">
+      <mat-checkbox (click)="setIGV()" checked="true">Exonerado</mat-checkbox>
+    </div>
+
+      <div flex fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="5px">
+        <div fxFlex="15">
+          <span>
+            Imagen de Artículo
+          </span>
+          <ngx-image-uploader [options]="options" (upload)="onUpload($event)"></ngx-image-uploader>
+          <!-- <file-upload accept=".jpg,.jpeg,.png" maxsize="80" filesize="80">
+            <ng-template #placeholder>
+              <span>
+                <mat-icon>cloud_upload</mat-icon>
+              </span>
+            </ng-template>
+          </file-upload> -->
+        </div>
+
+        <div fxFlex="85">
+          <div fxLayoutGap="5px" fxLayout="row" fxLayout.lt-md="column">
+              <mat-form-field *ngIf="addArticleFormGroup.value.sale_item && verifyIGV()" fxFlex="15" appearance="outline">
+                  <mat-label>Precio Neto</mat-label>
+                  <input matInput type="number" (keyup)="setPrice(addArticleFormGroup.value.net_price)" formControlName="net_price" placeholder="Precio Neto">
+                </mat-form-field>
+            <mat-form-field *ngIf="addArticleFormGroup.value.sale_item" fxFlex="15" appearance="outline">
+              <mat-label>Precio de Venta</mat-label>
+              <input matInput type="number" (keyup)="setNetPrice(addArticleFormGroup.value.price)" formControlName="price" placeholder="Precio">
+            </mat-form-field>
+            <mat-form-field *ngIf="!addArticleFormGroup.value.production_item && verifyIGV()" fxFlex="15" appearance="outline">
+                <mat-label>IGV</mat-label>
+                <input matInput type="number" readonly [value]="addArticleFormGroup.value.igv" placeholder="IGV">
+              </mat-form-field>
+            <mat-form-field fxFlex="15" appearance="outline">
+              <mat-label>Costo</mat-label>
+              <input matInput type="number" formControlName="cost" placeholder="Costo">
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+              <mat-label>Moneda</mat-label>
+              <mat-select [compareWith]="compareObjects" formControlName="coin_id">
+                <mat-option *ngFor="let item of currencies" [value]="item.id">{{item.description}} ({{item.symbol}})
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+              <mat-label>Proveedor</mat-label>
+              <mat-select formControlName="sold_by" [compareWith]="compareObjects">
+                <mat-option *ngFor="let item of providers" [value]="item.id">{{item.business_name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxLayoutGap="5px" fxLayout="row" fxLayout.lt-md="column">
+            <mat-form-field fxFlex appearance="outline">
+              <mat-label>Unidad de Medida</mat-label>
+              <mat-select [compareWith]="compareObjects" formControlName="measurement_unit_id">
+                <mat-option *ngFor="let unit of mUnits" [value]="unit.id">{{unit.description}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+              <mat-label>Cantidad de Medida</mat-label>
+              <input matInput formControlName="quantity_measurement" placeholder="Cantidad de Medida">
+            </mat-form-field>
+            <mat-form-field fxFlex="10" appearance="outline">
+              <mat-label>C&oacute;digo</mat-label>
+              <input matInput formControlName="code" placeholder="Código">
+            </mat-form-field>
+            <mat-form-field fxFlex appearance="outline">
+              <mat-label>C&oacute;digo de Barras</mat-label>
+              <input matInput formControlName="barcode" placeholder="Codigo de Barras">
+            </mat-form-field>
+            <!-- <mat-form-field fxFlex appearance="outline">
+              <mat-label>Impuestos</mat-label>
+              <mat-select [compareWith]="compareObjects" formControlName="tax" multiple>
+                <mat-option *ngFor="let item of taxes" [value]="item.id">{{item.description}}</mat-option>
+              </mat-select>
+            </mat-form-field> -->
+          </div>
+        </div>
+      </div>
+
+      <div flex fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="5px">
+        <mat-form-field fxFlex="40" appearance="outline">
+          <mat-label>Observaciones</mat-label>
+          <input matInput formControlName="observation" placeholder="Observaciones">
+        </mat-form-field>
+        <mat-form-field fxFlex appearance="outline">
+          <mat-label>Locales</mat-label>
+          <mat-select [compareWith]="compareObjects" formControlName="headquarter" multiple>
+            <mat-option *ngFor="let item of stores" [value]="item.id">{{item.description}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex appearance="outline">
+          <mat-label>Almacen</mat-label>
+          <mat-select [compareWith]="compareObjects" formControlName="warehouse_id">
+            <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.id">{{warehouse.description}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="15" appearance="outline">
+          <mat-label>Color</mat-label>
+          <input autocomplete="false" matInput [(colorPicker)]="addArticleFormGroup.get('colour').value"
+            [style.background]="addArticleFormGroup.get('colour').value"
+            [style.color]="addArticleFormGroup.get('colour').value" [value]="addArticleFormGroup.get('colour').value"
+            (colorPickerChange)="addArticleFormGroup.get('colour').setValue($event)" class="colorPicker"
+            formControlName="colour" cpColorMode="presets" cpPosition="top"
+            [cpPresetColors]="['#000000','#283593', '#C62828', '#AD1457', '#6A1B9A', '#1565C0', '#0277BD', '#00838F', '#00695C', '#2E7D32', '#F9A825', '#EF6C00', '#D84315', '#4E342E', '#9E9D24', '#FFAB91']">
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="addArticleFormGroup.value.sale_item" fxLayout="row">
+        <div *ngIf="addArticleFormGroup.value.sale_item" fxLayout="column" fxFlex>
+          <h4>&Aacute;rea de Impresi&oacute;n</h4>
+          <div fxLayoutGap="5px">
+            <mat-form-field fxFlex="50" appearance="outline">
+              <mat-label>Area de Impresión</mat-label>
+              <mat-select formControlName="area_id" (selectionChange)="getPrintersByArea(addArticleFormGroup.value.area_id)"
+                [compareWith]="compareObjects">
+                <mat-option *ngFor="let area of areas" [value]="area.id">{{area.description}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex="50" appearance="outline">
+              <mat-label>Impresora</mat-label>
+              <mat-select formControlName="printer_id" [compareWith]="compareObjects">
+                <mat-option *ngFor="let printer of printers" [value]="printer.id">{{printer.description}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <h4>Inventario</h4>
+      <div flex fxLayout="column">
+        <div fxFlex="100">
+          <mat-slide-toggle formControlName="compound_article" color="primary">Art&iacute;culo Compuesto
+          </mat-slide-toggle>
+        </div>
+        <div fxFlex="100">
+          <mat-slide-toggle formControlName="use_stock" color="primary">Seguir el Inventario</mat-slide-toggle>
+        </div>
+      </div>
+      <div flex fxLayout="row" [hidden]="addArticleFormGroup.value.compound_article === false">
+        <mat-form-field fxFlex="40" fxFlex.sm="100" fxFlex.xs="100" appearance="outline">
+          <mat-label>Art&iacute;culo</mat-label>
+          <mat-select formControlName="article" (selectionChange)="addArticle(addArticleFormGroup.value.article)">
+            <mat-option>
+              <ngx-mat-select-search formControlName="articleFilter" [placeholderLabel]="'Buscar'"
+                [noEntriesFoundLabel]="'No se encontraron registros'"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let article of filteredProducts | async " [value]="article">
+              {{article.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" [hidden]="addArticleFormGroup.value.compound_article === false">
+        <div fxFlex="100">
+          <table mat-table [dataSource]="modaldataSource">
+
+            <ng-container matColumnDef="component">
+              <th mat-header-cell *matHeaderCellDef>Componente</th>
+              <td mat-cell *matCellDef="let element">{{ element.component }}</td>
+              <td mat-footer-cell *matFooterCellDef>Costo Total </td>
+            </ng-container>
+
+            <ng-container matColumnDef="qty">
+              <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+              <td mat-cell *matCellDef="let element; let idx = index"><input style="width: 150px; background-color: lavender;" [(ngModel)]="element.qty" [ngModelOptions]="{standalone: true}" (keyup)="addProductsQty($event, idx, element.cost)" placeholder="Cantidad" matInput type="number"></td>
+            </ng-container>
+
+            <ng-container matColumnDef="cost">
+              <th mat-header-cell *matHeaderCellDef>Costo</th>
+              <td mat-cell *matCellDef="let element">{{ element.cost }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef>Precio Neto</th>
+              <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="total">
+              <th mat-header-cell *matHeaderCellDef>Total</th>
+              <td mat-cell *matCellDef="let element">{{ (element.qty ? element.qty : 0) * element.price }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="options">
+              <th mat-header-cell *matHeaderCellDef>Opciones</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <button (click)="deleteArticle(i)" type="button" matTooltip="Quitar" mat-icon-button color="warn">
+                  <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+      </div>
+      <div flex fxLayout="row" [hidden]="addArticleFormGroup.value.use_stock === false" fxLayoutGap="20px">
+        <mat-form-field fxFlex="25" appearance="outline">
+          <mat-label>Unidad de Medida</mat-label>
+          <mat-select [compareWith]="compareObjects" formControlName="measurement_unit_id_stock">
+            <mat-option *ngFor="let unit of mUnits" [value]="unit.id">{{unit.description}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="20" appearance="outline">
+          <mat-label>Cantidad</mat-label>
+          <input matInput formControlName="quantity" placeholder="Cantidad">
+        </mat-form-field>
+        <mat-form-field fxFlex="20" appearance="outline">
+          <mat-label>Cantidad M&iacute;nima</mat-label>
+          <input matInput formControlName="minimum_stock" placeholder="Cantidad M&iacute;nima">
+        </mat-form-field>
+        <mat-form-field fxFlex="20" appearance="outline">
+          <mat-label>Cantidad M&aacute;xima</mat-label>
+          <input matInput formControlName="maximum_stock" placeholder="Cantidad M&aacute;xima">
+        </mat-form-field>
+      </div>
+      <mat-divider style="margin: 10px 0 10px 0"></mat-divider>
+      <!-- <h4>Locales</h4>
+      <div flex fxLayout="row">
+        <div fxFlex="50">
+          <mat-checkbox>El artículo está disponible para la venta en todos los locales</mat-checkbox>
+        </div>
+      </div>
+      <div flex fxLayout="row">
+        <div fxFlex="100">
+          <table mat-table [dataSource]="modaldataSourceShops">
+
+            <ng-container matColumnDef="available">
+              <th mat-header-cell *matHeaderCellDef>Disponible</th>
+              <td mat-cell *matCellDef="let element">
+                <mat-checkbox></mat-checkbox>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="shop">
+              <th mat-header-cell *matHeaderCellDef>Local</th>
+              <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef>Precio</th>
+              <td mat-cell *matCellDef="let element">
+                <mat-form-field>
+                  <input matInput>
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsShops"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsShops"></tr>
+          </table>
+        </div>
+      </div> -->
+      <div fxLayoutAlign="end center" fxLayout="row">
+        <mat-slide-toggle [color]="'primary'" formControlName="state">
+          {{addArticleFormGroup.value.state ? 'Activo' : 'Inactivo'}}</mat-slide-toggle>
+      </div>
+      <div style="margin-bottom: 5px;" fxLayoutAlign="end center" fxLayoutGap="5px" fxLayout="row">
+        <button flex mat-raised-button color="warn" matTooltip="Reiniciar Registro" type="reset">Limpiar</button>
+        <span>&nbsp;</span>
+        <button flex mat-raised-button color="primary" matTooltip="Guardar Registro" type="submit"
+          [disabled]="!addArticleFormGroup.valid">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>

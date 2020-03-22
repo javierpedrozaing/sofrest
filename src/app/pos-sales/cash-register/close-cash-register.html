@@ -1,0 +1,43 @@
+<button mat-button color="warn" class="float-right" (click)="onNoClick()">
+  <mat-icon>close</mat-icon>
+</button>
+<h1 mat-dialog-title>Cierre de {{data.data.description}}</h1>
+<form [formGroup]="closeCashRegisterFormGroup" (ngSubmit)="closeBox()">
+  <div mat-dialog-content>
+    <div fxLayout="row">
+      <mat-form-field fxFlex="50" appearance="outline">
+        <input
+          matInput
+          type="number"
+          formControlName="amount_close"
+          placeholder="Monto de Cierre"
+        />
+      </mat-form-field>
+      <mat-form-field fxFlex="50" appearance="outline">
+        <input
+          matInput
+          type="text"
+          formControlName="exchange_rate"
+          placeholder="Tipo de Cambio"
+        />
+      </mat-form-field>
+    </div>
+    <div fxLayout="row">
+      <mat-form-field fxFlex appearance="outline">
+        <mat-label>Comentarios</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          placeholder="Comentarios"
+        ></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions fxLayoutAlign="center center">
+    <div fxLayout="row">
+      <button fxFlex="100" mat-flat-button matTooltip="Cerrar" color="primary">
+        Cerrar
+      </button>
+    </div>
+  </div>
+</form>

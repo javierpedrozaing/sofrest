@@ -1,0 +1,91 @@
+<mat-card>
+        <div class="container-section-header clearfix">
+                <h2 class="float-left">Horas Trabajadas</h2>
+            </div>
+            
+            <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="end center" *ngIf="!isMobile" fxLayoutGap="20px">
+                    <form [formGroup]="form" fxFlex>
+                            <mat-form-field fxFlex>
+                                <input matInput placeholder="Rango de Fecha" [satDatepicker]="picker2" formControlName="date">
+                                <sat-datepicker #picker2 [rangeMode]="true">
+                                </sat-datepicker>
+                                <sat-datepicker-toggle matSuffix [for]="picker2"></sat-datepicker-toggle>
+                            </mat-form-field>
+                        </form>
+                <mat-form-field fxFlex>
+                    <mat-label>Locales</mat-label>
+                    <mat-select [(ngModel)]="shop" multiple>
+                        <mat-select-trigger>
+                            {{shop.length>0 ? ( shop.length === stores.length ? 'Todos los locales' : shop[0].name ) : ''}}
+                            <span *ngIf="shop.length != stores.length && shop.length>1" class="">
+                                (+{{shop.length - 1}})
+                            </span>
+                        </mat-select-trigger>
+                        <div style="padding: 10px">
+                            <mat-checkbox coloor="primary" [(ngModel)]="allSelectedStore"
+                                (change)="selectAllStore(allSelectedStore)">Todos los locales</mat-checkbox>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <mat-option (click)="changeShop()" *ngFor="let store of stores" [value]="store">{{store.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field fxFlex>
+                    <mat-label>Empleados</mat-label>
+                    <mat-select [(ngModel)]="employees" multiple>
+                        <mat-select-trigger>
+                            {{employees.length>0 ? ( employees.length === employeesData.length ? 'Todos los Empleados' : employees[0].name ) : ''}}
+                            <span *ngIf="employees.length != employeesData.length && employees.length>1" class="">
+                                (+{{shop.length - 1}})
+                            </span>
+                        </mat-select-trigger>
+                        <div style="padding: 10px">
+                            <mat-checkbox coloor="primary" [(ngModel)]="allSelectedEmployees"
+                                (change)="selectAllEmployees(allSelectedEmployees)">Todos los Empleados</mat-checkbox>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <mat-option (click)="changeEmployee()" *ngFor="let employee of employeesData" [value]="employee">
+                            {{employee.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            
+            <div class="table-responsive text-nowrap" *ngIf="!isMobile">
+                <table mat-table class="table table-responsive-sm" [dataSource]="dataSource" >
+            
+                    <ng-container matColumnDef="employee">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Empleado </th>
+                        <td mat-cell *matCellDef="let element" class="text-center"> {{element.employee}} </td>
+                        <td mat-footer-cell *matFooterCellDef class="text-center"><strong>Total</strong>  </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="shop">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Local </th>
+                        <td mat-cell *matCellDef="let element" class="text-center"> {{element.shop}} </td>
+                        <td mat-footer-cell *matFooterCellDef class="text-center"></td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="total">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> Total </th>
+                        <td mat-cell *matCellDef="let element" class="text-center"> {{element.total}} </td>
+                        <td mat-footer-cell *matFooterCellDef class="text-center"> <strong>{{getTotal()}}</strong> </td>
+                    </ng-container>
+            
+            
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="text-center"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="text-center"></tr>
+                    <tr mat-footer-row *matFooterRowDef="displayedColumns" ></tr>
+                    
+                </table>
+            </div>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" *ngIf="!isMobile"></mat-paginator>
+            
+            <div *ngIf="isMobile"> <strong style="color: black">Total :</strong> {{getTotal() | number }} </div>
+            <mat-list *ngIf="isMobile">
+                <mat-list-item *ngFor="let data of dataSource.data" class="mat-element">
+                  <mat-icon mat-list-icon>insert_drive_file</mat-icon>
+                  <h4 mat-line>{{data.employee}}</h4>
+                  <p mat-line> {{data.shop}}</p>
+                  <mat-divider></mat-divider>
+                </mat-list-item>
+              </mat-list>
+</mat-card>

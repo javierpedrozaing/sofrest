@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-lg-3 col-md 4 col-sm-6 col-xs-12 order-card" *ngFor="let order of orders; let i = index">
+        <mat-card class="table-card" [ngClass]="{'status-class-active': (order.status ===1 ), 'status-class-waiting': (order.status ===2 ), 'status-class-inactive': (order.status ===3 ) }">
+            <div flex fxLayout="row" fxLayoutAlign="none center">
+                <div fxFlex="90" fxLayoutAlign="none center">
+                    <mat-icon>alarm</mat-icon> <span fxFlex="90">{{order.date}}</span>
+                </div>
+                <span fxFlex="10" class="table-number text-center">
+                    <strong>{{order.table}}</strong>
+                </span>
+            </div>
+            <mat-divider></mat-divider>
+            <mat-card-content flex fxLayout="column" fxLayoutAlign="space-evenly start">
+                <div flex fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="none center">
+                    <span>&nbsp;</span>
+                </div>
+                <div flex fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="none center">
+                    <mat-icon color="primary">person</mat-icon> <span style="color: #3f51b5"> {{order.client.name | uppercase}}</span>
+                </div>
+                <div flex fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="none center">
+                    <mat-icon color="accent">email</mat-icon>
+                    <span>
+                        {{order.client.email | uppercase}}
+                    </span>
+                </div>
+                <div flex fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="none center">
+                    <mat-icon style="color:#ffa000">phone</mat-icon>
+                    <span>
+                        {{order.client.phone | uppercase}}
+                    </span>
+                </div>
+            </mat-card-content>
+            <mat-divider></mat-divider>
+            <mat-card-actions class="header-footer">
+                    <button mat-icon-button color="primary" matTooltip="Añadir/Editar Pedido" [routerLink]="['/tables-and-orders/order-data']">
+                        <mat-icon>restaurant</mat-icon>
+                      </button>
+                      <button mat-icon-button color="primary" matTooltip="Pagar Cuentas" [routerLink]="['/orders/payment']">
+                        <mat-icon>payment</mat-icon>
+                      </button>
+                    <button mat-icon-button color="primary" (click)="openDialog()" matTooltip="Mover Mesa">
+                            <mat-icon>transfer_within_a_station</mat-icon>
+                          </button>
+                          <button mat-icon-button color="warn" (click)="cancelOrder(i)" matTooltip="Cancelar Pedido">
+                            <mat-icon>cancel_presentation</mat-icon>
+                          </button>
+            </mat-card-actions>
+        </mat-card>
+
+    </div>
+</div>
+
+<button class="float-button" type="button" mat-fab color="primary" [routerLink]="['/tables-and-orders/order-data']">
+    <mat-icon aria-label="Añadir">
+      add
+    </mat-icon>
+  </button>

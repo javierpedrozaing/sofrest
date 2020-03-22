@@ -1,0 +1,23 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>Darse de baja de inventario avanzado</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <p>
+            Darse de baja resultará en la pérdida de acceso a las opciones de inventario avanzado incluyendo: órdenes de compra, transferencias de stock e informe de evaluación de inventario.
+        </p>
+
+
+        <p>
+            Acceso al servicio se suspenderá automáticamente al final de la prueba gratuita.
+        </p>
+
+
+    </mat-card-content>
+    <mat-card-actions>
+        <div class="clearfix">
+            <button class="float-right" matTooltip="Darse de Baja"  mat-button>DARSE DE BAJA</button>
+            <button (click)="close()" matTooltip="Cancelar" class="float-right" mat-button>CANCELAR</button>
+        </div>
+    </mat-card-actions>
+</mat-card>

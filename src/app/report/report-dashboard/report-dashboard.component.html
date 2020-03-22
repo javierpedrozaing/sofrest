@@ -1,0 +1,110 @@
+<div class="row mt-4">
+
+  <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12" *ngFor="let statBar of statsBar" style="margin-bottom: 10px">
+      <mat-card class="card-background">
+        <mat-card-header>
+          <mat-card-title>
+            <span style="font-size: 10px;">
+              {{statBar.name}}
+            </span>
+            <mat-divider></mat-divider>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row">
+              <div class="col-lg-4 col-md-4 col-xs-3 col-sm-3">
+                  <div class="height-bar-description">
+                      <div class="row" style="margin-top: 50%">
+                          <span class="col-12"> <strong>{{statBar.value}}K </strong> </span>
+                          <span class="col-12 " [ngClass]="{'down-data': !statBar.up, 'up-data' : statBar.up}">
+                            {{statBar.up ? '&uarr;' : '&darr;'}}
+                            {{statBar.percentage | number: '1.1-1'}} % 
+                          </span>
+                      </div>
+                  </div>
+                  <div class="height-bar-description-mobile">
+                      <div class="row">
+                          <span class="col-12"> <strong>{{statBar.value}}K </strong> </span>
+                          <span class="col-12 " [ngClass]="{'down-data': !statBar.up, 'up-data' : statBar.up}">
+                            {{statBar.up ? '&uarr;' : '&darr;'}}
+                            {{statBar.percentage | number: '1.1-1'}} % 
+                          </span>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-8 col-md-8 col-xs-9 col-sm-9">
+                  <div style="display: block" fxFlex="100">
+                      <canvas baseChart
+                      [datasets]="barChartData"
+                      [labels]="barChartLabels"
+                      [options]="barChartOptions"
+                      [plugins]="barChartPlugins"
+                      [legend]="barChartLegend"
+                      [chartType]="barChartType">
+                      </canvas>
+                </div>
+              </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12" style="margin-bottom: 10px" *ngFor="let statDoughnut of statsDoughnut" >
+    <mat-card class="card-background">
+      <mat-card-header>
+        <mat-card-title>
+          <span style="font-size: 10px;">
+            {{statDoughnut.name}}
+          </span>
+          <mat-divider></mat-divider>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div style="display: block">
+          <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
+            [options]="doughnutChartOption">
+          </canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12" style="margin-bottom: 10px">
+    <mat-card class="card-background">
+      <mat-card-header>
+        <mat-card-title>
+          <span style="font-size: 1vw;">
+            Ventas de los mozos
+          </span>
+          <mat-divider></mat-divider>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div style="display: block">
+          <canvas baseChart width="400" height="400"
+          [datasets]="lineChartData"
+          [labels]="lineChartLabels"
+          [options]="lineChartOptions"
+          [colors]="lineChartColors"
+          [legend]="lineChartLegend"
+          [chartType]="lineChartType"
+          [plugins]="lineChartPlugins"></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12 d-flex align-self-start flex-column" >
+      <div class="card mb-3 widget-content card-background" *ngFor="let statCard of statsCards" style="width: 100%;">
+          <div class="widget-content-wrapper">
+            <div class="widget-content-left">
+              <div class="widget-heading" style="color : #56d9fe">${{statCard.amount | number:'.0' }}</div>
+              <div class="widget-subheading">{{statCard.name}}</div>
+            </div>
+            <div class="widget-content-right">
+              <mat-icon style="cursor: pointer">more_horiz</mat-icon>
+            </div>
+          </div>
+        </div>
+  </div>
+</div>

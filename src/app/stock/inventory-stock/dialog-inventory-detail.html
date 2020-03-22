@@ -1,0 +1,47 @@
+<h1 mat-dialog-title>Detalle del Inventario                <button type="button" mat-button color="warn" matTooltip="Cerrar" class="float-right config-close" (click)="onNoClick()">
+                <mat-icon>close</mat-icon>
+              </button></h1>
+<div mat-dialog-content>
+        <form [formGroup]="form" class="form-container">
+                <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+                        <mat-form-field fxFlex="50" appearance="outline">
+                                <mat-label>Fecha </mat-label>
+                                <input matInput formControlName="date" placeholder="Fecha">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="50" appearance="outline">
+                                <mat-label>Artículo </mat-label>
+                                <input matInput formControlName="article" placeholder="Artículo">
+                        </mat-form-field>
+                </div>
+                <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+                        <mat-form-field fxFlex="50" appearance="outline">
+                                <mat-label>Tistarta </mat-label>
+                                <input matInput formControlName="shop" placeholder="Fecha">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="50" appearance="outline">
+                                <mat-label>Empleado </mat-label>
+                                <input matInput formControlName="employee" placeholder="Artículo">
+                        </mat-form-field>
+                </div>
+                <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+                        <mat-form-field fxFlex="50" appearance="outline">
+                                <mat-label>Motivo </mat-label>
+                                <input matInput formControlName="motive" placeholder="Fecha">
+                        </mat-form-field>
+                        <mat-form-field fxFlex="50" appearance="outline">
+                                <mat-label>Ajuste </mat-label>
+                                <input matInput formControlName="ajust" placeholder="Artículo">
+                        </mat-form-field>
+                </div>
+                <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+                        <mat-form-field fxFlex="50" appearance="outline">
+                                <mat-label>Stock final </mat-label>
+                                <input matInput formControlName="final_stock" placeholder="Fecha">
+                        </mat-form-field>
+                </div>
+        </form>
+</div>
+<div mat-dialog-actions class="text-center" fxLayoutAlign="end center">
+        <button mat-raised-button (click)="onNoClick()" class="float-right" 
+        matTooltip="Cerrar" color="warn">Cerrar</button>
+</div>

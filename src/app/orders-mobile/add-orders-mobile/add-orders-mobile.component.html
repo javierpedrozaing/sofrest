@@ -1,0 +1,41 @@
+<div fxLayout="row" style="background-color: #7986CB; color: white">
+    <div fxFlex="20" style="padding: 10px">
+        <button mat-raised-button color="accent" routerLink="/orders-mobile">
+            <mat-icon>arrow_back</mat-icon>
+        </button></div>
+    <div fxFlex="80" style="padding: 10px" fxLayoutAlign="center center">PEDIDOS</div>
+</div>
+<div flex fxLayout="column">
+    <form [formGroup]="addFormGroup">
+        <div flex fxLayout="column">
+            <mat-form-field fxFlex="100" appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="Nombre del Cliente" formControlName="name" required>
+            </mat-form-field>
+            <mat-form-field fxFlex="100" appearance="outline">
+                <mat-label>Apellido</mat-label>
+                <input matInput placeholder="Apellido del Cliente" formControlName="lastname" required>
+            </mat-form-field>
+            <mat-form-field fxFlex="100" appearance="outline">
+                <mat-label>Tel&eacute;fono</mat-label>
+                <input matInput placeholder="N&uacute;mero Telef&oacute;nico" formControlName="phone_number" required>
+            </mat-form-field>
+            <mat-form-field fxFlex="100" appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="Direcci&oacute;n de Email" formControlName="email" required>
+            </mat-form-field>
+            <mat-form-field fxFlex="100" appearance="outline">
+                <mat-label>N&uacute;mero de Comensales</mat-label>
+                <input type="number" matInput placeholder="N&uacute;mero de Comensales" formControlName="diners_number" required>
+            </mat-form-field>
+            <div fxLayout="column" fxLayoutAlign="space-around center">
+                <button type="button" mat-flat-button class="btn-full-width" matTooltip="Boleta">Boleta</button>
+                <button type="button" mat-flat-button class="btn-full-width" matTooltip="Factura">Factura</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div style="position: fixed; bottom: 20px" fxLayout="row" fxLayoutAlign="space-around center">
+    <button routerLink="/orders-mobile/list" mat-flat-button class="btn-mid-width" matTooltip="Asignar Pedidos">Asignar Pedidos</button>
+    <button routerLink="/orders-mobile/grid" mat-flat-button class="btn-mid-width" color="primary" matTooltip="Asignar Mesa">Asignar Mesa</button>
+</div>

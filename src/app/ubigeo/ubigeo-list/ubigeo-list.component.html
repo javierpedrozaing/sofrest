@@ -1,0 +1,85 @@
+<mat-card>
+    <div class="container-section-header clearfix">
+        <h2 class="float-left">UBIGEO</h2>
+        <button class="float-right" matTooltip="Agregar Sub-Categoría" mat-flat-button *ngIf="!isMobile" color="primary" (click)="openDialog()">
+            <mat-icon aria-hidden="false" aria-label="Add Icon">add</mat-icon> Agregar
+        </button>
+        <!-- <span class="float-right">&nbsp;</span>
+      <button class="float-right" *ngIf="showRemove && dataSource" (click)="removeSelected()" mat-flat-button
+        color="warn">
+        <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24"> RETIRAR
+      </button> -->
+    </div>
+
+    <div flex fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="20px">
+        <mat-form-field fxFlex="50">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+            <span matPrefix>
+                <mat-icon>search</mat-icon>
+            </span>
+        </mat-form-field>
+    </div>
+
+    <div class="table-responsive text-nowrap" *ngIf="!isMobile">
+        <table mat-table [dataSource]="dataSource"
+            class="text-center" *ngIf="!isMobile">
+
+            <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> N </th>
+                <td mat-cell *matCellDef="let element; let i =index" class="text-center"> {{i + 1}} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="department">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Departamento </th>
+                <td mat-cell *matCellDef="let element" class="text-center"> {{element.department}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="province">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Provincia </th>
+                <td mat-cell *matCellDef="let element" class="text-center"> {{element.province}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="district">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Distrito </th>
+                <td mat-cell *matCellDef="let element" class="text-center"> {{element.district}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Código </th>
+                <td mat-cell *matCellDef="let element" class="text-center"> {{element.code}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="options">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Opciones </th>
+                <td mat-cell *matCellDef="let element; let idx = index" class="text-center">
+                    <button mat-icon-button color="primary" (click)="openDialog(element.id,idx)" matTooltip="Editar">
+                      <img src="./assets/ui-icons/SVG/edit.svg" width="24" height="24">
+                    </button>
+                    <button mat-icon-button color="warn" matTooltip="Eliminar" (click)="deleteCategory(idx)">
+                      <img src="./assets/ui-icons/SVG/delete.svg" width="24" height="24">
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" *ngIf="!isMobile">
+    </mat-paginator>
+
+    <!-- <mat-list *ngIf="isMobile">
+        <mat-list-item *ngFor="let data of dataSource.data" class="mat-element">
+            <ngx-avatar class="img-fluid" src="./assets/images/modifiers.png" size="40"></ngx-avatar>
+            <h4 mat-line>{{data.modifier}}</h4>
+            <p mat-line> {{data.options}} </p>
+            <mat-divider></mat-divider>
+        </mat-list-item>
+    </mat-list> -->
+
+    <button class="float-button" (click)="openDialog()" *ngIf="isMobile" mat-fab color="primary">
+        <mat-icon aria-label="Añadir">
+            add
+        </mat-icon>
+    </button>
+</mat-card>
